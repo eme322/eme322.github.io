@@ -13,7 +13,7 @@ function startGameOnce() {
 
 function startGame() {
   myGamePiece = new gameObject(30, 30, 'red', 10, 120);
-  myGamePiece.gravity = 0.05;
+  myGamePiece.gravity = 0.02;
   myGameArea.start();
 }
 
