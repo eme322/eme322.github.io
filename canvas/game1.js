@@ -82,7 +82,7 @@ function gameObject(width, height, color, x, y, type, imageSrc) {
   this.y = y;
   this.gravity = 0;
   this.gravitySpeed = 0;
-  this.color = white;
+  this.color = white; //color
   this.image = null;
 
   if (imageSrc) {
