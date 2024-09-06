@@ -22,7 +22,7 @@ window.addEventListener('keydown', function (e) {
 
   switch (e.key) {
     case 'ArrowUp':
-      myGamePiece.speedY = -1; // Move upward
+      myGamePiece.speedY = -3; // Move upward
       break;
     case 'ArrowDown':
       myGamePiece.speedY = 1; // Move downward
