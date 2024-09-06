@@ -85,7 +85,6 @@ function gameObject(width, height, color, x, y, type, imageSrc) {
   this.color = color;
   this.image = null;
 
-  // Load the image if provided
   if (imageSrc) {
     this.image = new Image();
     this.image.src = imageSrc;
@@ -94,14 +93,12 @@ function gameObject(width, height, color, x, y, type, imageSrc) {
   this.update = function () {
     var ctx = myGameArea.context;
     if (this.image) {
-      // Draw the image if it exists
       ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     } else if (this.type == "text") {
       ctx.font = this.width + " " + this.height;
       ctx.fillStyle = color;
       ctx.fillText(this.text, this.x, this.y);
     } else {
-      // Fallback: Draw a colored rectangle
       ctx.fillStyle = this.color;
       ctx.fillRect(this.x, this.y, this.width, this.height);
     }
@@ -146,12 +143,14 @@ function gameObject(width, height, color, x, y, type, imageSrc) {
 // Function to create and manage obstacles
 function updateObstacles() {
   var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+  var crocodileImageSrc = 'crocodile.jpg'; // Image source for obstacles
+
   for (i = 0; i < myObstacles.length; i += 1) {
     if (myGamePiece.crashWith(myObstacles[i])) {
       return;
     }
   }
-  
+
   if (myGameArea.frameNo == 1 || everyinterval(150)) {
     x = myGameArea.canvas.width;
     minHeight = 20;
@@ -161,10 +160,11 @@ function updateObstacles() {
     maxGap = 200;
     gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
 
-    // Use the crocodile image for obstacles
-    var crocodileImageSrc = 'crocodile.jpg';
-    myObstacles.push(new gameObject(50, height, null, x, 0, null, crocodileImageSrc)); // Top crocodile
-    myObstacles.push(new gameObject(50, x - height - gap, null, x, height + gap, null, crocodileImageSrc)); // Bottom crocodile
+    // Create top obstacle
+    myObstacles.push(new gameObject(50, height, null, x, 0, null, crocodileImageSrc));
+
+    // Create bottom obstacle
+    myObstacles.push(new gameObject(50, myGameArea.canvas.height - height - gap, null, x, height + gap, null, crocodileImageSrc));
   }
 
   for (i = 0; i < myObstacles.length; i += 1) {
@@ -199,4 +199,3 @@ function togglePause() {
     myGameArea.stop();
   }
 }
-
