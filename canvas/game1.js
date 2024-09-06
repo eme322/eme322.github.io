@@ -18,6 +18,12 @@ function startGame() {
   myGamePiece.gravity = 0.03; // Adjust gravity for smoother jumps
   myGameArea.start();
 }
+function addGameTitle() {
+    var title = document.createElement('div');
+    title.id = 'gameTitle';
+    title.innerHTML = 'Fish Flight';
+    document.body.insertBefore(title, document.body.firstChild);
+}
 
 window.addEventListener('keydown', function (e) {
   if (!gameStarted) return;
