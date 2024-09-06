@@ -72,7 +72,7 @@ var myGameArea = {
   },
 };
 
-function gameObject(width, height, color, x, y, type) {
+function gameObject(width, height, color, x, y, type, imageSrc) {
   this.type = type;
   this.width = width;
   this.height = height;
@@ -83,17 +83,29 @@ function gameObject(width, height, color, x, y, type) {
   this.gravity = 0;
   this.gravitySpeed = 0;
   this.color = color;
+  this.image = null;
+
+  // Load the image if provided
+  if (imageSrc) {
+    this.image = new Image();
+    this.image.src = imageSrc;
+  }
+
   this.update = function () {
     var ctx = myGameArea.context;
-    if (this.type == "text") {
+    if (this.image) {
+      // Draw the image if it exists
+      ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    } else if (this.type == "text") {
       ctx.font = this.width + " " + this.height;
       ctx.fillStyle = color;
       ctx.fillText(this.text, this.x, this.y);
     } else {
+      // Fallback: Draw a colored rectangle
       ctx.fillStyle = this.color;
       ctx.fillRect(this.x, this.y, this.width, this.height);
     }
-  }
+  };
 
   this.newPos = function () {
     this.gravitySpeed += this.gravity;
@@ -112,6 +124,22 @@ function gameObject(width, height, color, x, y, type) {
       this.y = 0;
       this.gravitySpeed = 0;
     }
+  };
+
+  this.crashWith = function (otherobj) {
+    var myleft = this.x;
+    var myright = this.x + this.width;
+    var mytop = this.y;
+    var mybottom = this.y + this.height;
+    var otherleft = otherobj.x;
+    var otherright = otherobj.x + otherobj.width;
+    var othertop = otherobj.y;
+    var otherbottom = otherobj.y + otherobj.height;
+    var crash = true;
+    if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+      crash = false;
+    }
+    return crash;
   };
 }
 
@@ -132,8 +160,11 @@ function updateObstacles() {
     minGap = 50;
     maxGap = 200;
     gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
-    myObstacles.push(new gameObject(10, height, 'green', x, 0));
-    myObstacles.push(new gameObject(10, x - height - gap, 'green', x, height + gap));
+
+    // Use the crocodile image for obstacles
+    var crocodileImageSrc = 'crocodile.jpg';
+    myObstacles.push(new gameObject(50, height, null, x, 0, null, crocodileImageSrc)); // Top crocodile
+    myObstacles.push(new gameObject(50, x - height - gap, null, x, height + gap, null, crocodileImageSrc)); // Bottom crocodile
   }
 
   for (i = 0; i < myObstacles.length; i += 1) {
