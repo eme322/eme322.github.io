@@ -1,6 +1,7 @@
 var myGamePiece;
 var myObstacles = [];
 var isPaused = false; // To track the pause state
+
 /////
 var gameStarted = false;
 
