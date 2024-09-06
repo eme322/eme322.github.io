@@ -2,7 +2,7 @@ var myGamePiece;
 var myObstacles = [];
 var isPaused = false;
 var gameStarted = false;
-
+ 
 function startGameOnce() {
   if (!gameStarted) {
     startGame(); 
