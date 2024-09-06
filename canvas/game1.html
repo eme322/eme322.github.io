@@ -20,6 +20,38 @@ function startGame() {
     myGamePiece = new gameObject(30, 30, "red", 10, 120);
     myGamePiece.gravity = 0.05;
     myScore = new gameObject("30px", "Consolas", "black", 280, 40, "text");
+
+    // Add event listeners for keyboard input
+    window.addEventListener('keydown', function (e) {
+        switch(e.key) {
+            case "ArrowUp":
+                accelerate(-0.2);
+                break;
+            case "ArrowDown":
+                myGamePiece.gravity = 0.1;
+                break;
+            case "ArrowLeft":
+                myGamePiece.speedX = -1;
+                break;
+            case "ArrowRight":
+                myGamePiece.speedX = 1;
+                break;
+        }
+    });
+
+    window.addEventListener('keyup', function (e) {
+        switch(e.key) {
+            case "ArrowUp":
+            case "ArrowDown":
+                accelerate(0.05);  // Reset gravity after up or down arrow released
+                break;
+            case "ArrowLeft":
+            case "ArrowRight":
+                myGamePiece.speedX = 0; // Stop horizontal movement when key is released
+                break;
+        }
+    });
+
     myGameArea.start();
 }
 
@@ -32,7 +64,7 @@ var myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
-        },
+    },
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
@@ -40,7 +72,6 @@ var myGameArea = {
 
 function gameObject(width, height, color, x, y, type) {
     this.type = type;
-    this.score = 0;
     this.width = width;
     this.height = height;
     this.speedX = 0;
@@ -50,7 +81,7 @@ function gameObject(width, height, color, x, y, type) {
     this.gravity = 0;
     this.gravitySpeed = 0;
     this.update = function() {
-        ctx = myGameArea.context;
+        var ctx = myGameArea.context;
         if (this.type == "text") {
             ctx.font = this.width + " " + this.height;
             ctx.fillStyle = color;
@@ -64,12 +95,21 @@ function gameObject(width, height, color, x, y, type) {
         this.gravitySpeed += this.gravity;
         this.x += this.speedX;
         this.y += this.speedY + this.gravitySpeed;
-        this.hitBottom();
+        this.checkBoundaries();
     }
-    this.hitBottom = function() {
+    this.checkBoundaries = function() {
         var rockbottom = myGameArea.canvas.height - this.height;
+        var topBoundary = 0;
+        
+        // Check bottom boundary
         if (this.y > rockbottom) {
             this.y = rockbottom;
+            this.gravitySpeed = 0;
+        }
+        
+        // Check top boundary
+        if (this.y < topBoundary) {
+            this.y = topBoundary;
             this.gravitySpeed = 0;
         }
     }
@@ -130,8 +170,9 @@ function accelerate(n) {
 }
 </script>
 <br>
-<button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button>
-<p>Use the ACCELERATE button to stay in the air</p>
-<p>How long can you stay alive?</p>
-</body>
-</html>
+<button onmousedown="Start Playing(-0.2)" onmouseup="accelerate(0.05)">Start</button>
+<p>Click the Start button to begin</p>
+<p>Use the arrow keys to navigate</p>
+    </body>
+    </html>
+
