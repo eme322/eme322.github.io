@@ -18,6 +18,8 @@ function startGame() {
 }
 
 window.addEventListener('keydown', function (e) {
+  if (!gameStarted) return; // Prevent movement before the game starts
+
   switch (e.key) {
     case 'ArrowUp':
       myGamePiece.speedY = -1; // Move upward
@@ -35,6 +37,8 @@ window.addEventListener('keydown', function (e) {
 });
 
 window.addEventListener('keyup', function (e) {
+  if (!gameStarted) return; // Prevent actions before the game starts
+
   switch (e.key) {
     case 'ArrowUp':
     case 'ArrowDown':
@@ -121,3 +125,4 @@ function togglePause() {
     myGameArea.stop();
   }
 }
+
