@@ -9,7 +9,8 @@ canvas {
 #gameTitle {
     font-size: 2em;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 25px;
+    margin-bottom: 30px;
     font-family: Arial, sans-serif;
 }
 
