@@ -13,7 +13,7 @@ function startGameOnce() {
 
 function startGame() {
   myGamePiece = new gameObject(30, 30, 'red', 10, 120);
-  myGamePiece.gravity = 0.02; // Reduce gravity for smoother jumps
+  myGamePiece.gravity = 0.02; // Adjust gravity for smoother jumps
   myGameArea.start();
 }
 
@@ -22,10 +22,10 @@ window.addEventListener('keydown', function (e) {
 
   switch (e.key) {
     case 'ArrowUp':
-      myGamePiece.speedY = -3; // Reduce upward speed for smoother air time
+      myGamePiece.speedY = -3; // Adjust upward speed
       break;
     case 'ArrowDown':
-      myGamePiece.speedY = 1.5; // Slow downward movement
+      myGamePiece.speedY = 1.5; // Adjust downward speed
       break;
     case 'ArrowLeft':
       myGamePiece.speedX = -1.5; 
@@ -54,8 +54,8 @@ window.addEventListener('keyup', function (e) {
 var myGameArea = {
   canvas: document.createElement('canvas'),
   start: function () {
-    this.canvas.width = 500;
-    this.canvas.height = 300;
+    this.canvas.width = 480;
+    this.canvas.height = 270;
     this.context = this.canvas.getContext('2d');
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
     this.frameNo = 0;
@@ -140,17 +140,14 @@ function gameObject(width, height, color, x, y, type, imageSrc) {
   };
 }
 
-// Function to create and manage obstacles
 function updateObstacles() {
   var x, height, gap, minHeight, maxHeight, minGap, maxGap;
-  var crocodileImageSrc = 'crocodile.jpg'; // Image source for obstacles
-
   for (i = 0; i < myObstacles.length; i += 1) {
     if (myGamePiece.crashWith(myObstacles[i])) {
       return;
     }
   }
-
+  
   if (myGameArea.frameNo == 1 || everyinterval(150)) {
     x = myGameArea.canvas.width;
     minHeight = 20;
@@ -160,11 +157,14 @@ function updateObstacles() {
     maxGap = 200;
     gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
 
-    // Create top obstacle
-    myObstacles.push(new gameObject(50, height, null, x, 0, null, crocodileImageSrc));
-
-    // Create bottom obstacle
-    myObstacles.push(new gameObject(50, myGameArea.canvas.height - height - gap, null, x, height + gap, null, crocodileImageSrc));
+    // Create top and bottom obstacles with different images
+    var crocodileTopImageSrc = 'crocodileTop.jpg';
+    var crocodileDownImageSrc = 'crocodileDown.jpg';
+    
+    // Top obstacle
+    myObstacles.push(new gameObject(50, height, null, x, 0, null, crocodileTopImageSrc));
+    // Bottom obstacle
+    myObstacles.push(new gameObject(50, x - height - gap, null, x, height + gap, null, crocodileDownImageSrc));
   }
 
   for (i = 0; i < myObstacles.length; i += 1) {
@@ -199,3 +199,4 @@ function togglePause() {
     myGameArea.stop();
   }
 }
+
