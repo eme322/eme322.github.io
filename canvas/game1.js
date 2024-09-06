@@ -1,61 +1,55 @@
 var myGamePiece;
 var myObstacles = [];
-var isPaused = false; // To track the pause state
+var isPaused = false;
 var gameStarted = false;
 
 function startGameOnce() {
   if (!gameStarted) {
-    startGame(); // Start the game
+    startGame(); 
     gameStarted = true;
-    document.getElementById('startButton').disabled = true; // Disable button after start
+    document.getElementById('startButton').disabled = true; 
   }
 }
 
 function startGame() {
   myGamePiece = new gameObject(30, 30, 'red', 10, 120);
-  myGamePiece.gravity = 0.02;
+  myGamePiece.gravity = 0.02; // Reduce gravity for smoother jumps
   myGameArea.start();
 }
 
-
-
 window.addEventListener('keydown', function (e) {
-  if (!gameStarted) return; // Prevent movement before the game starts
+  if (!gameStarted) return;
 
   switch (e.key) {
     case 'ArrowUp':
-      myGamePiece.speedY = -5; // Move upward
+      myGamePiece.speedY = -3; // Reduce upward speed for smoother air time
       break;
     case 'ArrowDown':
-      myGamePiece.speedY = 3; // Move downward
+      myGamePiece.speedY = 1.5; // Slow downward movement
       break;
     case 'ArrowLeft':
-      myGamePiece.speedX = -2; // Move left
+      myGamePiece.speedX = -1.5; 
       break;
     case 'ArrowRight':
-      myGamePiece.speedX = 2; // Move right
+      myGamePiece.speedX = 1.5; 
       break;
   }
 });
 
 window.addEventListener('keyup', function (e) {
-  if (!gameStarted) return; // Prevent actions before the game starts
+  if (!gameStarted) return;
 
   switch (e.key) {
     case 'ArrowUp':
     case 'ArrowDown':
-      myGamePiece.speedY = 0; // Stop vertical movement when key is released
+      myGamePiece.speedY = 0; 
       break;
     case 'ArrowLeft':
     case 'ArrowRight':
-      myGamePiece.speedX = 0; // Stop horizontal movement when key is released
+      myGamePiece.speedX = 0; 
       break;
   }
 });
-
-
-
-
 
 var myGameArea = {
   canvas: document.createElement('canvas'),
@@ -88,7 +82,7 @@ function gameObject(width, height, color, x, y, type) {
   this.y = y;
   this.gravity = 0;
   this.gravitySpeed = 0;
-  this.color = color; // Store the color property
+  this.color = color;
   this.update = function () {
     var ctx = myGameArea.context;
     if (this.type == "text") {
@@ -101,20 +95,13 @@ function gameObject(width, height, color, x, y, type) {
     }
   }
 
-  
   this.newPos = function () {
     this.gravitySpeed += this.gravity;
-  // Apply the vertical speed and gravity together
     this.y += this.speedY + this.gravitySpeed;
     this.x += this.speedX;
-    this.checkBoundaries();//  // Check boundaries
+    this.checkBoundaries();
   };
 
-
-
-
-  
-  
   this.checkBoundaries = function () {
     var rockbottom = myGameArea.canvas.height - this.height;
     if (this.y > rockbottom) {
@@ -126,21 +113,6 @@ function gameObject(width, height, color, x, y, type) {
       this.gravitySpeed = 0;
     }
   };
-  this.crashWith = function (otherobj) {
-    var myleft = this.x;
-    var myright = this.x + this.width;
-    var mytop = this.y;
-    var mybottom = this.y + this.height;
-    var otherleft = otherobj.x;
-    var otherright = otherobj.x + otherobj.width;
-    var othertop = otherobj.y;
-    var otherbottom = otherobj.y + otherobj.height;
-    var crash = true;
-    if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-      crash = false;
-    }
-    return crash;
-  };
 }
 
 // Function to create and manage obstacles
@@ -148,11 +120,10 @@ function updateObstacles() {
   var x, height, gap, minHeight, maxHeight, minGap, maxGap;
   for (i = 0; i < myObstacles.length; i += 1) {
     if (myGamePiece.crashWith(myObstacles[i])) {
-      return; // Game stops if a crash occurs
+      return;
     }
   }
   
-  // Create new obstacles every 150 frames
   if (myGameArea.frameNo == 1 || everyinterval(150)) {
     x = myGameArea.canvas.width;
     minHeight = 20;
@@ -161,33 +132,31 @@ function updateObstacles() {
     minGap = 50;
     maxGap = 200;
     gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
-    myObstacles.push(new gameObject(10, height, 'green', x, 0)); // Top obstacle
-    myObstacles.push(new gameObject(10, x - height - gap, 'green', x, height + gap)); // Bottom obstacle
+    myObstacles.push(new gameObject(10, height, 'green', x, 0));
+    myObstacles.push(new gameObject(10, x - height - gap, 'green', x, height + gap));
   }
 
-  // Move and update obstacles
   for (i = 0; i < myObstacles.length; i += 1) {
-    myObstacles[i].x -= 1; // Move obstacle to the left
+    myObstacles[i].x -= 1;
     myObstacles[i].update();
   }
 }
 
-// Function to check if a specific interval has passed
 function everyinterval(n) {
   if ((myGameArea.frameNo / n) % 1 == 0) return true;
   return false;
 }
 
 function updateGameArea() {
-  if (isPaused) return; // Do nothing if the game is paused
+  if (isPaused) return;
 
   myGameArea.clear();
   myGameArea.frameNo += 1;
 
-  updateObstacles(); // Update obstacles
+  updateObstacles();
 
-  myGamePiece.newPos(); // Update player position
-  myGamePiece.update(); // Draw player
+  myGamePiece.newPos();
+  myGamePiece.update();
 }
 
 function togglePause() {
@@ -199,3 +168,4 @@ function togglePause() {
     myGameArea.stop();
   }
 }
+
