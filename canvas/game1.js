@@ -75,6 +75,8 @@ var myGameArea = {
   },
 };
 
+
+/*
 function gameObject(width, height, color, x, y, type, imageSrc) {
   this.type = type;
   this.width = width;
@@ -106,7 +108,58 @@ function gameObject(width, height, color, x, y, type, imageSrc) {
       ctx.fillRect(this.x, this.y, this.width, this.height);
     }
   };
+*/
 
+
+function gameObject(width, height, color, x, y, type, imageSrc) {
+  this.type = type;
+  this.width = width;
+  this.height = height;
+  this.speedX = 0;
+  this.speedY = 0;
+  this.x = x;
+  this.y = y;
+  this.gravity = 0;
+  this.gravitySpeed = 0;
+  this.color = color;
+  this.image = null;
+
+  if (imageSrc) {
+    this.image = new Image();
+    this.image.src = imageSrc;
+  }
+
+  this.update = function () {
+    var ctx = myGameArea.context;
+    if (this.image) {
+      // Calculate aspect ratio
+      var imgAspectRatio = this.image.width / this.image.height;
+      var objAspectRatio = this.width / this.height;
+
+      if (imgAspectRatio > objAspectRatio) {
+        // Image is wider relative to its height
+        var newWidth = this.height * imgAspectRatio;
+        var offsetX = (this.width - newWidth) / 2;
+        ctx.drawImage(this.image, this.x + offsetX, this.y, newWidth, this.height);
+      } else {
+        // Image is taller relative to its width
+        var newHeight = this.width / imgAspectRatio;
+        var offsetY = (this.height - newHeight) / 2;
+        ctx.drawImage(this.image, this.x, this.y + offsetY, this.width, newHeight);
+      }
+    } else if (this.type == "text") {
+      ctx.font = this.width + " " + this.height;
+      ctx.fillStyle = color;
+      ctx.fillText(this.text, this.x, this.y);
+    } else {
+      ctx.fillStyle = this.color;
+      ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+  };
+
+
+
+ 
   this.newPos = function () {
     this.gravitySpeed += this.gravity;
     this.y += this.speedY + this.gravitySpeed;
