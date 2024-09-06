@@ -1,7 +1,17 @@
 var myGamePiece;
 var myObstacles = [];
 var isPaused = false; // To track the pause state
+/////
+var gameStarted = false;
 
+function startGameOnce() {
+    if (!gameStarted) {
+        startGame(); // Start the game
+        gameStarted = true;
+        document.getElementById("startButton").disabled = true; // Disable button after start
+    }
+}
+////
 function startGame() {
     myGamePiece = new gameObject(30, 30, "red", 10, 120);
     myGamePiece.gravity = 0.05;
