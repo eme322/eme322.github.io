@@ -16,7 +16,7 @@ function startGame() {
   myGamePiece.gravity = 0.05;
   myGameArea.start();
 }
-
+/*
 window.addEventListener('keydown', function (e) {
   if (!gameStarted) return; // Prevent movement before the game starts
 
@@ -50,6 +50,49 @@ window.addEventListener('keyup', function (e) {
       break;
   }
 });
+
+*/
+
+
+window.addEventListener('keydown', function (e) {
+  if (!gameStarted) return; // Prevent movement before the game starts
+
+  switch (e.key) {
+    case 'ArrowUp':
+      if (myGamePiece.speedY > minSpeedY) {
+        myGamePiece.speedY += upwardAcceleration;  // Gradual upward acceleration
+      }
+      break;
+    case 'ArrowDown':
+      if (myGamePiece.speedY < maxSpeedY) {
+        myGamePiece.speedY = 3;  // Controlled downward movement
+      }
+      break;
+    case 'ArrowLeft':
+      myGamePiece.speedX = -2;  // Move left
+      break;
+    case 'ArrowRight':
+      myGamePiece.speedX = 2;   // Move right
+      break;
+  }
+});
+
+window.addEventListener('keyup', function (e) {
+  if (!gameStarted) return; // Prevent actions before the game starts
+
+  switch (e.key) {
+    case 'ArrowUp':
+    case 'ArrowDown':
+      myGamePiece.speedY = 0; // Stop vertical movement when key is released
+      break;
+    case 'ArrowLeft':
+    case 'ArrowRight':
+      myGamePiece.speedX = 0; // Stop horizontal movement when key is released
+      break;
+  }
+});
+
+
 
 var myGameArea = {
   canvas: document.createElement('canvas'),
@@ -94,6 +137,8 @@ function gameObject(width, height, color, x, y, type) {
       ctx.fillRect(this.x, this.y, this.width, this.height);
     }
   }
+
+  /*
   this.newPos = function () {
     this.gravitySpeed += this.gravity;
   // Apply the vertical speed and gravity together
@@ -101,6 +146,32 @@ function gameObject(width, height, color, x, y, type) {
     this.x += this.speedX;
     this.checkBoundaries();//  // Check boundaries
   };
+
+  */
+
+
+
+  this.newPos = function () {
+  this.gravitySpeed += this.gravity;
+  
+  // Cap the speed to avoid excessive downward speed
+  if (this.gravitySpeed > maxSpeedY) {
+    this.gravitySpeed = maxSpeedY;
+  }
+
+  this.x += this.speedX;
+  this.y += this.speedY + this.gravitySpeed;  // Apply speed and gravity together
+
+  this.checkBoundaries();  // Keep the sprite within boundaries
+};
+
+
+
+
+
+
+  
+  
   this.checkBoundaries = function () {
     var rockbottom = myGameArea.canvas.height - this.height;
     if (this.y > rockbottom) {
