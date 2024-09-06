@@ -6,35 +6,36 @@ function startGame() {
     myGamePiece = new gameObject(30, 30, "red", 10, 120);
     myGamePiece.gravity = 0.05;
 
-    window.addEventListener('keydown', function (e) {
-        switch (e.key) {
-            case "ArrowUp":
-                accelerate(-0.2);
-                break;
-            case "ArrowDown":
-                myGamePiece.gravity = 0.1;
-                break;
-            case "ArrowLeft":
-                myGamePiece.speedX = -1;
-                break;
-            case "ArrowRight":
-                myGamePiece.speedX = 1;
-                break;
-        }
-    });
+window.addEventListener('keydown', function (e) {
+    switch (e.key) {
+        case "ArrowUp":
+            myGamePiece.speedY = -1; // Move upward
+            break;
+        case "ArrowDown":
+            myGamePiece.speedY = 1; // Move downward
+            break;
+        case "ArrowLeft":
+            myGamePiece.speedX = -1; // Move left
+            break;
+        case "ArrowRight":
+            myGamePiece.speedX = 1; // Move right
+            break;
+    }
+});
 
-    window.addEventListener('keyup', function (e) {
-        switch (e.key) {
-            case "ArrowUp":
-            case "ArrowDown":
-                accelerate(0.05);  // Reset gravity after up or down arrow released
-                break;
-            case "ArrowLeft":
-            case "ArrowRight":
-                myGamePiece.speedX = 0; // Stop horizontal movement when key is released
-                break;
-        }
-    });
+window.addEventListener('keyup', function (e) {
+    switch (e.key) {
+        case "ArrowUp":
+        case "ArrowDown":
+            myGamePiece.speedY = 0;  // Stop vertical movement when key is released
+            break;
+        case "ArrowLeft":
+        case "ArrowRight":
+            myGamePiece.speedX = 0;  // Stop horizontal movement when key is released
+            break;
+    }
+});
+
 
     myGameArea.start();
 }
