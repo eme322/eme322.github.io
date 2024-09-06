@@ -78,9 +78,10 @@ function gameObject(width, height, color, x, y, type) {
   this.y = y;
   this.gravity = 0;
   this.gravitySpeed = 0;
+  this.color = color; // Store the color property
   this.update = function () {
     var ctx = myGameArea.context;
-    ctx.fillStyle = color;
+    ctx.fillStyle = color; // Access the stored color property
     ctx.fillRect(this.x, this.y, this.width, this.height);
   };
   this.newPos = function () {
