@@ -63,7 +63,7 @@ var myGameArea = {
   },
   clear: function () {
     this.context.fillStyle = 'white'; // Set the background color to white
-        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height); // Fill the entire canvas with white
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height); // Fill the entire canvas with white
   },
   stop: function () {
     clearInterval(this.interval);
