@@ -1,7 +1,7 @@
 var myGamePiece;
 var myObstacles = [];
 var isPaused = false; // To track the pause state
-var gameStarted = false;
+var gameStarted = false; // To track if the game has started
 
 function startGameOnce() {
     if (!gameStarted) {
@@ -18,6 +18,8 @@ function startGame() {
 }
 
 window.addEventListener('keydown', function (e) {
+    if (!gameStarted) return; // Do nothing if game hasn't started
+
     switch (e.key) {
         case "ArrowUp":
             myGamePiece.speedY = -1; // Move upward
@@ -35,6 +37,8 @@ window.addEventListener('keydown', function (e) {
 });
 
 window.addEventListener('keyup', function (e) {
+    if (!gameStarted) return; // Do nothing if game hasn't started
+
     switch (e.key) {
         case "ArrowUp":
         case "ArrowDown":
@@ -103,7 +107,7 @@ function gameObject(width, height, color, x, y, type) {
 }
 
 function updateGameArea() {
-    if (isPaused) return;
+    if (isPaused || !gameStarted) return; // Don't update if paused or game hasn't started
 
     myGameArea.clear();
     myGameArea.frameNo += 1;
@@ -112,6 +116,8 @@ function updateGameArea() {
 }
 
 function togglePause() {
+    if (!gameStarted) return; // Do nothing if game hasn't started
+
     if (isPaused) {
         isPaused = false;
         myGameArea.resume();
