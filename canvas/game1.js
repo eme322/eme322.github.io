@@ -16,43 +16,6 @@ function startGame() {
   myGamePiece.gravity = 0.05;
   myGameArea.start();
 }
-/*
-window.addEventListener('keydown', function (e) {
-  if (!gameStarted) return; // Prevent movement before the game starts
-
-  switch (e.key) {
-    case 'ArrowUp':
-      myGamePiece.speedY = -5; // Move upward
-      break;
-    case 'ArrowDown':
-      myGamePiece.speedY = 3; // Move downward
-      break;
-    case 'ArrowLeft':
-      myGamePiece.speedX = -2; // Move left
-      break;
-    case 'ArrowRight':
-      myGamePiece.speedX = 2; // Move right
-      break;
-  }
-});
-
-window.addEventListener('keyup', function (e) {
-  if (!gameStarted) return; // Prevent actions before the game starts
-
-  switch (e.key) {
-    case 'ArrowUp':
-    case 'ArrowDown':
-      myGamePiece.speedY = 0; // Stop vertical movement when key is released
-      break;
-    case 'ArrowLeft':
-    case 'ArrowRight':
-      myGamePiece.speedX = 0; // Stop horizontal movement when key is released
-      break;
-  }
-});
-
-*/
-
 
 window.addEventListener('keydown', function (e) {
   if (!gameStarted) return; // Prevent movement before the game starts
@@ -91,8 +54,6 @@ window.addEventListener('keyup', function (e) {
       break;
   }
 });
-
-
 
 var myGameArea = {
   canvas: document.createElement('canvas'),
