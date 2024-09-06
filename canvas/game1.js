@@ -1,8 +1,6 @@
 var myGamePiece;
 var myObstacles = [];
 var isPaused = false; // To track the pause state
-
-/////
 var gameStarted = false;
 
 function startGameOnce() {
@@ -12,10 +10,12 @@ function startGameOnce() {
         document.getElementById("startButton").disabled = true; // Disable button after start
     }
 }
-////
+
 function startGame() {
     myGamePiece = new gameObject(30, 30, "red", 10, 120);
     myGamePiece.gravity = 0.05;
+    myGameArea.start();
+}
 
 window.addEventListener('keydown', function (e) {
     switch (e.key) {
@@ -46,10 +46,6 @@ window.addEventListener('keyup', function (e) {
             break;
     }
 });
-
-
-    myGameArea.start();
-}
 
 var myGameArea = {
     canvas: document.createElement("canvas"),
@@ -84,14 +80,8 @@ function gameObject(width, height, color, x, y, type) {
     this.gravitySpeed = 0;
     this.update = function () {
         var ctx = myGameArea.context;
-        if (this.type == "text") {
-            ctx.font = this.width + " " + this.height;
-            ctx.fillStyle = color;
-            ctx.fillText(this.text, this.x, this.y);
-        } else {
-            ctx.fillStyle = color;
-            ctx.fillRect(this.x, this.y, this.width, this.height);
-        }
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
     this.newPos = function () {
         this.gravitySpeed += this.gravity;
@@ -101,78 +91,24 @@ function gameObject(width, height, color, x, y, type) {
     }
     this.checkBoundaries = function () {
         var rockbottom = myGameArea.canvas.height - this.height;
-        var topBoundary = 0;
-
-        // Check bottom boundary
         if (this.y > rockbottom) {
             this.y = rockbottom;
             this.gravitySpeed = 0;
         }
-
-        // Check top boundary
-        if (this.y < topBoundary) {
-            this.y = topBoundary;
+        if (this.y < 0) {
+            this.y = 0;
             this.gravitySpeed = 0;
         }
-    }
-    this.crashWith = function (otherobj) {
-        var myleft = this.x;
-        var myright = this.x + this.width;
-        var mytop = this.y;
-        var mybottom = this.y + this.height;
-        var otherleft = otherobj.x;
-        var otherright = otherobj.x + otherobj.width;
-        var othertop = otherobj.y;
-        var otherbottom = otherobj.y + otherobj.height;
-        var crash = true;
-        if ((mybottom < othertop) ||
-            (mytop > otherbottom) ||
-            (myright < otherleft) ||
-            (myleft > otherright)) {
-            crash = false;
-        }
-        return crash;
     }
 }
 
 function updateGameArea() {
-    if (isPaused) return; // Don't update if paused
+    if (isPaused) return;
 
-    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
-    for (i = 0; i < myObstacles.length; i += 1) {
-        if (myGamePiece.crashWith(myObstacles[i])) {
-            return;
-        }
-    }
     myGameArea.clear();
     myGameArea.frameNo += 1;
-    if (myGameArea.frameNo == 1 || everyinterval(150)) {
-        x = myGameArea.canvas.width;
-        minHeight = 20;
-        maxHeight = 200;
-        height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
-        minGap = 50;
-        maxGap = 200;
-        gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
-        myObstacles.push(new gameObject(10, height, "green", x, 0));
-        myObstacles.push(new gameObject(10, x - height - gap, "green", x, height + gap));
-    }
-    for (i = 0; i < myObstacles.length; i += 1) {
-        myObstacles[i].x += -1;
-        myObstacles[i].update();
-    }
-    document.getElementById("score").innerText = "SCORE: " + myGameArea.frameNo; // Update score
     myGamePiece.newPos();
     myGamePiece.update();
-}
-
-function everyinterval(n) {
-    if ((myGameArea.frameNo / n) % 1 == 0) { return true; }
-    return false;
-}
-
-function accelerate(n) {
-    myGamePiece.gravity = n;
 }
 
 function togglePause() {
