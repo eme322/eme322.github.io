@@ -22,16 +22,16 @@ window.addEventListener('keydown', function (e) {
 
   switch (e.key) {
     case 'ArrowUp':
-      myGamePiece.speedY = -3; // Move upward
+      myGamePiece.speedY = -5; // Move upward
       break;
     case 'ArrowDown':
-      myGamePiece.speedY = 1; // Move downward
+      myGamePiece.speedY = 3; // Move downward
       break;
     case 'ArrowLeft':
-      myGamePiece.speedX = -1; // Move left
+      myGamePiece.speedX = -2; // Move left
       break;
     case 'ArrowRight':
-      myGamePiece.speedX = 1; // Move right
+      myGamePiece.speedX = 2; // Move right
       break;
   }
 });
@@ -96,9 +96,10 @@ function gameObject(width, height, color, x, y, type) {
   }
   this.newPos = function () {
     this.gravitySpeed += this.gravity;
-    this.x += this.speedX;
+  // Apply the vertical speed and gravity together
     this.y += this.speedY + this.gravitySpeed;
-    this.checkBoundaries();
+    this.x += this.speedX;
+    this.checkBoundaries();//  // Check boundaries
   };
   this.checkBoundaries = function () {
     var rockbottom = myGameArea.canvas.height - this.height;
