@@ -84,10 +84,25 @@ function gameObject(width, height, color, x, y, type) {
   this.gravitySpeed = 0;
   this.color = color; // Store the color property
   this.update = function () {
+
+    
+            ctx = myGameArea.context;
+        if (this.type == "text") {
+            ctx.font = this.width + " " + this.height;
+            ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);
+        } else {
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+
+    /*
     var ctx = myGameArea.context;
     ctx.fillStyle = color; // Access the stored color property
     ctx.fillRect(this.x, this.y, this.width, this.height);
   };
+  */
   this.newPos = function () {
     this.gravitySpeed += this.gravity;
     this.x += this.speedX;
