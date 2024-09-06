@@ -17,6 +17,8 @@ function startGame() {
   /*myGamePiece = new gameObject(30, 30, 'red', 10, 120);*/
   myGamePiece.gravity = 0.03; // Adjust gravity for smoother jumps
   myGameArea.start();
+ addGameTitle();
+ 
 }
 function addGameTitle() {
     var title = document.createElement('div');
