@@ -86,13 +86,15 @@ var myGameArea = {
   },
   stop: function () {
     clearInterval(this.interval);
-    gameOver = true; // Set game over flag when the game stops
+    /*gameOver = true;*/ // Set game over flag when the game stops
     this.clear(); // Clear the canvas
     myObstacles = []; // Remove all obstacles
     myGamePiece = null; // Remove the fish
+    /*
     displayGameOver(); // Display the Game Over message
     stopBackgroundSound(); // Stop the background sound
     playGameOverSound(); // Play the Game Over sound effect
+    */
   },
   resume: function () {
     this.interval = setInterval(updateGameArea, 40);
