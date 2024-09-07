@@ -6,7 +6,7 @@ var gameOver = false; // To track if the game is over
 var score = 0;
 var scoreInterval = 50; // Update score every 50 frames
 var frameCount = 0;
-var backgroundSound; // For background sound
+var backgroundSound; // For background sound 
 var gameOverSound; // For Game Over sound
 
 function startGameOnce() {
