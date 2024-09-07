@@ -1,7 +1,7 @@
 /* Styles for the canvas element */
 canvas {
     border: 1px solid #d3d3d3;
-    background-color: white; /* Background color of the canvas */
+    background-color: black; /* Background color of the canvas */
     display: block; /* Centering the canvas */
     margin: 0 auto;
 }
