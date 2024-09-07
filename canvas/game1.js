@@ -268,6 +268,6 @@ function stopBackgroundSound() {
 }
 
 function playGameOverSound() {
-  gameOverSound = new Audio('Lose sound effects.mp3');
+  gameOverSound = new Audio('mixkit-sad-game-over-trombone-471.wav');
   gameOverSound.play();
 }
