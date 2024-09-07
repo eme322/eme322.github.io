@@ -6,9 +6,11 @@ var gameOver = false; // To track if the game is over
 var score = 0;
 var scoreInterval = 50; // Update score every 50 frames
 var frameCount = 0;
+var backgroundSound; // For background sound
+var gameOverSound; // For Game Over sound
 
 function startGameOnce() {
-  if (!gameStarted) { 
+  if (!gameStarted) {
     startGame();
     gameStarted = true;
     document.getElementById('startButton').disabled = true;
@@ -21,6 +23,7 @@ function startGame() {
   myGamePiece.gravity = 0.01; // Adjust gravity for smoother jumps
   myGameArea.start();
   addGameTitle();
+  playBackgroundSound();
 }
 
 function addGameTitle() {
@@ -78,7 +81,7 @@ var myGameArea = {
     this.interval = setInterval(updateGameArea, 40);
   },
   clear: function () {
-    this.context.fillStyle = 'white';
+    this.context.fillStyle = 'black';
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   },
   stop: function () {
@@ -88,6 +91,8 @@ var myGameArea = {
     myObstacles = []; // Remove all obstacles
     myGamePiece = null; // Remove the fish
     displayGameOver(); // Display the Game Over message
+    stopBackgroundSound(); // Stop the background sound
+    playGameOverSound(); // Play the Game Over sound effect
   },
   resume: function () {
     this.interval = setInterval(updateGameArea, 40);
@@ -246,4 +251,23 @@ function displayGameOver() {
   ctx.fillStyle = "red";
   ctx.textAlign = "center";
   ctx.fillText("Game Over!", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2);
+}
+
+// Sound functions
+function playBackgroundSound() {
+  backgroundSound = new Audio('mixkit-close-sea-waves-loop-1195.wav');
+  backgroundSound.loop = true; // Loop the background sound
+  backgroundSound.play();
+}
+
+function stopBackgroundSound() {
+  if (backgroundSound) {
+    backgroundSound.pause();
+    backgroundSound.currentTime = 0; // Reset the sound to the beginning
+  }
+}
+
+function playGameOverSound() {
+  gameOverSound = new Audio('canvas/Game Over sound effect.mp3');
+  gameOverSound.play();
 }
