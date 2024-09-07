@@ -2,9 +2,10 @@ var myGamePiece;
 var myObstacles = [];
 var isPaused = false;
 var gameStarted = false;
-var score = 0; // Initialize score
-var scoreInterval = 50; // Update score every 50 frames to slow down the game
-var frameCount = 0; // Frame counter
+var gameOver = false; // To track if the game is over
+var score = 0;
+var scoreInterval = 50; // Update score every 50 frames
+var frameCount = 0;
 
 function startGameOnce() {
   if (!gameStarted) {
@@ -33,14 +34,14 @@ function addGameTitle() {
 }
 
 window.addEventListener('keydown', function (e) {
-  if (!gameStarted) return;
+  if (!gameStarted || gameOver) return;
 
   switch (e.key) {
     case 'ArrowUp':
-      myGamePiece.speedY = -2; // Adjust upward speed
+      myGamePiece.speedY = -2;
       break;
     case 'ArrowDown':
-      myGamePiece.speedY = 1; // Adjust downward speed
+      myGamePiece.speedY = 1;
       break;
     case 'ArrowLeft':
       myGamePiece.speedX = -1;
@@ -52,7 +53,7 @@ window.addEventListener('keydown', function (e) {
 });
 
 window.addEventListener('keyup', function (e) {
-  if (!gameStarted) return;
+  if (!gameStarted || gameOver) return;
 
   switch (e.key) {
     case 'ArrowUp':
@@ -74,7 +75,7 @@ var myGameArea = {
     this.context = this.canvas.getContext('2d');
     document.body.insertBefore(this.canvas, document.body.childNodes[1]);
     this.frameNo = 0;
-    this.interval = setInterval(updateGameArea, 40); // Slow down the game by increasing the interval
+    this.interval = setInterval(updateGameArea, 40);
   },
   clear: function () {
     this.context.fillStyle = 'white';
@@ -82,6 +83,8 @@ var myGameArea = {
   },
   stop: function () {
     clearInterval(this.interval);
+    gameOver = true; // Set game over flag when game stops
+    displayGameOver();
   },
   resume: function () {
     this.interval = setInterval(updateGameArea, 40);
@@ -171,7 +174,8 @@ function updateObstacles() {
   var x, height, gap, minHeight, maxHeight, minGap, maxGap;
   for (i = 0; i < myObstacles.length; i += 1) {
     if (myGamePiece.crashWith(myObstacles[i])) {
-      return;
+      myGameArea.stop();
+      return; // Stop updating obstacles when game is over
     }
   }
 
@@ -203,7 +207,7 @@ function everyinterval(n) {
 }
 
 function updateGameArea() {
-  if (isPaused) return;
+  if (isPaused || gameOver) return;
 
   myGameArea.clear();
   myGameArea.frameNo += 1;
@@ -213,7 +217,6 @@ function updateGameArea() {
   myGamePiece.newPos();
   myGamePiece.update();
 
-  // Update the score display
   frameCount++;
   if (frameCount % scoreInterval === 0) {
     score += 1;
@@ -231,3 +234,15 @@ function togglePause() {
   }
 }
 
+function displayGameOver() {
+  var gameOverElement = document.createElement('div');
+  gameOverElement.id = 'gameOver';
+  gameOverElement.style.position = 'absolute';
+  gameOverElement.style.top = '200px';
+  gameOverElement.style.left = '200px';
+  gameOverElement.style.color = 'red';
+  gameOverElement.style.fontSize = '48px';
+  gameOverElement.style.fontWeight = 'bold';
+  gameOverElement.textContent = 'Game Over!';
+  document.body.appendChild(gameOverElement);
+}
