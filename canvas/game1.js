@@ -78,13 +78,13 @@ var myGameArea = {
     this.interval = setInterval(updateGameArea, 40);
   },
   clear: function () {
-    this.context.fillStyle = 'white';
-    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   },
   stop: function () {
     clearInterval(this.interval);
     gameOver = true; // Set game over flag when the game stops
-    displayGameOver();
+    this.clear(); // Clear the canvas
+    displayGameOver(); // Display the Game Over message
   },
   resume: function () {
     this.interval = setInterval(updateGameArea, 40);
