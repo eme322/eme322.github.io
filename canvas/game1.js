@@ -85,6 +85,8 @@ var myGameArea = {
     clearInterval(this.interval);
     gameOver = true; // Set game over flag when the game stops
     this.clear(); // Clear the canvas
+    myObstacles = []; // Remove all obstacles
+    myGamePiece = null; // Remove the fish
     displayGameOver(); // Display the Game Over message
   },
   resume: function () {
@@ -172,22 +174,23 @@ function gameObject(width, height, color, x, y, type, imageSrc) {
 }
 
 function updateObstacles() {
-  var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+  if (gameOver) return; // Stop updating obstacles if the game is over
+
   for (i = 0; i < myObstacles.length; i += 1) {
-    if (myGamePiece.crashWith(myObstacles[i])) {
+    if (myGamePiece && myGamePiece.crashWith(myObstacles[i])) {
       myGameArea.stop();
-      return; // Stop updating obstacles when game is over
+      return;
     }
   }
 
   if (myGameArea.frameNo == 1 || everyinterval(150)) {
-    x = myGameArea.canvas.width;
-    minHeight = 20;
-    maxHeight = 200;
-    height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
-    minGap = 50;
-    maxGap = 200;
-    gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
+    var x = myGameArea.canvas.width;
+    var minHeight = 20;
+    var maxHeight = 200;
+    var height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
+    var minGap = 50;
+    var maxGap = 200;
+    var gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
 
     var crocodileTopImageSrc = 'crocodileTop.jpg';
     var crocodileDownImageSrc = 'crocodileDown.jpg';
@@ -215,8 +218,10 @@ function updateGameArea() {
 
   updateObstacles();
 
-  myGamePiece.newPos();
-  myGamePiece.update();
+  if (myGamePiece) {
+    myGamePiece.newPos();
+    myGamePiece.update();
+  }
 
   frameCount++;
   if (frameCount % scoreInterval === 0) {
