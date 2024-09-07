@@ -3,6 +3,8 @@ var myObstacles = [];
 var isPaused = false;
 var gameStarted = false;
 var score = 0; // Initialize score
+var scoreInterval = 5; // Update score every 5 frames
+var frameCount = 0; // Frame counter
 
 function startGameOnce() {
   if (!gameStarted) {
@@ -25,7 +27,7 @@ function addGameTitle() {
   if (!existingTitle) { // Only add title if it doesn't already exist
     var title = document.createElement('div');
     title.id = 'gameTitle';
-  /*  title.innerHTML = 'Fish Flight'; */
+    title.innerHTML = 'Fish Flight';
     document.body.insertBefore(title, document.body.firstChild);
   }
 }
@@ -218,19 +220,22 @@ function updateGameArea() {
   myGamePiece.update();
   
   // Update the score display
-  score += 1; // Increment score for each frame
-  var scoreElement = document.getElementById('score');
-  if (!scoreElement) {
-    scoreElement = document.createElement('div');
-    scoreElement.id = 'score';
-    scoreElement.style.position = 'absolute';
-    scoreElement.style.top = '50px';
-    scoreElement.style.left = '10px';
-    scoreElement.style.color = 'black';
-    scoreElement.style.fontSize = '24px';
-    document.body.insertBefore(scoreElement, myGameArea.canvas); // Insert score element before the canvas
+  frameCount++;
+  if (frameCount % scoreInterval === 0) { // Update score every `scoreInterval` frames
+    score += 1; 
+    var scoreElement = document.getElementById('score');
+    if (!scoreElement) {
+      scoreElement = document.createElement('div');
+      scoreElement.id = 'score';
+      scoreElement.style.position = 'absolute';
+      scoreElement.style.top = '50px';
+      scoreElement.style.left = '10px';
+      scoreElement.style.color = 'black';
+      scoreElement.style.fontSize = '24px';
+      document.body.insertBefore(scoreElement, myGameArea.canvas); // Insert score element before the canvas
+    }
+    scoreElement.textContent = 'SCORE: ' + score;
   }
-  scoreElement.textContent = 'SCORE: ' + score;
 }
 
 function togglePause() {
