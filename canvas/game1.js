@@ -177,7 +177,7 @@ function gameObject(width, height, color, x, y, type, imageSrc) {
     return crash;
   };
 }
-
+ 
 function updateObstacles() {
   if (gameOver) return; // Stop updating obstacles if the game is over
 
