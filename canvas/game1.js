@@ -8,7 +8,7 @@ var scoreInterval = 50; // Update score every 50 frames
 var frameCount = 0;
 
 function startGameOnce() {
-  if (!gameStarted) {
+  if (!gameStarted) { 
     startGame();
     gameStarted = true;
     document.getElementById('startButton').disabled = true;
