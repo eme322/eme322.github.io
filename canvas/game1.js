@@ -25,7 +25,7 @@ function addGameTitle() {
   if (!existingTitle) { // Only add title if it doesn't already exist
     var title = document.createElement('div');
     title.id = 'gameTitle';
-    title.innerHTML = 'Fish Flight';
+  /*  title.innerHTML = 'Fish Flight'; */
     document.body.insertBefore(title, document.body.firstChild);
   }
 }
