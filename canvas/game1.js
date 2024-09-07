@@ -3,7 +3,7 @@ var myObstacles = [];
 var isPaused = false;
 var gameStarted = false;
 var gameOver = false; // To track if the game is over
-var score = 0;
+var score = 0; 
 var scoreInterval = 50; // Update score every 50 frames
 var frameCount = 0;
 
