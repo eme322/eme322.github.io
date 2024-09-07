@@ -86,13 +86,14 @@ var myGameArea = {
   },
   stop: function () {
     clearInterval(this.interval);
-    /*gameOver = true;*/ // Set game over flag when the game stops
     this.clear(); // Clear the canvas
     myObstacles = []; // Remove all obstacles
     myGamePiece = null; // Remove the fish
+    stopBackgroundSound(); // Stop the background sound
+    /*
     displayGameOver(); // Display the Game Over message
     stopBackgroundSound(); // Stop the background sound
-    /*playGameOverSound(); */ // Play the Game Over sound effect
+    playGameOverSound(); */ // Play the Game Over sound effect
     
   },
   resume: function () {
@@ -185,6 +186,8 @@ function updateObstacles() {
   for (i = 0; i < myObstacles.length; i += 1) {
     if (myGamePiece && myGamePiece.crashWith(myObstacles[i])) {
       myGameArea.stop();
+      displayGameOver(); // Display game over message
+      gameOver = true; // Set game over flag
       return;
     }
   }
