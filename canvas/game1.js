@@ -3,28 +3,28 @@ var myObstacles = [];
 var isPaused = false;
 var gameStarted = false;
 var score = 0; // Initialize score
-var scoreInterval = 5; // Update score every 5 frames
+var scoreInterval = 50; // Update score every 50 frames to slow down the game
 var frameCount = 0; // Frame counter
 
 function startGameOnce() {
   if (!gameStarted) {
-    startGame(); 
+    startGame();
     gameStarted = true;
-    document.getElementById('startButton').disabled = true; 
+    document.getElementById('startButton').disabled = true;
   }
 }
 
 function startGame() {
   var fishImageSrc = 'fish.jpg'; // Path to your fish image
   myGamePiece = new gameObject(60, 60, null, 10, 120, null, fishImageSrc); // Use the image for the sprite
-  myGamePiece.gravity = 0.03; // Adjust gravity for smoother jumps
+  myGamePiece.gravity = 0.01; // Adjust gravity for smoother jumps
   myGameArea.start();
   addGameTitle();
 }
 
 function addGameTitle() {
   var existingTitle = document.getElementById('gameTitle');
-  if (!existingTitle) { // Only add title if it doesn't already exist
+  if (!existingTitle) {
     var title = document.createElement('div');
     title.id = 'gameTitle';
     title.innerHTML = 'Fish Flight';
@@ -37,16 +37,16 @@ window.addEventListener('keydown', function (e) {
 
   switch (e.key) {
     case 'ArrowUp':
-      myGamePiece.speedY = -3; // Adjust upward speed
+      myGamePiece.speedY = -2; // Adjust upward speed
       break;
     case 'ArrowDown':
-      myGamePiece.speedY = 1.5; // Adjust downward speed
+      myGamePiece.speedY = 1; // Adjust downward speed
       break;
     case 'ArrowLeft':
-      myGamePiece.speedX = -1.5; 
+      myGamePiece.speedX = -1;
       break;
     case 'ArrowRight':
-      myGamePiece.speedX = 1.5; 
+      myGamePiece.speedX = 1;
       break;
   }
 });
@@ -57,11 +57,11 @@ window.addEventListener('keyup', function (e) {
   switch (e.key) {
     case 'ArrowUp':
     case 'ArrowDown':
-      myGamePiece.speedY = 0; 
+      myGamePiece.speedY = 0;
       break;
     case 'ArrowLeft':
     case 'ArrowRight':
-      myGamePiece.speedX = 0; 
+      myGamePiece.speedX = 0;
       break;
   }
 });
@@ -72,19 +72,19 @@ var myGameArea = {
     this.canvas.width = 600;
     this.canvas.height = 400;
     this.context = this.canvas.getContext('2d');
-    document.body.insertBefore(this.canvas, document.body.childNodes[1]); // Ensure canvas is inserted after title
+    document.body.insertBefore(this.canvas, document.body.childNodes[1]);
     this.frameNo = 0;
-    this.interval = setInterval(updateGameArea, 20);
+    this.interval = setInterval(updateGameArea, 40); // Slow down the game by increasing the interval
   },
   clear: function () {
-    this.context.fillStyle = 'white'; // Set the background color to white
-    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height); // Fill the entire canvas with white
+    this.context.fillStyle = 'white';
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
   },
   stop: function () {
     clearInterval(this.interval);
   },
   resume: function () {
-    this.interval = setInterval(updateGameArea, 20);
+    this.interval = setInterval(updateGameArea, 40);
   },
 };
 
@@ -109,17 +109,14 @@ function gameObject(width, height, color, x, y, type, imageSrc) {
   this.update = function () {
     var ctx = myGameArea.context;
     if (this.image) {
-      // Calculate aspect ratio
       var imgAspectRatio = this.image.width / this.image.height;
       var objAspectRatio = this.width / this.height;
 
       if (imgAspectRatio > objAspectRatio) {
-        // Image is wider relative to its height
         var newWidth = this.height * imgAspectRatio;
         var offsetX = (this.width - newWidth) / 2;
         ctx.drawImage(this.image, this.x + offsetX, this.y, newWidth, this.height);
       } else {
-        // Image is taller relative to its width
         var newHeight = this.width / imgAspectRatio;
         var offsetY = (this.height - newHeight) / 2;
         ctx.drawImage(this.image, this.x, this.y + offsetY, this.width, newHeight);
@@ -177,7 +174,7 @@ function updateObstacles() {
       return;
     }
   }
-  
+
   if (myGameArea.frameNo == 1 || everyinterval(150)) {
     x = myGameArea.canvas.width;
     minHeight = 20;
@@ -187,13 +184,10 @@ function updateObstacles() {
     maxGap = 200;
     gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
 
-    // Create top and bottom obstacles with different images
     var crocodileTopImageSrc = 'crocodileTop.jpg';
     var crocodileDownImageSrc = 'crocodileDown.jpg';
-    
-    // Top obstacle
+
     myObstacles.push(new gameObject(50, height, null, x, 0, null, crocodileTopImageSrc));
-    // Bottom obstacle
     myObstacles.push(new gameObject(50, x - height - gap, null, x, height + gap, null, crocodileDownImageSrc));
   }
 
@@ -218,23 +212,12 @@ function updateGameArea() {
 
   myGamePiece.newPos();
   myGamePiece.update();
-  
+
   // Update the score display
   frameCount++;
-  if (frameCount % scoreInterval === 0) { // Update score every `scoreInterval` frames
-    score += 1; 
-    var scoreElement = document.getElementById('score');
-    if (!scoreElement) {
-      scoreElement = document.createElement('div');
-      scoreElement.id = 'score';
-      scoreElement.style.position = 'absolute';
-      scoreElement.style.top = '50px';
-      scoreElement.style.left = '10px';
-      scoreElement.style.color = 'black';
-      scoreElement.style.fontSize = '24px';
-      document.body.insertBefore(scoreElement, myGameArea.canvas); // Insert score element before the canvas
-    }
-    scoreElement.textContent = 'SCORE: ' + score;
+  if (frameCount % scoreInterval === 0) {
+    score += 1;
+    document.getElementById('score').textContent = 'SCORE: ' + score;
   }
 }
 
@@ -247,5 +230,4 @@ function togglePause() {
     myGameArea.stop();
   }
 }
-
 
