@@ -13,7 +13,7 @@ function startGameOnce() {
 }
 
 function startGame() {
-   var fishImageSrc = 'fish.jpg'; // Path to your fish image
+  var fishImageSrc = 'fish.jpg'; // Path to your fish image
   myGamePiece = new gameObject(60, 60, null, 10, 120, null, fishImageSrc); // Use the image for the sprite
   myGamePiece.gravity = 0.03; // Adjust gravity for smoother jumps
   myGameArea.start();
@@ -21,10 +21,13 @@ function startGame() {
 }
 
 function addGameTitle() {
+  var existingTitle = document.getElementById('gameTitle');
+  if (!existingTitle) { // Only add title if it doesn't already exist
     var title = document.createElement('div');
     title.id = 'gameTitle';
     title.innerHTML = 'Fish Flight';
     document.body.insertBefore(title, document.body.firstChild);
+  }
 }
 
 window.addEventListener('keydown', function (e) {
@@ -216,7 +219,18 @@ function updateGameArea() {
   
   // Update the score display
   score += 1; // Increment score for each frame
-  document.getElementById('score').textContent = 'SCORE: ' + score;
+  var scoreElement = document.getElementById('score');
+  if (!scoreElement) {
+    scoreElement = document.createElement('div');
+    scoreElement.id = 'score';
+    scoreElement.style.position = 'absolute';
+    scoreElement.style.top = '50px';
+    scoreElement.style.left = '10px';
+    scoreElement.style.color = 'black';
+    scoreElement.style.fontSize = '24px';
+    document.body.insertBefore(scoreElement, myGameArea.canvas); // Insert score element before the canvas
+  }
+  scoreElement.textContent = 'SCORE: ' + score;
 }
 
 function togglePause() {
