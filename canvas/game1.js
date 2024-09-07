@@ -3,7 +3,7 @@ var myObstacles = [];
 var isPaused = false;
 var gameStarted = false;
 var gameOver = false; // To track if the game is over
-var score = 0; 
+var score = 0;
 var scoreInterval = 50; // Update score every 50 frames
 var frameCount = 0;
 
@@ -83,7 +83,7 @@ var myGameArea = {
   },
   stop: function () {
     clearInterval(this.interval);
-    gameOver = true; // Set game over flag when game stops
+    gameOver = true; // Set game over flag when the game stops
     displayGameOver();
   },
   resume: function () {
@@ -235,14 +235,9 @@ function togglePause() {
 }
 
 function displayGameOver() {
-  var gameOverElement = document.createElement('div');
-  gameOverElement.id = 'gameOver';
-  gameOverElement.style.position = 'absolute';
-  gameOverElement.style.top = '200px';
-  gameOverElement.style.left = '200px';
-  gameOverElement.style.color = 'red';
-  gameOverElement.style.fontSize = '48px';
-  gameOverElement.style.fontWeight = 'bold';
-  gameOverElement.textContent = 'Game Over!';
-  document.body.appendChild(gameOverElement);
+  var ctx = myGameArea.context;
+  ctx.font = "48px Arial";
+  ctx.fillStyle = "red";
+  ctx.textAlign = "center";
+  ctx.fillText("Game Over!", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2);
 }
