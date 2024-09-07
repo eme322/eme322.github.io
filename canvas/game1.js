@@ -193,8 +193,8 @@ function updateObstacles() {
     var minHeight = 20;
     var maxHeight = 200;
     var height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
-    var minGap = 50;
-    var maxGap = 200;
+    var minGap = 100;
+    var maxGap = 300;
     var gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
 
     var crocodileTopImageSrc = 'crocodileTop.jpg';
