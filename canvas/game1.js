@@ -268,6 +268,6 @@ function stopBackgroundSound() {
 }
 
 function playGameOverSound() {
-  gameOverSound = new Audio('canvas/Game Over sound effect.mp3');
+  gameOverSound = new Audio('canvas/Game-Over-sound-effect.mp3');
   gameOverSound.play();
 }
