@@ -20,7 +20,7 @@ function startGameOnce() {
 function startGame() {
   var fishImageSrc = 'fish.jpg'; // Path to your fish image
   myGamePiece = new gameObject(60, 60, null, 10, 120, null, fishImageSrc); // Use the image for the sprite
-  myGamePiece.gravity = 0.01; // Adjust gravity for smoother jumps
+  myGamePiece.gravity = 0.005; // Adjust gravity for smoother jumps
   myGameArea.start();
   addGameTitle();
   playBackgroundSound();
@@ -41,7 +41,7 @@ window.addEventListener('keydown', function (e) {
 
   switch (e.key) {
     case 'ArrowUp':
-      myGamePiece.speedY = -2;
+      myGamePiece.speedY = -5;
       break;
     case 'ArrowDown':
       myGamePiece.speedY = 1;
