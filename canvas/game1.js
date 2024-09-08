@@ -19,7 +19,7 @@ function startGameOnce() {
 
 function startGame() {
   var fishImageSrc = 'fish.jpg'; // Path to your fish image
-  myGamePiece = new gameObject(50, 50, null, 10, 120, null, fishImageSrc); // Use the image for the sprite
+  myGamePiece = new gameObject(45, 45, null, 10, 120, null, fishImageSrc); // Use the image for the sprite
   myGamePiece.gravity = 0.005; // Adjust gravity for smoother jumps
   myGameArea.start();
   addGameTitle();
