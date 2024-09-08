@@ -86,7 +86,7 @@ var myGameArea = {
   },
   stop: function () {
     clearInterval(this.interval);
-    this.clear(); // Clear the canvas
+    //this.clear(); // Clear the canvas
     myObstacles = []; // Remove all obstacles
     myGamePiece = null; // Remove the fish
     stopBackgroundSound(); // Stop the background sound
