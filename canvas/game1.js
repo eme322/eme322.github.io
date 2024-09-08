@@ -92,7 +92,7 @@ var myGameArea = {
     stopBackgroundSound(); // Stop the background sound
     displayGameOver(); // Display the Game Over message
     stopBackgroundSound(); // Stop the background sound
-    playGameOverSound(); */ // Play the Game Over sound effect
+    playGameOverSound(); // Play the Game Over sound effect
     
   },
   resume: function () {
