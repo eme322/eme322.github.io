@@ -90,7 +90,6 @@ var myGameArea = {
     //myObstacles = []; // Remove all obstacles
     //myGamePiece = null; // Remove the fish
     stopBackgroundSound(); // Stop the background sound
-    /*
     displayGameOver(); // Display the Game Over message
     stopBackgroundSound(); // Stop the background sound
     playGameOverSound(); */ // Play the Game Over sound effect
