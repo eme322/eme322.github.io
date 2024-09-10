@@ -198,9 +198,10 @@ function updateObstacles() {
   // Check for collisions with obstacles
   for (i = 0; i < myObstacles.length; i += 1) {
     if (myGamePiece && myGamePiece.crashWith(myObstacles[i])) {
+      gameOver = true; // Set game over flag
       myGameArea.stop();
       displayGameOver(); // Display game over message
-      gameOver = true; // Set game over flag
+     //gameOver = true; // Set game over flag
       return;
     }
   }
@@ -237,10 +238,10 @@ function everyinterval(n) {
 
 // Main game loop to update the game area
 function updateGameArea() {
+  if (isPaused) return; // Stop updating if the game is paused
   if (gameOver) return; // Stop updating if the game is over
 
-  if (isPaused) return; // Stop updating if the game is paused
-
+  //if (isPaused) return; // Stop updating if the game is paused
   //if (isPaused || gameOver) return;
 
   myGameArea.clear();
@@ -266,7 +267,7 @@ function togglePause() {
 
   if (isPaused) {
     isPaused = false;
-    myGameArea.resume();//resume the game
+    myGameArea.resume(); //resume the game
   } else {
     isPaused = true;
     myGameArea.stop();//pause the game
