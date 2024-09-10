@@ -319,13 +319,3 @@ function playGameOverSound() {
   gameOverSound.play();
 }
 
-
-  //
-  myGameArea.stop = function () {
-  clearInterval(this.interval);
-  stopBackgroundSound(); // Stop the background sound
-  displayGameOver(); // Display the Game Over message
-  playGameOverSound(); // Play the Game Over sound effect
-  myObstacles = []; // Clear obstacles
-  myGamePiece = null; // Remove the fish
-};
