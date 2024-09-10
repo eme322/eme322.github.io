@@ -297,6 +297,9 @@ function displayGameOver() {
   ctx.font = "48px Arial";
   ctx.fillStyle = "red";
   ctx.textAlign = "center";
+  /// Trying 
+  ctx.clearRect(0, 0, myGameArea.canvas.width, myGameArea.canvas.height); // Clear previous text before showing pause
+/////
   ctx.fillText("Game Over!", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2);
 }
 
