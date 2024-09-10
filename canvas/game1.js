@@ -1,5 +1,5 @@
 // Global variables to manage game state
-var myGamePiece;
+var myGamePiece; 
 var myObstacles = [];
 var isPaused = false;
 var gameStarted = false;
