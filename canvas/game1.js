@@ -250,7 +250,8 @@ function updateGameArea() {
   // Update obstacles only when the game is in process
   updateObstacles();
 
-  if (myGamePiece) {
+  //if (myGamePiece) {
+    if (!gameOver && myGamePiece) {
     myGamePiece.newPos();
     myGamePiece.update();
   }
