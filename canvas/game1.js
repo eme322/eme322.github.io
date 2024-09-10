@@ -67,7 +67,7 @@ window.addEventListener('keyup', function (e) {
   switch (e.key) {
     case 'ArrowUp':
     case 'ArrowDown':
-      myGamePiece.speedY = 0; // Stop vertical movement
+      myGamePiece.speedY = 0; // Stop vertical movement 
       break;
     case 'ArrowLeft':
     case 'ArrowRight':
