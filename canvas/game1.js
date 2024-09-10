@@ -287,6 +287,7 @@ function displayPauseText() {
   ctx.font = "48px Arial";
   ctx.fillStyle = "Red";
   ctx.textAlign = "center";
+  ctx.clearRect(0, 0, myGameArea.canvas.width, myGameArea.canvas.height); // Clear previous text before showing pause
   ctx.fillText("Game Paused", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2);
 }
 
