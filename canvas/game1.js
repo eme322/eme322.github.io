@@ -236,6 +236,10 @@ function everyinterval(n) {
   return false;
 }
 
+function clearPauseText() {
+  myGameArea.clear(); // This will clear the entire canvas including the "Game Paused" text
+}
+
 // Main game loop to update the game area
 function updateGameArea() {
   if (isPaused) return; // Stop updating if the game is paused
@@ -280,7 +284,7 @@ function togglePause() {
 function displayPauseText() {
   var ctx = myGameArea.context;
   ctx.font = "48px Arial";
-  ctx.fillStyle = "yellow";
+  ctx.fillStyle = "Red";
   ctx.textAlign = "center";
   ctx.fillText("Game Paused", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2);
 }
