@@ -201,7 +201,6 @@ function updateObstacles() {
       gameOver = true; // Set game over flag
       myGameArea.stop();
       displayGameOver(); // Display game over message
-     //gameOver = true; // Set game over flag
       return;
     }
   }
@@ -245,12 +244,10 @@ function updateGameArea() {
   if (isPaused) return; // Stop updating if the game is paused
   if (gameOver) return; // Stop updating if the game is over
 
-  //if (isPaused) return; // Stop updating if the game is paused
-  //if (isPaused || gameOver) return;
-
   myGameArea.clear();
   myGameArea.frameNo += 1;
-
+  
+  // Update obstacles only when the game is in process
   updateObstacles();
 
   if (myGamePiece) {
@@ -298,9 +295,6 @@ function displayGameOver() {
   ctx.fillStyle = "red";
   ctx.textAlign = "center";
   ctx.fillText("Game Over!", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2);
-  /// Trying 
-  ctx.clearRect(0, 0, myGameArea.canvas.width, myGameArea.canvas.height); // Clear previous text before showing pause
-/////
 }
 
 // Sound functions
@@ -320,6 +314,18 @@ function stopBackgroundSound() {
 
 // Function to play Game Over sound
 function playGameOverSound() {
+  if (!isPaused && gameOver) { // Ensure the game is not paused and is over before playing the sound
   gameOverSound = new Audio('mixkit-sad-game-over-trombone-471.wav');
   gameOverSound.play();
 }
+
+
+  //
+  myGameArea.stop = function () {
+  clearInterval(this.interval);
+  stopBackgroundSound(); // Stop the background sound
+  displayGameOver(); // Display the Game Over message
+  playGameOverSound(); // Play the Game Over sound effect
+  myObstacles = []; // Clear obstacles
+  myGamePiece = null; // Remove the fish
+};
