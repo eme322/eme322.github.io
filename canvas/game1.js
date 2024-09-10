@@ -282,6 +282,7 @@ function togglePause() {
 
 //Funtion to display the Game Pause message
 function displayPauseText() {
+  if (gameOver) return; // Don't display "Game Paused" if the game is over
   var ctx = myGameArea.context;
   ctx.font = "48px Arial";
   ctx.fillStyle = "Red";
