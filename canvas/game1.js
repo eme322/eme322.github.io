@@ -268,10 +268,21 @@ function togglePause() {
   if (isPaused) {
     isPaused = false;
     myGameArea.resume(); //resume the game
+    clearPauseText(); // Clear "Game Paused" text when resuming
   } else {
     isPaused = true;
     myGameArea.stop();//pause the game
+    displayPauseText(); // Display "Game Paused" on the canvas
   }
+}
+
+//Funtion to display the Game Pause message
+function displayPauseText() {
+  var ctx = myGameArea.context;
+  ctx.font = "48px Arial";
+  ctx.fillStyle = "yellow";
+  ctx.textAlign = "center";
+  ctx.fillText("Game Paused", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2);
 }
 
 // Function to display the Game Over message
