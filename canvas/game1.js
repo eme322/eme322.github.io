@@ -100,7 +100,7 @@ var myGameArea = {
     this.interval = setInterval(updateGameArea, 40); // Resume the game loop
   }
 };
-
+ 
 // Constructor function to create game objects
 function gameObject(width, height, color, x, y, type, imageSrc) {
   this.type = type;
