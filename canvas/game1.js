@@ -9,7 +9,6 @@ var scoreInterval = 50; // Update score every 50 frames
 var frameCount = 0;
 var backgroundSound; // For background sound 
 var gameOverSound; // For Game Over sound
-var myGamePiece; 
 
 // Function to start the game once when the start button is pressed
 function startGameOnce() {
@@ -87,7 +86,8 @@ var myGameArea = {
     this.canvas.width = 600;
     this.canvas.height = 450;
     this.context = this.canvas.getContext('2d');
-    document.body.insertBefore(this.canvas, document.body.childNodes[1]); // Insert canvas into the DOM
+   document.body.appendChild(this.canvas); // Appends the canvas to the end of the body //ojoooo
+    //document.body.insertBefore(this.canvas, document.body.childNodes[1]); // Insert canvas into the DOM
     this.frameNo = 0;
     this.interval = setInterval(updateGameArea, 40); // Update game every 40 milliseconds
   },
