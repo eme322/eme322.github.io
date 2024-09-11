@@ -242,10 +242,10 @@ function updateGameArea() {
   updateObstacles();
 
   //if (myGamePiece) {
-   // if (!gameOver && myGamePiece) {
+   // if (!gameOver && myGamePiece) {      //OJO
     myGamePiece.newPos();
     myGamePiece.update();
-  }
+  //}
 
   frameCount++;
   if (frameCount % scoreInterval === 0) {
