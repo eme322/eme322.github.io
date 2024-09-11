@@ -1,4 +1,4 @@
-// Global variables to manage game state
+ // Global variables to manage game state
 var myGamePiece; 
 var myObstacles = [];
 var isPaused = false;
