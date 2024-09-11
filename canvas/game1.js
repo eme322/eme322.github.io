@@ -10,6 +10,8 @@ var frameCount = 0;
 var backgroundSound; // For background sound 
 var gameOverSound; // For Game Over sound
 
+
+/*
 // Function to start the game once when the start button is pressed
 function startGameOnce() {
   if (!gameStarted) {
@@ -18,6 +20,7 @@ function startGameOnce() {
     document.getElementById('startButton').disabled = true; // Disable start button after game starts
   }
 }
+*/
 
 // Function to initialize the game
 function startGame() {
@@ -38,9 +41,11 @@ var myGameArea = {
     this.context = this.canvas.getContext('2d');
     // Insert canvas before the score
     var scoreDiv = document.getElementById('score');
-    document.body.insertBefore(this.canvas, scoreDiv); // Insert canvas before the score display
-    this.frameNo = 0;
-    this.interval = setInterval(updateGameArea, 40); // Update game every 40 milliseconds
+    //document.body.insertBefore(this.canvas, scoreDiv); // Insert canvas before the score display
+   document.body.insertBefore(this.canvas, document.body.childNodes[0]); 
+   this.frameNo = 0;
+   this.interval = setInterval(updateGameArea, 20);
+    //this.interval = setInterval(updateGameArea, 40); // Update game every 40 milliseconds
   },
   clear: function () {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height); // Clear the canvas
@@ -233,7 +238,17 @@ function everyinterval(n) {
 }
 
 // Main game loop to update the game area
+//
 function updateGameArea() {
+    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+    for (i = 0; i < myObstacles.length; i += 1) {
+        if (myGamePiece.crashWith(myObstacles[i])) {
+            return;
+        } 
+    }
+//
+
+ 
   myGameArea.clear();
   myGameArea.frameNo += 1;
   
