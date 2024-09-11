@@ -232,8 +232,11 @@ function everyinterval(n) {
 
 // Main game loop to update the game area
 function updateGameArea() {
-  if (isPaused) return; // Stop updating if the game is paused
-  if (gameOver) return; // Stop updating if the game is over
+   if (isPaused) {
+    displayPauseText();  // Show pause text when the game is paused
+    return; // Do not clear or update the game if paused
+  }
+  if (gameOver) return; // Stop updating the game if it's over
 
   myGameArea.clear();
   myGameArea.frameNo += 1;
@@ -241,11 +244,11 @@ function updateGameArea() {
   // Update obstacles only when the game is in process
   updateObstacles();
 
-  if (myGamePiece) {
+ // if (myGamePiece) {
    // if (!gameOver && myGamePiece) {      //OJO
     myGamePiece.newPos();
     myGamePiece.update();
-  }
+  //}
 
   frameCount++;
   if (frameCount % scoreInterval === 0) {
