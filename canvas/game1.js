@@ -2,7 +2,7 @@
 var myGamePiece; 
 var myObstacles = [];
 var isPaused = false;
-var gameStarted = false;
+var gameStarted = false; 
 var gameOver = false; // To track if the game is over
 var score = 0;
 var scoreInterval = 50; // Update score every 50 frames
@@ -21,6 +21,7 @@ function startGameOnce() {
   
 // Function to initialize the game
 function startGame() {
+  console.log('Game started'); // Debugging
   var fishImageSrc = 'fish.jpg'; // Path to your fish image
   myGamePiece = new gameObject(45, 45, null, 10, 120, null, fishImageSrc); // Use the image for the sprite
   myGamePiece.gravity = 0.005; // Gravity for smoother jumps
