@@ -232,12 +232,12 @@ function everyinterval(n) {
 
 // Main game loop to update the game area
 function updateGameArea() {
-   if (isPaused) {
+   /*if (isPaused) {
     displayPauseText();  // Show pause text when the game is paused
     return; // Do not clear or update the game if paused
   }
   if (gameOver) return; // Stop updating the game if it's over
-
+*/
   myGameArea.clear();
   myGameArea.frameNo += 1;
   
