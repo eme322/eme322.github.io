@@ -86,9 +86,8 @@ var myGameArea = {
     document.body.insertBefore(this.canvas, document.body.childNodes[1]); // Insert canvas into the DOM
     this.frameNo = 0;
    this.interval = setInterval(updateGameArea, 40);//update game every 40 milliseconds
-  }
-   
   },
+ 
   clear: function () {
     this.context.fillStyle = 'black';
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height); //clear the canvas
