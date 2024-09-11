@@ -18,8 +18,50 @@ function startGameOnce() {
     document.getElementById('startButton').disabled = true; // Disable start button after game starts
   }
 }
+
+
+
+
+// Function to initialize the game
+function startGame() {
+  var fishImageSrc = 'fish.jpg'; // Path to your fish image
+  myGamePiece = new gameObject(45, 45, null, 10, 120, null, fishImageSrc); // Use the image for the sprite
+  myGamePiece.gravity = 0.005; // Gravity for smoother jumps
+  myGameArea.start();
+  addGameTitle();  // Add the game title to the page
+  playBackgroundSound(); // Start playing background sound
+}
+
+// Object to manage the game area and its operations
+var myGameArea = {
+  canvas: document.createElement('canvas'),
+  start: function () {
+    this.canvas.width = 600;
+    this.canvas.height = 450;
+    this.context = this.canvas.getContext('2d');
+    // Insert canvas before the score
+    var scoreDiv = document.getElementById('score');
+    document.body.insertBefore(this.canvas, scoreDiv); // Insert canvas before the score display
+    this.frameNo = 0;
+    this.interval = setInterval(updateGameArea, 40); // Update game every 40 milliseconds
+  },
+  clear: function () {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height); // Clear the canvas
+  },
+  stop: function () {
+    clearInterval(this.interval);
+    stopBackgroundSound(); // Stop the background sound
+    displayGameOver(); // Display the Game Over message
+    playGameOverSound(); // Play the Game Over sound effect
+  },
+  resume: function () {
+    this.interval = setInterval(updateGameArea, 40); // Resume the game loop
+  }
+};
+
   
 // Function to initialize the game
+/*
 function startGame() {
  // console.log('Game started'); // Debugging
   var fishImageSrc = 'fish.jpg'; // Path to your fish image
@@ -40,6 +82,7 @@ function addGameTitle() {
     document.body.insertBefore(title, document.body.firstChild); // Insert title at the top of the page
   }
 }
+*/
 
 // Event listener for keydown events to control the game piece
 window.addEventListener('keydown', function (e) {
@@ -80,6 +123,7 @@ window.addEventListener('keyup', function (e) {
 
 
 // Object to manage the game area and its operations
+/*
 var myGameArea = {
   canvas: document.createElement('canvas'),
   start: function () {
@@ -104,6 +148,7 @@ var myGameArea = {
     this.interval = setInterval(updateGameArea, 40); // Resume the game loop
   }
 };
+*/
  
 // Constructor function to create game objects
 function gameObject(width, height, color, x, y, type, imageSrc) {
