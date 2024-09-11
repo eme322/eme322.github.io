@@ -9,6 +9,7 @@ var scoreInterval = 50; // Update score every 50 frames
 var frameCount = 0;
 var backgroundSound; // For background sound 
 var gameOverSound; // For Game Over sound
+var myGamePiece; 
 
 // Function to start the game once when the start button is pressed
 function startGameOnce() {
