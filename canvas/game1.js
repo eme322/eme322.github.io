@@ -84,12 +84,10 @@ var myGameArea = {
     this.canvas.height = 450;
     this.context = this.canvas.getContext('2d');
     document.body.insertBefore(this.canvas, document.body.childNodes[1]); // Insert canvas into the DOM
-    this.context.fillStyle = "blue";
-    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.frameNo = 0;
+   this.interval = setInterval(updateGameArea, 40);//update game every 40 milliseconds
   }
    
-   //this.frameNo = 0;
-   //this.interval = setInterval(updateGameArea, 40);//update game every 40 milliseconds
   },
   clear: function () {
     this.context.fillStyle = 'black';
@@ -97,9 +95,6 @@ var myGameArea = {
   },
   stop: function () {
     clearInterval(this.interval);
-    //this.clear(); // Clear the canvas
-    //myObstacles = []; // Remove all obstacles
-    //myGamePiece = null; // Remove the fish
     stopBackgroundSound(); // Stop the background sound
     displayGameOver(); // Display the Game Over message
     stopBackgroundSound(); // Stop the background sound
@@ -237,10 +232,6 @@ function updateObstacles() {
 function everyinterval(n) {
   if ((myGameArea.frameNo / n) % 1 == 0) return true;
   return false;
-}
-
-//function clearPauseText() {
- // myGameArea.clear(); // This will clear the entire canvas including the "Game Paused" text
 }
 
 // Main game loop to update the game area
