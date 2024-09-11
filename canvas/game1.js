@@ -309,5 +309,5 @@ function playGameOverSound() {
   if (!isPaused && gameOver) { // Ensure the game is not paused and is over before playing the sound
   gameOverSound = new Audio('mixkit-sad-game-over-trombone-471.wav');
   gameOverSound.play();
-}
+  }
 }
