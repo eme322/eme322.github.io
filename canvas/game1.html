@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Fish Flight</title>
-    <link rel="stylesheet" type="text/css" href="game1.css"> <!-- Link to CSS file -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:2px solid #d3d3d3;
+    background-color: #00f1f1;
+}
+</style>
 </head>
-<body>
-    <script src="game1.js"></script>
-    <br/> 
-    <button id="startButton" onclick="startGameOnce()">Start</button>
-    <br/>
-    <button onclick="togglePause()">Pause/Resume</button>
-    <p>Use the start playing button to begin the game</p>
-    <p>Use the pause/resume button to pause or resume the game</p>
-    <div id="score">SCORE: 0</div>
+<body onload="startGame()">
+   
+    
+<script src="game2.js">
+    
+</script>
+<br>
+<button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button>
+<p>Use the ACCELERATE button to stay in the air</p>
+<p>How long can you stay alive?</p>
+<button onClick="startGame()"> Start the Game </button>
 </body>
 </html>
