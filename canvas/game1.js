@@ -310,4 +310,4 @@ function playGameOverSound() {
   gameOverSound = new Audio('mixkit-sad-game-over-trombone-471.wav');
   gameOverSound.play();
 }
-
+}
