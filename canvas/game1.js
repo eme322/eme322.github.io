@@ -246,7 +246,7 @@ function updateGameArea() {
   updateObstacles();
 
   //if (myGamePiece) {
-    if (!gameOver && myGamePiece) {
+   // if (!gameOver && myGamePiece) {
     myGamePiece.newPos();
     myGamePiece.update();
   }
