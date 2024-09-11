@@ -85,25 +85,20 @@ var myGameArea = {
     this.context = this.canvas.getContext('2d');
     document.body.insertBefore(this.canvas, document.body.childNodes[1]); // Insert canvas into the DOM
     this.frameNo = 0;
-   this.interval = setInterval(updateGameArea, 40);//update game every 40 milliseconds
+    this.interval = setInterval(updateGameArea, 40); // Update game every 40 milliseconds
   },
-},
- 
   clear: function () {
-    this.context.fillStyle = 'black';
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height); //clear the canvas
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height); // Clear the canvas
   },
   stop: function () {
     clearInterval(this.interval);
     stopBackgroundSound(); // Stop the background sound
     displayGameOver(); // Display the Game Over message
-    stopBackgroundSound(); // Stop the background sound
     playGameOverSound(); // Play the Game Over sound effect
-    
   },
   resume: function () {
-    this.interval = setInterval(updateGameArea, 40); //Resume the game loop
-  },
+    this.interval = setInterval(updateGameArea, 40); // Resume the game loop
+  }
 };
 
 // Constructor function to create game objects
