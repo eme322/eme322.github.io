@@ -21,7 +21,7 @@ function startGameOnce() {
   
 // Function to initialize the game
 function startGame() {
-  console.log('Game started'); // Debugging
+ // console.log('Game started'); // Debugging
   var fishImageSrc = 'fish.jpg'; // Path to your fish image
   myGamePiece = new gameObject(45, 45, null, 10, 120, null, fishImageSrc); // Use the image for the sprite
   myGamePiece.gravity = 0.005; // Gravity for smoother jumps
@@ -80,7 +80,6 @@ window.addEventListener('keyup', function (e) {
 
 
 // Object to manage the game area and its operations
-/*
 var myGameArea = {
   canvas: document.createElement('canvas'),
   start: function () {
@@ -104,7 +103,7 @@ var myGameArea = {
     this.interval = setInterval(updateGameArea, 40); // Resume the game loop
   }
 };
- */
+ 
 // Constructor function to create game objects
 function gameObject(width, height, color, x, y, type, imageSrc) {
   this.type = type;
