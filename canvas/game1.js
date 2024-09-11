@@ -273,6 +273,7 @@ function togglePause() {
 }
 
 //Funtion to display the Game Pause message
+/*
 function displayPauseText() {
   if (gameOver) return; // Don't display "Game Paused" if the game is over
   var ctx = myGameArea.context;
@@ -282,7 +283,8 @@ function displayPauseText() {
   ctx.clearRect(0, 0, myGameArea.canvas.width, myGameArea.canvas.height); // Clear previous text before showing pause
   ctx.fillText("Game Paused", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2);
 }
-//278 uncommented
+*/
+// uncommented
 
 // Function to display the Game Over message
 function displayGameOver() {
