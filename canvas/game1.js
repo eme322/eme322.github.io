@@ -3,7 +3,7 @@ var myGamePiece;
 var myObstacles = [];
 var isPaused = false;
 var gameStarted = false; 
-var gameOver = false; // To track if the game is over
+var gameOver = false; // To track if the game is over 
 var score = 0;
 var scoreInterval = 50; // Update score every 50 frames
 var frameCount = 0;
@@ -77,7 +77,10 @@ window.addEventListener('keyup', function (e) {
   }
 });
 
+
+
 // Object to manage the game area and its operations
+/*
 var myGameArea = {
   canvas: document.createElement('canvas'),
   start: function () {
@@ -101,7 +104,7 @@ var myGameArea = {
     this.interval = setInterval(updateGameArea, 40); // Resume the game loop
   }
 };
- 
+ */
 // Constructor function to create game objects
 function gameObject(width, height, color, x, y, type, imageSrc) {
   this.type = type;
