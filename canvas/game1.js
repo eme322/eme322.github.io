@@ -241,11 +241,11 @@ function updateGameArea() {
   // Update obstacles only when the game is in process
   updateObstacles();
 
-  //if (myGamePiece) {
+  if (myGamePiece) {
    // if (!gameOver && myGamePiece) {      //OJO
     myGamePiece.newPos();
     myGamePiece.update();
-  //}
+  }
 
   frameCount++;
   if (frameCount % scoreInterval === 0) {
