@@ -285,9 +285,16 @@ function displayPauseText() {
   ctx.font = "48px Arial";
   ctx.fillStyle = "Red";
   ctx.textAlign = "center";
-  ctx.clearRect(0, 0, myGameArea.canvas.width, myGameArea.canvas.height); // Clear previous text before showing pause
+  //ctx.clearRect(0, 0, myGameArea.canvas.width, myGameArea.canvas.height); // Clear previous text before showing pause
   ctx.fillText("Game Paused", myGameArea.canvas.width / 2, myGameArea.canvas.height / 2);
 }
+
+//
+function clearPauseText() {
+  myGameArea.clear(); // This will clear the entire canvas including the "Game Paused" text
+  updateGameArea(); // Redraw the game immediately after clearing the pause text
+}
+
 
 // Function to display the Game Over message
 function displayGameOver() {
