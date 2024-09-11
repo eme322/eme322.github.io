@@ -87,6 +87,7 @@ var myGameArea = {
     this.frameNo = 0;
    this.interval = setInterval(updateGameArea, 40);//update game every 40 milliseconds
   },
+},
  
   clear: function () {
     this.context.fillStyle = 'black';
