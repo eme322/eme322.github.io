@@ -1,24 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<style>
-canvas {
-    border:2px solid #d3d3d3;
-    background-color: #00f1f1;
-}
-</style>
-</head>
-<body onload="startGame()">
-   
-    
-<script src="game2.js">
-    
-</script>
-<br>
-<button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">ACCELERATE</button>
-<p>Use the ACCELERATE button to stay in the air</p>
-<p>How long can you stay alive?</p>
-<button onClick="startGame()"> Start the Game </button>
-</body>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      #gameTitle {
+        font-size: 2em;
+        color: #000;
+        text-align: center;
+        margin-top: 10px; /* Adjust as needed */
+        margin-bottom: 10px; /* Adjust as needed */
+        z-index: 1; /* Ensure it's above the canvas */
+        position: relative;
+      }
+
+      canvas {
+        display: block;
+        margin: 0 auto;
+        border: 2px solid #000; /* Optional: for visual clarity */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gameTitle">Fish Flight</div>
+    <script src="game1.js"></script>
+    <br />
+    <button id="startButton" onclick="startGame()">Start</button>
+    <p>Press the Start button to begin the game</p>
+    <button id="pauseResumeButton" onclick="togglePauseResume()" disabled>
+      Pause
+    </button>
+    <p>Press the Pause/Resume button if you need</p>
+    <div id="score">SCORE: 0</div>
+  </body>
 </html>
