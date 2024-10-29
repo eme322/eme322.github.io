@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chessboard_Emely</title>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/@babel/standalone@7.10.3/babel.min.js"
+      crossorigin
+    ></script>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f0f0f0;
+      }
+      #root {
+        text-align: center;
+      }
+      table {
+        margin: 0 auto;
+      }
+      .button-group {
+        margin-bottom: 20px;
+      }
+      .button-group button {
+        margin: 0 10px;
+      }
+      .button-group label {
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-presets="react,stage-3">
+      const initialGameState = [
+        ['', 'r', '', 'r', '', 'r', '', 'r'],
+        ['r', '', 'r', '', 'r', '', 'r', ''],
+        ['', 'r', '', 'r', '', 'r', '', 'r'],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['R', '', 'R', '', 'R', '', 'R', ''],
+        ['', 'R', '', 'R', '', 'R', '', 'R'],
+        ['R', '', 'R', '', 'R', '', 'R', ''],
+      ];
+
+      const pieceImages = {
+        r: 'coke.png',
+        R: 'pepsi.png',
+      };
+
+      function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        const voices = speechSynthesis.getVoices();
+        if (voices.length > 0) {
+          utterance.voice = voices[0];
+        }
+        speechSynthesis.speak(utterance);
+      }
+
+      function Game() {
+        const [game, setGame] = React.useState(initialGameState);
+        const [turn, setTurn] = React.useState('');
+        const [isGameStarted, setIsGameStarted] = React.useState(false);
+        const [selectedPiece, setSelectedPiece] = React.useState(null);
+        const [previousPositions, setPreviousPositions] = React.useState({
+          r: null,
+          R: null,
+        });
+        const [isSpeechEnabled, setIsSpeechEnabled] = React.useState(false);
+
+        React.useEffect(() => {
+          // Preload voices
+          window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+          };
+        }, []);
+
+        function startGame(player) {
+          setTurn(player);
+          setIsGameStarted(true);
+        }
+
+        function restartGame() {
+          setGame(initialGameState);
+          setTurn('');
+          setIsGameStarted(false);
+          setSelectedPiece(null);
+          setPreviousPositions({ r: null, R: null });
+        }
+
+        function handleCellClick(rowIndex, colIndex) {
+          if (!isGameStarted) return;
+
+          const piece = game[rowIndex][colIndex];
+          const isPlayerPiece =
+            (turn === 'r' && piece === 'r') || (turn === 'R' && piece === 'R');
+
+          if (isPlayerPiece) {
+            setSelectedPiece({ row: rowIndex, col: colIndex });
+            if (isSpeechEnabled) {
+              speak(
+                `Selected piece at row ${rowIndex + 1}, column ${colIndex + 1}`
+              );
+            }
+          } else if (selectedPiece) {
+            movePiece(rowIndex, colIndex);
+          }
+        }
+
+        function movePiece(targetRow, targetCol) {
+          const { row: selectedRow, col: selectedCol } = selectedPiece;
+          const piece = game[selectedRow][selectedCol];
+          const isTargetEmpty = game[targetRow][targetCol] === '';
+          const isRedSquare = (targetRow + targetCol) % 2 === 1; // Ensure target is a red square
+          const previousPosition = previousPositions[piece];
+          const isMovingBack =
+            previousPosition &&
+            previousPosition.row === targetRow &&
+            previousPosition.col === targetCol;
+          const isValidDirection =
+            (piece === 'r' && targetRow > selectedRow) ||
+            (piece === 'R' && targetRow < selectedRow); // Ensure coke moves down and pepsi moves up
+
+          if (
+            isTargetEmpty &&
+            isRedSquare &&
+            !isMovingBack &&
+            isValidDirection
+          ) {
+            const rowDiff = targetRow - selectedRow;
+            const colDiff = targetCol - selectedCol;
+
+            // Check if it is a capturing move
+            if (Math.abs(rowDiff) === 2 && Math.abs(colDiff) === 2) {
+              const middleRow = selectedRow + rowDiff / 2;
+              const middleCol = selectedCol + colDiff / 2;
+              const middlePiece = game[middleRow][middleCol];
+
+              // Ensure there is an opponent piece to capture
+              if (
+                (turn === 'r' && middlePiece === 'R') ||
+                (turn === 'R' && middlePiece === 'r')
+              ) {
+                const newGameState = game.map((row) => row.slice());
+                newGameState[selectedRow][selectedCol] = '';
+                newGameState[middleRow][middleCol] = ''; // Remove the captured piece
+                newGameState[targetRow][targetCol] = piece;
+                setGame(newGameState);
+                setSelectedPiece({ row: targetRow, col: targetCol });
+                setPreviousPositions({
+                  ...previousPositions,
+                  [piece]: { row: selectedRow, col: selectedCol },
+                });
+
+                if (isSpeechEnabled) {
+                  speak(
+                    `Captured piece at row ${middleRow + 1}, column ${
+                      middleCol + 1
+                    }`
+                  );
+                }
+
+                // Check for additional captures
+                if (canCaptureAgain(targetRow, targetCol, piece)) {
+                  if (isSpeechEnabled) {
+                    speak('You can capture again');
+                  }
+                  return;
+                }
+
+                setSelectedPiece(null);
+                setTurn(turn === 'r' ? 'R' : 'r');
+                return;
+              }
+            }
+
+            // Regular move
+            if (Math.abs(rowDiff) === 1 && Math.abs(colDiff) === 1) {
+              const newGameState = game.map((row) => row.slice());
+              newGameState[selectedRow][selectedCol] = '';
+              newGameState[targetRow][targetCol] = piece;
+              setGame(newGameState);
+              setSelectedPiece(null);
+              setTurn(turn === 'r' ? 'R' : 'r');
+              setPreviousPositions({
+                ...previousPositions,
+                [piece]: { row: selectedRow, col: selectedCol },
+              });
+
+              if (isSpeechEnabled) {
+                speak(
+                  `Moved piece to row ${targetRow + 1}, column ${targetCol + 1}`
+                );
+              }
+            }
+          }
+        }
+
+        function canCaptureAgain(row, col, piece) {
+          const directions = [
+            { rowDiff: -2, colDiff: -2 },
+            { rowDiff: -2, colDiff: 2 },
+            { rowDiff: 2, colDiff: -2 },
+            { rowDiff: 2, colDiff: 2 },
+          ];
+
+          for (const { rowDiff, colDiff } of directions) {
+            const targetRow = row + rowDiff;
+            const targetCol = col + colDiff;
+            const middleRow = row + rowDiff / 2;
+            const middleCol = col + colDiff / 2;
+
+            if (
+              targetRow >= 0 &&
+              targetRow < game.length &&
+              targetCol >= 0 &&
+              targetCol < game[0].length &&
+              game[targetRow][targetCol] === '' &&
+              (targetRow + targetCol) % 2 === 1
+            ) {
+              const middlePiece = game[middleRow][middleCol];
+              if (
+                (piece === 'r' && middlePiece === 'R' && targetRow > row) ||
+                (piece === 'R' && middlePiece === 'r' && targetRow < row)
+              ) {
+                return true;
+              }
+            }
+          }
+          return false;
+        }
+
+        return (
+          <div>
+            <h2>React Checkers Game Assignment</h2>
+            <div className="button-group">
+              <button onClick={() => startGame('r')}>Start Game: Coke</button>
+              <button onClick={() => startGame('R')}>Start Game: Pepsi</button>
+              <button onClick={restartGame}>Restart Game</button>
+              <br />
+              <br />
+              <input
+                type="checkbox"
+                id="tts-enabled"
+                name="tts-enabled"
+                checked={isSpeechEnabled}
+                onChange={(e) => setIsSpeechEnabled(e.target.checked)}
+              />
+              <label htmlFor="tts-enabled">Enable Text-to-Speech</label>
+            </div>
+            <h3>
+              Turn: {turn === 'r' ? 'Coke' : turn === 'R' ? 'Pepsi' : 'None'}
+            </h3>
+            <table>
+              <tbody>
+                {game.map((row, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {row.map((cell, colIndex) => {
+                      const isBlackSquare = (rowIndex + colIndex) % 2 === 1;
+                      const backgroundColor = isBlackSquare ? 'brown' : 'beige';
+                      const isSelected =
+                        selectedPiece &&
+                        selectedPiece.row === rowIndex &&
+                        selectedPiece.col === colIndex;
+
+                      return (
+                        <td
+                          key={colIndex}
+                          style={{
+                            width: '50px',
+                            height: '50px',
+                            backgroundColor: isSelected
+                              ? 'yellow'
+                              : backgroundColor,
+                            textAlign: 'center',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => handleCellClick(rowIndex, colIndex)}
+                        >
+                          {cell && (
+                            <img
+                              src={pieceImages[cell]}
+                              alt={cell}
+                              style={{
+                                width: '40px',
+                                height: '40px',
+                              }}
+                            />
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      }
+      ReactDOM.createRoot(document.getElementById('root')).render(<Game />);
+    </script>
+  </body>
+</html>
