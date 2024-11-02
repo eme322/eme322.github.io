@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>3D Forward-Only Game - Coke vs Pepsi</title>
+    <title>Assignment 5: 3D board Game</title>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <style>
       body,
@@ -83,7 +83,7 @@
         scene
       );
 
-      // Chessboard setup
+      // Set up the board tiles
       const tileSize = 1;
       const tiles = [];
       for (let row = 0; row < boardSize; row++) {
@@ -110,15 +110,14 @@
           tile.row = row;
           tile.col = col;
 
-          // Handle tile click to move the selected piece
+          // Assign click event to each tile
           tile.actionManager = new BABYLON.ActionManager(scene);
           tile.actionManager.registerAction(
             new BABYLON.ExecuteCodeAction(
               BABYLON.ActionManager.OnPickTrigger,
               function () {
-                highlightTile(tile); // Highlight the clicked tile for visibility
-                //handleTileClick(row, col); // Handle the piece movement
-                handleTileClick(tile.row, tile.col); // Handle the piece movement
+                highlightTile(tile); // Highlight the clicked tile for visibility /////
+                handleTileClick(tile.row, tile.col);
               }
             )
           );
@@ -127,7 +126,7 @@
         tiles.push(rowTiles);
       }
 
-      // Place pieces
+      // Place pieces on the board
       const pieces = [];
       const placePiece = (row, col, pieceType) => {
         const color = pieceType === 'r' ? redColor : blueColor;
@@ -161,6 +160,7 @@
         pieces.push(piece);
       };
 
+      // Initialize pieces based on gameState
       for (let row = 0; row < gameState.length; row++) {
         for (let col = 0; col < gameState[row].length; col++) {
           const pieceType = gameState[row][col];
@@ -170,7 +170,7 @@
         }
       }
 
-      // Select a piece
+      // Select a piece for potential move
       function selectPiece(piece) {
         if (
           isGameStarted &&
@@ -193,20 +193,14 @@
         const { row: selectedRow, col: selectedCol, pieceType } = selectedPiece;
         const rowDiff = targetRow - selectedRow;
         const colDiff = targetCol - selectedCol;
+        const isTargetEmpty = gameState[targetRow][targetCol] === '';
 
-        const isForwardMove =
-          (pieceType === 'r' && rowDiff === 1) ||
-          (pieceType === 'R' && rowDiff === -1);
-        const isCaptureMove =
-          Math.abs(rowDiff) === 2 && Math.abs(colDiff) === 2;
-
+        // Attempt a capture move if it's 2 spaces away
         if (
-          isForwardMove &&
-          Math.abs(colDiff) === 1 &&
-          gameState[targetRow][targetCol] === ''
+          isTargetEmpty &&
+          Math.abs(rowDiff) === 2 &&
+          Math.abs(colDiff) === 2
         ) {
-          makeMove(selectedRow, selectedCol, targetRow, targetCol);
-        } else if (isCaptureMove) {
           const midRow = selectedRow + rowDiff / 2;
           const midCol = selectedCol + colDiff / 2;
           const midPiece = gameState[midRow][midCol];
@@ -216,21 +210,76 @@
             (turn === 'R' && midPiece === 'r')
           ) {
             makeMove(selectedRow, selectedCol, targetRow, targetCol);
-            gameState[midRow][midCol] = ''; // Remove captured piece
-            console.log(`Captured piece at (${midRow}, ${midCol})`);
-          } else {
-            console.log('Invalid capture attempt.');
+            removePiece(midRow, midCol); // Remove captured piece
+            gameState[midRow][midCol] = ''; // Clear captured piece in game state
+
+            if (canCaptureAgain(targetRow, targetCol, pieceType)) {
+              selectedPiece = { row: targetRow, col: targetCol, pieceType };
+              return;
+            }
+            setTurnAfterMove();
+            return;
           }
-        } else {
-          console.log('Invalid move attempt.');
+        }
+
+        // Regular movement without capturing
+        if (
+          isTargetEmpty &&
+          Math.abs(rowDiff) === 1 &&
+          Math.abs(colDiff) === 1
+        ) {
+          makeMove(selectedRow, selectedCol, targetRow, targetCol);
+          setTurnAfterMove();
         }
       }
-      ////////////////
+
+      // Remove the captured piece visually and from the game state
+      function removePiece(row, col) {
+        const pieceToRemove = pieces.find(
+          (p) => p.row === row && p.col === col
+        );
+        if (pieceToRemove) {
+          pieceToRemove.dispose(); // Remove from the scene
+          pieces.splice(pieces.indexOf(pieceToRemove), 1); // Remove from pieces array
+        }
+      }
+
+      // Check if additional capture moves are available
+      function canCaptureAgain(row, col, pieceType) {
+        const directions = [
+          { rowDiff: -2, colDiff: -2 },
+          { rowDiff: -2, colDiff: 2 },
+          { rowDiff: 2, colDiff: -2 },
+          { rowDiff: 2, colDiff: 2 },
+        ];
+
+        for (const { rowDiff, colDiff } of directions) {
+          const targetRow = row + rowDiff;
+          const targetCol = col + colDiff;
+          const middleRow = row + rowDiff / 2;
+          const middleCol = col + colDiff / 2;
+
+          if (
+            targetRow >= 0 &&
+            targetRow < boardSize &&
+            targetCol >= 0 &&
+            targetCol < boardSize &&
+            gameState[targetRow][targetCol] === ''
+          ) {
+            const middlePiece = gameState[middleRow][middleCol];
+            if (
+              (pieceType === 'r' && middlePiece === 'R' && targetRow > row) ||
+              (pieceType === 'R' && middlePiece === 'r' && targetRow < row)
+            ) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+
       // Store the highlighted tile globally
       let highlightedTile = null;
-      ////////////////
-
-      ////
       function highlightTile(tile) {
         // Reset the color of the previously highlighted tile
         if (highlightedTile && highlightedTile !== tile) {
@@ -247,8 +296,7 @@
         highlightedTile = tile;
       }
 
-      ///////
-      // Make a move
+      // Move the selected piece and update position
       function makeMove(fromRow, fromCol, toRow, toCol) {
         gameState[fromRow][fromCol] = '';
         gameState[toRow][toCol] = selectedPiece.pieceType;
@@ -259,26 +307,28 @@
         );
         selectedPiece.row = toRow;
         selectedPiece.col = toCol;
-        console.log(`Moved piece to (${toRow}, ${toCol})`);
         selectedPiece = null;
+      }
 
-        // Switch the turn
+      // Update turn after each move
+      function setTurnAfterMove() {
+        selectedPiece = null;
         turn = turn === 'r' ? 'R' : 'r';
         document.getElementById('turnDisplay').innerText = `Turn: ${
           turn === 'r' ? 'Coke' : 'Pepsi'
         }`;
       }
 
-      // Start and restart game functions
+      // Initialize game with starting player
       function startGame(player) {
         turn = player;
         isGameStarted = true;
         document.getElementById('turnDisplay').innerText = `Turn: ${
           turn === 'r' ? 'Coke' : 'Pepsi'
         }`;
-        console.log(`Game started. First turn: ${turn}`);
       }
 
+      // Restart the game to its initial state
       function restartGame() {
         gameState = initialGameState.map((row) => row.slice());
         pieces.forEach((piece) => piece.dispose());
@@ -295,9 +345,7 @@
         isGameStarted = false;
         selectedPiece = null;
         document.getElementById('turnDisplay').innerText = 'Turn: None';
-        console.log('Game reset.');
       }
-
       // Render loop
       engine.runRenderLoop(() => {
         scene.render();
@@ -309,3 +357,5 @@
     </script>
   </body>
 </html>
+
+
