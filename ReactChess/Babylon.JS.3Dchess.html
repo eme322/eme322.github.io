@@ -1,1 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>3D Forward-Only Game - Coke vs Pepsi</title>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f0f0f0;
+      }
+      #renderCanvas {
+        width: 100vw;
+        height: 100vh;
+      }
+      #controls {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        display: flex;
+        flex-direction: column;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="controls">
+      <button onclick="startGame('r')">Start Game: Coke</button>
+      <button onclick="startGame('R')">Start Game: Pepsi</button>
+      <button onclick="restartGame()">Restart Game</button>
+      <h3 id="turnDisplay">Turn: None</h3>
+    </div>
+    <canvas id="renderCanvas"></canvas>
 
+    <script>
+      const canvas = document.getElementById('renderCanvas');
+      const engine = new BABYLON.Engine(canvas, true);
+      const scene = new BABYLON.Scene(engine);
+      const boardSize = 8;
+      let turn = '';
+      let selectedPiece = null;
+      let isGameStarted = false;
+
+      // Initial game state
+      const initialGameState = [
+        ['', 'r', '', 'r', '', 'r', '', 'r'],
+        ['r', '', 'r', '', 'r', '', 'r', ''],
+        ['', 'r', '', 'r', '', 'r', '', 'r'],
+        ['', '', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', '', ''],
+        ['R', '', 'R', '', 'R', '', 'R', ''],
+        ['', 'R', '', 'R', '', 'R', '', 'R'],
+        ['R', '', 'R', '', 'R', '', 'R', ''],
+      ];
+      let gameState = initialGameState.map((row) => row.slice());
+
+      // Colors for Coke and Pepsi
+      const redColor = new BABYLON.Color3(0.8, 0.1, 0.1);
+      const blueColor = new BABYLON.Color3(0.1, 0.1, 0.8);
+
+      // Camera and Light
+      const camera = new BABYLON.ArcRotateCamera(
+        'camera',
+        -Math.PI / 2,
+        Math.PI / 2.5,
+        12,
+        new BABYLON.Vector3(0, 0, 0),
+        scene
+      );
+      camera.attachControl(canvas, true);
+      const light = new BABYLON.HemisphericLight(
+        'light',
+        new BABYLON.Vector3(0, 1, 0),
+        scene
+      );
+
+      // Chessboard setup
+      const tileSize = 1;
+      const tiles = [];
+      for (let row = 0; row < boardSize; row++) {
+        const rowTiles = [];
+        for (let col = 0; col < boardSize; col++) {
+          const tile = BABYLON.MeshBuilder.CreateBox(
+            `tile_${row}_${col}`,
+            { size: tileSize, height: 0.2 },
+            scene
+          );
+          tile.position = new BABYLON.Vector3(
+            col - boardSize / 2 + 0.5,
+            0,
+            row - boardSize / 2 + 0.5
+          );
+          tile.material = new BABYLON.StandardMaterial(
+            `tileMat_${row}_${col}`,
+            scene
+          );
+          tile.material.diffuseColor =
+            (row + col) % 2 === 0
+              ? new BABYLON.Color3(1, 1, 1)
+              : new BABYLON.Color3(0.2, 0.2, 0.2);
+          tile.row = row;
+          tile.col = col;
+
+          // Handle tile click to move the selected piece
+          tile.actionManager = new BABYLON.ActionManager(scene);
+          tile.actionManager.registerAction(
+            new BABYLON.ExecuteCodeAction(
+              BABYLON.ActionManager.OnPickTrigger,
+              function () {
+                highlightTile(tile); // Highlight the clicked tile for visibility
+                //handleTileClick(row, col); // Handle the piece movement
+                handleTileClick(tile.row, tile.col); // Handle the piece movement
+              }
+            )
+          );
+          rowTiles.push(tile);
+        }
+        tiles.push(rowTiles);
+      }
+
+      // Place pieces
+      const pieces = [];
+      const placePiece = (row, col, pieceType) => {
+        const color = pieceType === 'r' ? redColor : blueColor;
+        const piece = BABYLON.MeshBuilder.CreateCylinder(
+          `piece_${row}_${col}`,
+          { diameter: 0.8, height: 0.2 },
+          scene
+        );
+        piece.position = new BABYLON.Vector3(
+          col - boardSize / 2 + 0.5,
+          0.2,
+          row - boardSize / 2 + 0.5
+        );
+        piece.material = new BABYLON.StandardMaterial(
+          `pieceMat_${row}_${col}`,
+          scene
+        );
+        piece.material.diffuseColor = color;
+        piece.pieceType = pieceType;
+        piece.row = row;
+        piece.col = col;
+        piece.actionManager = new BABYLON.ActionManager(scene);
+        piece.actionManager.registerAction(
+          new BABYLON.ExecuteCodeAction(
+            BABYLON.ActionManager.OnPickTrigger,
+            function () {
+              selectPiece(piece);
+            }
+          )
+        );
+        pieces.push(piece);
+      };
+
+      for (let row = 0; row < gameState.length; row++) {
+        for (let col = 0; col < gameState[row].length; col++) {
+          const pieceType = gameState[row][col];
+          if (pieceType) {
+            placePiece(row, col, pieceType);
+          }
+        }
+      }
+
+      // Select a piece
+      function selectPiece(piece) {
+        if (
+          isGameStarted &&
+          ((turn === 'r' && piece.pieceType === 'r') ||
+            (turn === 'R' && piece.pieceType === 'R'))
+        ) {
+          selectedPiece = piece;
+          console.log(
+            `Selected piece at (${piece.row}, ${piece.col}) for turn: ${turn}`
+          );
+        } else {
+          console.log(`Invalid selection. Turn is for: ${turn}`);
+        }
+      }
+
+      // Handle tile click to move piece
+      function handleTileClick(targetRow, targetCol) {
+        if (!selectedPiece) return;
+
+        const { row: selectedRow, col: selectedCol, pieceType } = selectedPiece;
+        const rowDiff = targetRow - selectedRow;
+        const colDiff = targetCol - selectedCol;
+
+        const isForwardMove =
+          (pieceType === 'r' && rowDiff === 1) ||
+          (pieceType === 'R' && rowDiff === -1);
+        const isCaptureMove =
+          Math.abs(rowDiff) === 2 && Math.abs(colDiff) === 2;
+
+        if (
+          isForwardMove &&
+          Math.abs(colDiff) === 1 &&
+          gameState[targetRow][targetCol] === ''
+        ) {
+          makeMove(selectedRow, selectedCol, targetRow, targetCol);
+        } else if (isCaptureMove) {
+          const midRow = selectedRow + rowDiff / 2;
+          const midCol = selectedCol + colDiff / 2;
+          const midPiece = gameState[midRow][midCol];
+
+          if (
+            (turn === 'r' && midPiece === 'R') ||
+            (turn === 'R' && midPiece === 'r')
+          ) {
+            makeMove(selectedRow, selectedCol, targetRow, targetCol);
+            gameState[midRow][midCol] = ''; // Remove captured piece
+            console.log(`Captured piece at (${midRow}, ${midCol})`);
+          } else {
+            console.log('Invalid capture attempt.');
+          }
+        } else {
+          console.log('Invalid move attempt.');
+        }
+      }
+      ////////////////
+      // Store the highlighted tile globally
+      let highlightedTile = null;
+      ////////////////
+
+      ////
+      function highlightTile(tile) {
+        // Reset the color of the previously highlighted tile
+        if (highlightedTile && highlightedTile !== tile) {
+          highlightedTile.material.diffuseColor =
+            (highlightedTile.row + highlightedTile.col) % 2 === 0
+              ? new BABYLON.Color3(1, 1, 1) // White for even tiles
+              : new BABYLON.Color3(0.2, 0.2, 0.2); // Dark for odd tiles
+        }
+
+        // Highlight the current tile in yellow
+        tile.material.diffuseColor = new BABYLON.Color3(1, 1, 0); // Yellow color
+
+        // Store the current tile as the highlighted one
+        highlightedTile = tile;
+      }
+
+      ///////
+      // Make a move
+      function makeMove(fromRow, fromCol, toRow, toCol) {
+        gameState[fromRow][fromCol] = '';
+        gameState[toRow][toCol] = selectedPiece.pieceType;
+        selectedPiece.position = new BABYLON.Vector3(
+          toCol - boardSize / 2 + 0.5,
+          0.2,
+          toRow - boardSize / 2 + 0.5
+        );
+        selectedPiece.row = toRow;
+        selectedPiece.col = toCol;
+        console.log(`Moved piece to (${toRow}, ${toCol})`);
+        selectedPiece = null;
+
+        // Switch the turn
+        turn = turn === 'r' ? 'R' : 'r';
+        document.getElementById('turnDisplay').innerText = `Turn: ${
+          turn === 'r' ? 'Coke' : 'Pepsi'
+        }`;
+      }
+
+      // Start and restart game functions
+      function startGame(player) {
+        turn = player;
+        isGameStarted = true;
+        document.getElementById('turnDisplay').innerText = `Turn: ${
+          turn === 'r' ? 'Coke' : 'Pepsi'
+        }`;
+        console.log(`Game started. First turn: ${turn}`);
+      }
+
+      function restartGame() {
+        gameState = initialGameState.map((row) => row.slice());
+        pieces.forEach((piece) => piece.dispose());
+        pieces.length = 0;
+        for (let row = 0; row < gameState.length; row++) {
+          for (let col = 0; col < gameState[row].length; col++) {
+            const pieceType = gameState[row][col];
+            if (pieceType) {
+              placePiece(row, col, pieceType);
+            }
+          }
+        }
+        turn = '';
+        isGameStarted = false;
+        selectedPiece = null;
+        document.getElementById('turnDisplay').innerText = 'Turn: None';
+        console.log('Game reset.');
+      }
+
+      // Render loop
+      engine.runRenderLoop(() => {
+        scene.render();
+      });
+
+      window.addEventListener('resize', () => {
+        engine.resize();
+      });
+    </script>
+  </body>
+</html>
