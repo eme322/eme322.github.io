@@ -3,6 +3,14 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+      }
       #gameTitle {
         font-size: 2em;
         color: #000;
@@ -14,27 +22,31 @@
       }
       canvas {
         display: block;
-        margin: 0 auto;
         border: 2px solid #000;
+      }
+      #buttonContainer {
+        text-align: center;
+        margin: 20px;
       }
     </style>
   </head>
   <body>
     <div id="gameTitle">Fish Flight</div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
-    <br />
-    <button id="startButton" onclick="startGame()">Start</button>
-    <button id="pauseResumeButton" onclick="togglePauseResume()" disabled>
-      Pause
-    </button>
-    <button id="restartButton" onclick="restartGame()">Restart</button>
-    <div id="score">SCORE: 0</div>
+    <div id="buttonContainer">
+      <button id="startButton" onclick="startGame()">Start</button>
+      <button id="pauseResumeButton" onclick="togglePauseResume()" disabled>
+        Pause
+      </button>
+      <button id="restartButton" onclick="restartGame()">Restart</button>
+      <div id="score">SCORE: 0</div>
+    </div>
     <canvas id="gameCanvas"></canvas>
 
+    <script src="https://cdn.jsdelivr.net/npm/fabric@5.0.0/dist/fabric.min.js"></script>
     <script>
       const canvas = new fabric.Canvas('gameCanvas', {
-        width: 800,
-        height: 600,
+        width: 700,
+        height: 500,
       });
 
       const backgroundSound = new Audio('mixkit-close-sea-waves-loop-1195.wav');
@@ -47,103 +59,82 @@
         isGamePaused = true,
         isGameStarted = false;
       let obstacles = [];
-      let bubbles = [];
-      let backgroundImages = [];
+      let backgroundLayer;
 
-      // Function to set the background images for continuous looping
+      // Function to set the background image
       function setBackground() {
         fabric.Image.fromURL('Ba.jpg', (img) => {
+          if (!img) {
+            console.error('Background image failed to load');
+            return;
+          }
           img.scaleToWidth(canvas.width);
           img.scaleToHeight(canvas.height);
           img.originX = 'left';
           img.originY = 'top';
           img.left = 0;
-          backgroundImages.push(img);
+          backgroundLayer = img;
+          canvas.setBackgroundImage(
+            backgroundLayer,
+            canvas.renderAll.bind(canvas)
+          );
 
-          fabric.Image.fromURL('Ba.jpg', (img2) => {
-            img2.scaleToWidth(canvas.width);
-            img2.scaleToHeight(canvas.height);
-            img2.originX = 'left';
-            img2.originY = 'top';
-            img2.left = canvas.width;
-            backgroundImages.push(img2);
-
-            backgroundImages.forEach((image) => {
-              canvas.add(image);
-            });
-            animateBackground();
-          });
+          animateWaveBackground();
+          createWaterWaves();
         });
       }
 
-      // Function to animate the background images in a loop
-      function animateBackground() {
-        backgroundImages.forEach((img) => {
-          img.animate('left', `-=${canvas.width}`, {
-            duration: 80000,
-            onChange: canvas.renderAll.bind(canvas),
-            easing: fabric.util.ease.linear,
-            onComplete: () => {
-              if (img.left <= -canvas.width) {
-                img.left = canvas.width * (backgroundImages.length - 1);
-              }
-              animateBackground();
-            },
-          });
-        });
-      }
-
-      // Set the initial background
-      setBackground();
-
-      // Create water wave animation using fabric.js
-      function createWaterWave() {
-        const wave = new fabric.Path(
-          'M 0 300 Q 150 100 300 300 T 600 300 T 900 300',
-          {
-            fill: 'rgba(0, 119, 190, 0.15)',
-            stroke: 'rgba(0, 119, 190, 0.1)',
-            strokeWidth: 1,
-            selectable: false,
-            evented: false,
+      // Function to animate wave-like movement of background
+      function animateWaveBackground() {
+        let waveAngle = 0;
+        function animate() {
+          if (isGameStarted && !isGamePaused) {
+            waveAngle += 0.02;
+            const offsetY = Math.sin(waveAngle) * 5;
+            backgroundLayer.top = offsetY;
+            canvas.setBackgroundImage(
+              backgroundLayer,
+              canvas.renderAll.bind(canvas)
+            );
           }
-        );
-        canvas.add(wave);
-        animateWave(wave);
+          requestAnimationFrame(animate);
+        }
+        animate();
       }
 
-      function createSecondWaterWave() {
-        const wave = new fabric.Path(
-          'M 0 350 Q 150 150 300 350 T 600 350 T 900 350',
-          {
-            fill: 'rgba(0, 119, 190, 0.15)',
-            stroke: 'rgba(0, 119, 190, 0.1)',
-            strokeWidth: 1,
-            selectable: false,
-            evented: false,
-          }
-        );
-        canvas.add(wave);
-        animateWave(wave);
+      // Function to create water wave animations
+      function createWaterWaves() {
+        for (let i = 0; i < 3; i++) {
+          const wave = new fabric.Path(
+            'M 0 500 Q 150 350 300 500 T 600 500 T 900 500',
+            {
+              fill: 'rgba(0, 119, 190, 0.15)',
+              stroke: 'rgba(0, 119, 190, 0.2)',
+              strokeWidth: 2,
+              selectable: false,
+              evented: false,
+              left: -200 + i * 300, // Staggering the waves horizontally
+              top: canvas.height - 100 + i * 30, // Staggering vertically
+            }
+          );
+          canvas.add(wave);
+          animateWave(wave, i);
+        }
       }
 
-      function animateWave(wave) {
-        wave.animate('left', '-=50', {
-          duration: 3000,
+      function animateWave(wave, index) {
+        wave.animate('left', '+=100', {
+          duration: 4000 + index * 500,
           onChange: canvas.renderAll.bind(canvas),
           easing: fabric.util.ease.easeInOutSine,
           onComplete: () => {
-            if (wave.left <= -50) {
-              wave.left = canvas.width;
-            }
-            animateWave(wave);
+            wave.left = -200;
+            animateWave(wave, index);
           },
         });
       }
 
-      // Add water wave animations
-      createWaterWave();
-      createSecondWaterWave();
+      setBackground(); // Set the background initially
 
       // Game piece class
       class GamePiece {
@@ -159,6 +150,10 @@
 
         createPiece(imgSrc) {
           fabric.Image.fromURL(imgSrc, (img) => {
+            if (!img) {
+              console.error('Game piece image failed to load');
+              return;
+            }
             img.set({
               left: this.x,
               top: this.y,
@@ -169,24 +164,21 @@
             });
             this.fabricObj = img;
             canvas.add(this.fabricObj);
+            canvas.renderAll();
           });
         }
 
         updatePosition() {
-          this.x += this.speedX;
-          this.y += this.speedY;
-          this.checkBounds();
-          this.fabricObj.animate(
-            { left: this.x, top: this.y },
-            {
-              onChange: canvas.renderAll.bind(canvas),
-              duration: 100,
-              easing: fabric.util.ease.easeOutQuad,
+          if (this.fabricObj) {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.checkBounds();
+            this.fabricObj.set({ left: this.x, top: this.y });
+            canvas.renderAll(); // Ensure the updated position is rendered
+            if (Math.random() < 0.05) {
+              // Reduce the frequency of bubbles
+              this.createBubbles();
             }
-          );
-          if (Math.random() < 0.1) {
-            // Create bubbles more frequently
-            this.createBubbles();
           }
         }
 
@@ -213,27 +205,25 @@
           const bubble = new fabric.Circle({
             left: this.x + (Math.random() * 20 - 10),
             top: this.y + (Math.random() * 20 - 10),
-            radius: 2,
+            radius: 5,
             fill: 'rgba(173, 216, 230, 0.6)',
             selectable: false,
             evented: false,
           });
-          bubbles.push(bubble);
           canvas.add(bubble);
-          animateBubble(bubble);
+          this.animateBubble(bubble);
         }
-      }
 
-      function animateBubble(bubble) {
-        bubble.animate('top', '-=30', {
-          duration: 2000,
-          onChange: canvas.renderAll.bind(canvas),
-          easing: fabric.util.ease.easeOutQuad,
-          onComplete: () => {
-            canvas.remove(bubble);
-            bubbles = bubbles.filter((b) => b !== bubble);
-          },
-        });
+        animateBubble(bubble) {
+          bubble.animate('top', '-=30', {
+            duration: 1500,
+            onChange: canvas.renderAll.bind(canvas),
+            easing: fabric.util.ease.easeOutQuad,
+            onComplete: () => {
+              canvas.remove(bubble);
+            },
+          });
+        }
       }
 
       class Obstacle {
@@ -248,6 +238,10 @@
 
         createObstacle(imgSrc) {
           fabric.Image.fromURL(imgSrc, (img) => {
+            if (!img) {
+              console.error('Obstacle image failed to load');
+              return;
+            }
             img.set({
               left: this.x,
               top: this.y,
@@ -258,23 +252,22 @@
             });
             this.fabricObj = img;
             canvas.add(this.fabricObj);
+            canvas.renderAll();
           });
         }
 
         updatePosition() {
-          this.x += this.speedX;
-          this.fabricObj.animate(
-            { left: this.x },
-            {
-              onChange: canvas.renderAll.bind(canvas),
-              duration: 100,
-              easing: fabric.util.ease.easeOutQuad,
-            }
-          );
+          if (this.fabricObj) {
+            this.x += this.speedX;
+            this.fabricObj.set({ left: this.x });
+            canvas.renderAll();
+          }
         }
 
         remove() {
-          canvas.remove(this.fabricObj);
+          if (this.fabricObj) {
+            canvas.remove(this.fabricObj);
+          }
         }
       }
 
@@ -320,10 +313,7 @@
         clearInterval(intervalId);
         canvas.clear();
         setBackground(); // Reset the background image
-        createWaterWave(); // Reset the water wave
-        createSecondWaterWave(); // Reset the second water wave
         obstacles = [];
-        bubbles = [];
         isGameStarted = false;
         isGamePaused = true;
         document.getElementById('startButton').disabled = false;
@@ -341,16 +331,16 @@
         myGamePiece.updatePosition();
         frameCount++;
 
-        // Generate new obstacles at a reasonable rate
-        if (frameCount % 80 === 0) {
-          // Increased frequency of obstacles
+        // Generate new obstacles at a more frequent rate
+        if (frameCount % 60 === 0) {
+          // Decrease interval for more frequent obstacles
           const x = canvas.width;
           const y = Math.random() * (canvas.height - 60) + 30;
-          let speedX = -(Math.random() * 1.5 + 1);
+          let speedX = -(Math.random() * 1.5 + 1); // Base speed of obstacles
 
-          // After reaching a score of 2000, vary the speed of obstacles
-          if (frameCount > 2000) {
-            speedX = -(Math.random() * 3 + 0.5); // Some sharks are slower, some are faster
+          // Some obstacles move faster
+          if (Math.random() < 0.5) {
+            speedX *= 1.5; // Increase speed for some sharks
           }
 
           const width = 40; // Smaller width for obstacles
@@ -371,7 +361,6 @@
             obstacles.push(newObstacle);
           }
         }
-
         // Update obstacles and check for collisions
         obstacles = obstacles.filter((obstacle) => {
           obstacle.updatePosition();
