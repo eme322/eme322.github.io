@@ -1,1 +1,440 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      #gameTitle {
+        font-size: 2em;
+        color: #000;
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        z-index: 1;
+        position: relative;
+      }
+      canvas {
+        display: block;
+        margin: 0 auto;
+        border: 2px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gameTitle">Fish Flight</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
+    <br />
+    <button id="startButton" onclick="startGame()">Start</button>
+    <button id="pauseResumeButton" onclick="togglePauseResume()" disabled>
+      Pause
+    </button>
+    <button id="restartButton" onclick="restartGame()">Restart</button>
+    <div id="score">SCORE: 0</div>
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+      const canvas = new fabric.Canvas('gameCanvas', {
+        width: 800,
+        height: 600,
+      });
+
+      const backgroundSound = new Audio('mixkit-close-sea-waves-loop-1195.wav');
+      backgroundSound.loop = true;
+      const gameOverSound = new Audio('mixkit-sad-game-over-trombone-471.wav');
+
+      let myGamePiece,
+        intervalId,
+        frameCount = 0,
+        isGamePaused = true,
+        isGameStarted = false;
+      let obstacles = [];
+      let bubbles = [];
+      let backgroundImages = [];
+
+      // Function to set the background images for continuous looping
+      function setBackground() {
+        fabric.Image.fromURL('Ba.jpg', (img) => {
+          img.scaleToWidth(canvas.width);
+          img.scaleToHeight(canvas.height);
+          img.originX = 'left';
+          img.originY = 'top';
+          img.left = 0;
+          backgroundImages.push(img);
+
+          fabric.Image.fromURL('Ba.jpg', (img2) => {
+            img2.scaleToWidth(canvas.width);
+            img2.scaleToHeight(canvas.height);
+            img2.originX = 'left';
+            img2.originY = 'top';
+            img2.left = canvas.width;
+            backgroundImages.push(img2);
+
+            backgroundImages.forEach((image) => {
+              canvas.add(image);
+            });
+            animateBackground();
+          });
+        });
+      }
+
+      // Function to animate the background images in a loop
+      function animateBackground() {
+        backgroundImages.forEach((img) => {
+          img.animate('left', `-=${canvas.width}`, {
+            duration: 80000,
+            onChange: canvas.renderAll.bind(canvas),
+            easing: fabric.util.ease.linear,
+            onComplete: () => {
+              if (img.left <= -canvas.width) {
+                img.left = canvas.width * (backgroundImages.length - 1);
+              }
+              animateBackground();
+            },
+          });
+        });
+      }
+
+      // Set the initial background
+      setBackground();
+
+      // Create water wave animation using fabric.js
+      function createWaterWave() {
+        const wave = new fabric.Path(
+          'M 0 300 Q 150 100 300 300 T 600 300 T 900 300',
+          {
+            fill: 'rgba(0, 119, 190, 0.15)',
+            stroke: 'rgba(0, 119, 190, 0.1)',
+            strokeWidth: 1,
+            selectable: false,
+            evented: false,
+          }
+        );
+        canvas.add(wave);
+        animateWave(wave);
+      }
+
+      function createSecondWaterWave() {
+        const wave = new fabric.Path(
+          'M 0 350 Q 150 150 300 350 T 600 350 T 900 350',
+          {
+            fill: 'rgba(0, 119, 190, 0.15)',
+            stroke: 'rgba(0, 119, 190, 0.1)',
+            strokeWidth: 1,
+            selectable: false,
+            evented: false,
+          }
+        );
+        canvas.add(wave);
+        animateWave(wave);
+      }
+
+      function animateWave(wave) {
+        wave.animate('left', '-=50', {
+          duration: 3000,
+          onChange: canvas.renderAll.bind(canvas),
+          easing: fabric.util.ease.easeInOutSine,
+          onComplete: () => {
+            if (wave.left <= -50) {
+              wave.left = canvas.width;
+            }
+            animateWave(wave);
+          },
+        });
+      }
+
+      // Add water wave animations
+      createWaterWave();
+      createSecondWaterWave();
+
+      // Game piece class
+      class GamePiece {
+        constructor(width, height, imgSrc, x, y) {
+          this.width = width;
+          this.height = height;
+          this.x = x;
+          this.y = y;
+          this.speedX = 0;
+          this.speedY = 0;
+          this.createPiece(imgSrc);
+        }
+
+        createPiece(imgSrc) {
+          fabric.Image.fromURL(imgSrc, (img) => {
+            img.set({
+              left: this.x,
+              top: this.y,
+              originX: 'center',
+              originY: 'center',
+              scaleX: 0.05,
+              scaleY: 0.05,
+            });
+            this.fabricObj = img;
+            canvas.add(this.fabricObj);
+          });
+        }
+
+        updatePosition() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          this.checkBounds();
+          this.fabricObj.animate(
+            { left: this.x, top: this.y },
+            {
+              onChange: canvas.renderAll.bind(canvas),
+              duration: 100,
+              easing: fabric.util.ease.easeOutQuad,
+            }
+          );
+          if (Math.random() < 0.1) {
+            // Create bubbles more frequently
+            this.createBubbles();
+          }
+        }
+
+        checkBounds() {
+          const rockBottom = canvas.height - this.height / 2;
+          if (this.y > rockBottom) {
+            this.y = rockBottom;
+          }
+          if (this.y < this.height / 2) {
+            this.y = this.height / 2;
+          }
+        }
+
+        detectCollision(obj) {
+          return !(
+            this.y + this.height / 2 < obj.y - obj.height / 2 ||
+            this.y - this.height / 2 > obj.y + obj.height / 2 ||
+            this.x + this.width / 2 < obj.x - obj.width / 2 ||
+            this.x - this.width / 2 > obj.x + obj.width / 2
+          );
+        }
+
+        createBubbles() {
+          const bubble = new fabric.Circle({
+            left: this.x + (Math.random() * 20 - 10),
+            top: this.y + (Math.random() * 20 - 10),
+            radius: 2,
+            fill: 'rgba(173, 216, 230, 0.6)',
+            selectable: false,
+            evented: false,
+          });
+          bubbles.push(bubble);
+          canvas.add(bubble);
+          animateBubble(bubble);
+        }
+      }
+
+      function animateBubble(bubble) {
+        bubble.animate('top', '-=30', {
+          duration: 2000,
+          onChange: canvas.renderAll.bind(canvas),
+          easing: fabric.util.ease.easeOutQuad,
+          onComplete: () => {
+            canvas.remove(bubble);
+            bubbles = bubbles.filter((b) => b !== bubble);
+          },
+        });
+      }
+
+      class Obstacle {
+        constructor(width, height, imgSrc, x, y, speedX) {
+          this.width = width / 2; // Reduced width by half
+          this.height = height / 2; // Reduced height by half
+          this.x = x;
+          this.y = y;
+          this.speedX = speedX;
+          this.createObstacle(imgSrc);
+        }
+
+        createObstacle(imgSrc) {
+          fabric.Image.fromURL(imgSrc, (img) => {
+            img.set({
+              left: this.x,
+              top: this.y,
+              originX: 'center',
+              originY: 'center',
+              scaleX: this.width / 100,
+              scaleY: this.height / 100,
+            });
+            this.fabricObj = img;
+            canvas.add(this.fabricObj);
+          });
+        }
+
+        updatePosition() {
+          this.x += this.speedX;
+          this.fabricObj.animate(
+            { left: this.x },
+            {
+              onChange: canvas.renderAll.bind(canvas),
+              duration: 100,
+              easing: fabric.util.ease.easeOutQuad,
+            }
+          );
+        }
+
+        remove() {
+          canvas.remove(this.fabricObj);
+        }
+      }
+
+      function startGame() {
+        if (!isGameStarted) {
+          myGamePiece = new GamePiece(
+            10,
+            10,
+            'fish.png',
+            50,
+            canvas.height / 2
+          );
+          backgroundSound.play();
+          isGamePaused = false;
+          isGameStarted = true;
+          frameCount = 0;
+          document.getElementById('startButton').disabled = true;
+          document.getElementById('pauseResumeButton').disabled = false;
+          document.getElementById('restartButton').disabled = false;
+          intervalId = setInterval(updateGameArea, 20);
+        }
+      }
+
+      function pauseGame() {
+        clearInterval(intervalId);
+        isGamePaused = true;
+        backgroundSound.pause();
+        document.getElementById('pauseResumeButton').innerText = 'Resume';
+      }
+
+      function resumeGame() {
+        intervalId = setInterval(updateGameArea, 20);
+        isGamePaused = false;
+        backgroundSound.play();
+        document.getElementById('pauseResumeButton').innerText = 'Pause';
+      }
+
+      function togglePauseResume() {
+        isGamePaused ? resumeGame() : pauseGame();
+      }
+
+      function restartGame() {
+        clearInterval(intervalId);
+        canvas.clear();
+        setBackground(); // Reset the background image
+        createWaterWave(); // Reset the water wave
+        createSecondWaterWave(); // Reset the second water wave
+        obstacles = [];
+        bubbles = [];
+        isGameStarted = false;
+        isGamePaused = true;
+        document.getElementById('startButton').disabled = false;
+        document.getElementById('pauseResumeButton').disabled = true;
+        document.getElementById('restartButton').disabled = true;
+        document.getElementById('pauseResumeButton').innerText = 'Pause';
+        document.getElementById('score').innerText = 'SCORE: 0';
+        backgroundSound.pause();
+        gameOverSound.pause();
+      }
+
+      function updateGameArea() {
+        if (isGamePaused || !isGameStarted) return;
+
+        myGamePiece.updatePosition();
+        frameCount++;
+
+        // Generate new obstacles at a reasonable rate
+        if (frameCount % 80 === 0) {
+          // Increased frequency of obstacles
+          const x = canvas.width;
+          const y = Math.random() * (canvas.height - 60) + 30;
+          let speedX = -(Math.random() * 1.5 + 1);
+
+          // After reaching a score of 2000, vary the speed of obstacles
+          if (frameCount > 2000) {
+            speedX = -(Math.random() * 3 + 0.5); // Some sharks are slower, some are faster
+          }
+
+          const width = 40; // Smaller width for obstacles
+          const height = 20; // Smaller height for obstacles
+
+          if (
+            obstacles.length === 0 ||
+            x - obstacles[obstacles.length - 1].x > 100
+          ) {
+            const newObstacle = new Obstacle(
+              width,
+              height,
+              'shark.png',
+              x,
+              y,
+              speedX
+            );
+            obstacles.push(newObstacle);
+          }
+        }
+
+        // Update obstacles and check for collisions
+        obstacles = obstacles.filter((obstacle) => {
+          obstacle.updatePosition();
+          if (myGamePiece.detectCollision(obstacle)) {
+            endGame();
+            return false;
+          }
+          if (obstacle.x < -obstacle.width) {
+            obstacle.remove();
+            return false;
+          }
+          return true;
+        });
+
+        document.getElementById('score').innerText = 'SCORE: ' + frameCount;
+        canvas.renderAll();
+      }
+
+      function endGame() {
+        clearInterval(intervalId);
+        backgroundSound.pause();
+        gameOverSound.play();
+        isGameStarted = false;
+        isGamePaused = true;
+        document.getElementById('pauseResumeButton').disabled = true;
+        document.getElementById('restartButton').disabled = false;
+        document.getElementById('startButton').disabled = false;
+        alert('Game Over! Your score: ' + frameCount);
+      }
+
+      // Handle controls
+      document.addEventListener('keydown', (e) => {
+        if (!isGamePaused) {
+          switch (e.key) {
+            case 'ArrowUp':
+              myGamePiece.speedY = -2;
+              break;
+            case 'ArrowDown':
+              myGamePiece.speedY = 1.5;
+              break; // Increased downward speed
+            case 'ArrowLeft':
+              myGamePiece.speedX = -1.5;
+              break; // Increased leftward speed
+            case 'ArrowRight':
+              myGamePiece.speedX = 1.5;
+              break; // Increased rightward speed
+          }
+        }
+      });
+
+      document.addEventListener('keyup', (e) => {
+        switch (e.key) {
+          case 'ArrowUp':
+          case 'ArrowDown':
+            myGamePiece.speedY = 0;
+            break;
+          case 'ArrowLeft':
+          case 'ArrowRight':
+            myGamePiece.speedX = 0;
+            break;
+        }
+      });
+    </script>
+  </body>
+</html>
 
