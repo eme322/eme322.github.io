@@ -1,125 +1,242 @@
-<head>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-    rel="stylesheet"
-  />
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Press Start 2P', cursive;
-    }
-  </style>
-</head>
-<body>
-  <!-- red container div -->
-  <div style="position: relative; display: inline-block">
-    <!-- smaller red container div -->
-    <div
-      style="
-        position: absolute;
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fighting Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: 'Press Start 2P', cursive;
+      }
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
         display: flex;
-        width: 100%;
         align-items: center;
-        padding: 20px;
-      "
-    >
-      <!-- player health -->
-      <div
-        style="
-          position: relative;
-          width: 100%;
-          display: flex;
-          justify-content: flex-end;
-          border-top: 4px solid white;
-          border-left: 4px solid white;
-          border-bottom: 4px solid white;
-        "
-      >
-        <div style="background-color: red; height: 30px; width: 100%"></div>
-        <div
-          id="playerHealth"
-          style="
-            position: absolute;
-            background: #818cf8;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-          "
-        ></div>
-      </div>
+        justify-content: center;
+        background-color: #111;
+        color: white;
+      }
+      #landing-page,
+      #game-screen,
+      #end-game {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #landing-page {
+        background: linear-gradient(45deg, #1a2a6c, #b21f1f, #fdbb2d);
+        text-align: center;
+      }
+      #playButton,
+      #playAgainButton {
+        padding: 15px 30px;
+        font-size: 1.5rem;
+        color: white;
+        background-color: #ff4f5a;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 20px;
+      }
+      #game-screen,
+      #end-game {
+        display: none; /* Initially hidden */
+      }
+      #end-game h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Landing Page -->
+    <div id="landing-page">
+      <h1>Welcome to the Fighting Game</h1>
+      <button id="playButton">Play Now</button>
+    </div>
 
-      <!-- timer -->
-      <div
-        id="timer"
-        style="
-          background-color: black;
-          width: 100px;
-          height: 50px;
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          border: 4px solid white;
-        "
-      >
-        10
-      </div>
-      <!-- enemy health -->
-      <div
-        style="
-          position: relative;
-          width: 100%;
-          border-top: 4px solid white;
-          border-bottom: 4px solid white;
-          border-right: 4px solid white;
-        "
-      >
-        <div style="background-color: red; height: 30px"></div>
+    <!-- Game Screen -->
+    <div id="game-screen">
+      <div style="position: relative; display: inline-block">
         <div
-          id="enemyHealth"
           style="
             position: absolute;
-            background: #818cf8;
+            display: flex;
+            width: 100%;
+            align-items: center;
+            padding: 20px;
+          "
+        >
+          <!-- Health bars and timer section -->
+          <div
+            style="
+              position: relative;
+              width: 100%;
+              display: flex;
+              justify-content: flex-end;
+              border-top: 4px solid white;
+              border-left: 4px solid white;
+              border-bottom: 4px solid white;
+            "
+          >
+            <div style="background-color: red; height: 30px; width: 100%"></div>
+            <div
+              id="playerHealth"
+              style="
+                position: absolute;
+                background: #818cf8;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+              "
+            ></div>
+          </div>
+          <div
+            id="timer"
+            style="
+              background-color: black;
+              width: 100px;
+              height: 50px;
+              flex-shrink: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              border: 4px solid white;
+            "
+          >
+            60
+          </div>
+          <div
+            style="
+              position: relative;
+              width: 100%;
+              border-top: 4px solid white;
+              border-bottom: 4px solid white;
+              border-right: 4px solid white;
+            "
+          >
+            <div style="background-color: red; height: 30px"></div>
+            <div
+              id="enemyHealth"
+              style="
+                position: absolute;
+                background: #818cf8;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+              "
+            ></div>
+          </div>
+        </div>
+        <div
+          id="displayText"
+          style="
+            position: absolute;
+            color: white;
+            align-items: center;
+            justify-content: center;
             top: 0;
             right: 0;
             bottom: 0;
             left: 0;
+            display: none;
           "
-        ></div>
+        >
+          Tie
+        </div>
+        <canvas></canvas>
       </div>
-      <div></div>
     </div>
-    <div
-      id="displayText"
-      style="
-        position: absolute;
-        color: white;
-        align-items: center;
-        justify-content: center;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        display: none;
-      "
-    >
-      Tie
-    </div>
-    <canvas></canvas>
-  </div>
 
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
-    integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  ></script>
-  <script src="js/utils.js"></script>
-  <script src="js/classes.js"></script>
-  <script src="index.js"></script>
-</body>
+    <!-- End Game Screen -->
+    <div id="end-game">
+      <h2 id="winnerText">Player 1 Wins!</h2>
+      <button id="playAgainButton">Play Again</button>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
+      integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="js/utils.js"></script>
+    <script src="js/classes.js"></script>
+    <script src="index.js"></script>
+
+    <script>
+      // Show the game screen when Play Now is clicked
+      document
+        .getElementById('playButton')
+        .addEventListener('click', function () {
+          document.getElementById('landing-page').style.display = 'none'
+          document.getElementById('game-screen').style.display = 'flex'
+        })
+
+      // Show the end game screen with the winner and Play Again button
+      function showEndGame(winnerText) {
+        document.getElementById('game-screen').style.display = 'none'
+        document.getElementById('end-game').style.display = 'flex'
+        document.getElementById('winnerText').innerText = winnerText
+      }
+
+      // Reset the game when Play Again is clicked
+      document
+        .getElementById('playAgainButton')
+        .addEventListener('click', function () {
+          document.getElementById('end-game').style.display = 'none'
+          document.getElementById('game-screen').style.display = 'flex'
+          // Reset game state (health, timer, etc.)
+          resetGame()
+        })
+
+      // Function to reset game elements
+      function resetGame() {
+        // Reset health, timer, and any other necessary game states
+        player.health = 100
+        enemy.health = 100
+        timer = 60
+        document.getElementById('playerHealth').style.width = '100%'
+        document.getElementById('enemyHealth').style.width = '100%'
+        document.getElementById('timer').innerHTML = timer
+        decreaseTimer() // Start the timer again
+        animate() // Restart the game animation
+      }
+
+      // Modify determineWinner function in `utils.js` to call `showEndGame`
+      function determineWinner({ player, enemy, timerId }) {
+        clearTimeout(timerId)
+        let winnerText
+        if (player.health === enemy.health) {
+          winnerText = 'Tie!'
+        } else if (player.health > enemy.health) {
+          winnerText = 'Player 1 Wins!'
+        } else {
+          winnerText = 'Player 2 Wins!'
+        }
+        showEndGame(winnerText)
+      }
+    </script>
+  </body>
+</html>
+
 
