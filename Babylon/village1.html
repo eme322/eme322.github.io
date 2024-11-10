@@ -18,18 +18,15 @@
     </button>
 
     <script>
+      // Initialize Babylon.js engine and create canvas reference
       var canvas = document.getElementById('renderCanvas');
       var engine = new BABYLON.Engine(canvas, true);
 
+      // Function to create the scene
       const createScene = function () {
         const scene = new BABYLON.Scene(engine);
-
-
-    // Add fog to the scene
-  scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
-  scene.fogColor = new BABYLON.Color3(0.8, 0.8, 0.9); // Light gray-blue fog
-  scene.fogDensity = 0.02; // Adjust density for more or less fog
-
+        
+        // Create camera for user navigation
         const camera = new BABYLON.ArcRotateCamera(
           'camera',
           -Math.PI / 1.5,
@@ -38,22 +35,27 @@
           new BABYLON.Vector3(0, 0, 0)
         );
         camera.attachControl(canvas, true);
+        
+        // Create hemispheric light to illuminate the scene
         const light = new BABYLON.HemisphericLight(
           'light',
           new BABYLON.Vector3(1, 1, 0)
         );
 
+        // Import the village model into the scene
         BABYLON.SceneLoader.ImportMeshAsync(
           '',
           'https://assets.babylonjs.com/meshes/',
           'village.glb'
         );
 
+        // Constructor function for defining a walking path
         const walk = function (turn, dist) {
           this.turn = turn;
           this.dist = dist;
         };
 
+        // Define the walking path for the character
         const track = [];
         track.push(new walk(86, 7));
         track.push(new walk(-85, 14.8));
@@ -65,7 +67,7 @@
         track.push(new walk(-98, 45.2));
         track.push(new walk(0, 47));
 
-        // Dude
+        // Import and animate the "Dude" character
         BABYLON.SceneLoader.ImportMeshAsync(
           'him',
           './',
@@ -83,12 +85,14 @@
           );
           const startRotation = dude.rotationQuaternion.clone();
 
+          // Begin animation for the character
           scene.beginAnimation(result.skeletons[0], 0, 100, true, 1.0);
 
           let distance = 0;
           let step = 0.015;
           let p = 0;
 
+          // Move character along the defined path
           scene.onBeforeRenderObservable.add(() => {
             dude.movePOV(0, 0, step);
             distance += step;
@@ -110,7 +114,7 @@
           });
         });
 
-        // Create a garden area for flowers in the center of the village where Dude is not walking
+        // Create a garden area with flowers in the village center
         const flowerColors = [
           new BABYLON.Color3(1, 0, 0), // Red
           new BABYLON.Color3(1, 1, 0), // Yellow
@@ -118,10 +122,11 @@
           new BABYLON.Color3(0, 0, 1), // Blue
         ];
 
-        const gardenCenter = new BABYLON.Vector3(0, 0, 5); // Adjusted to be more in the center of the street inside the village
-        const gardenRadius = 0.5; // Smaller radius for a compact garden
-        const flowerCount = 8; // Reduced number of flowers for a small garden
+        const gardenCenter = new BABYLON.Vector3(0, 0, 5);
+        const gardenRadius = 0.5;
+        const flowerCount = 8;
 
+        // Create flowers in the garden area
         for (let i = 0; i < flowerCount; i++) {
           const angle = (i * 2 * Math.PI) / flowerCount;
           const x = gardenCenter.x + gardenRadius * Math.cos(angle);
@@ -138,9 +143,9 @@
             'stemMaterial',
             scene
           );
-          stemMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.8, 0.2); // Green color for the stem
+          stemMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.8, 0.2);
 
-          // Create the stem
+          // Create the flower stem
           const stem = BABYLON.MeshBuilder.CreateCylinder(
             'stem',
             { height: 0.3, diameter: 0.05 },
@@ -153,7 +158,7 @@
           );
           stem.material = stemMaterial;
 
-          // Create the petals
+          // Create the flower petals
           for (let j = 0; j < 8; j++) {
             const petal = BABYLON.MeshBuilder.CreateSphere(
               'petal',
@@ -169,7 +174,7 @@
           }
         }
 
-        // Add two trees inside the village, positioned behind the houses and touching the green ground surface
+        // Add trees inside the village
         const spriteManagerTrees = new BABYLON.SpriteManager(
           'treesManager',
           'https://assets.babylonjs.com/sprites/palm.png',
@@ -178,10 +183,10 @@
           scene
         );
 
-        // Create two trees, ensuring they are inside the village and positioned behind houses
+        // Create trees and add rocks around them
         const treePositions = [
-          new BABYLON.Vector3(-5, 1, -4), // Positioned behind a house on the left side, slightly above ground
-          new BABYLON.Vector3(6, 1, -5), // Positioned behind a house on the right side, slightly above ground
+          new BABYLON.Vector3(-5, 1, -4),
+          new BABYLON.Vector3(6, 1, -5),
         ];
 
         treePositions.forEach((position) => {
@@ -190,9 +195,9 @@
           tree.width = 1;
           tree.height = 2;
 
-          // Create a small circle of rocks around each tree
+          // Create a circle of rocks around each tree
           const rockCount = 10;
-          const rockRadius = 0.4; // Smaller radius for a more compact circle
+          const rockRadius = 0.4;
           const rocks = [];
           for (let i = 0; i < rockCount; i++) {
             const angle = (i * 2 * Math.PI) / rockCount;
@@ -210,7 +215,7 @@
               'rockMaterial',
               scene
             );
-            rockMaterial.diffuseColor = new BABYLON.Color3(0.6, 0.3, 0.1); // Brown color for the rocks
+            rockMaterial.diffuseColor = new BABYLON.Color3(0.6, 0.3, 0.1);
             rock.material = rockMaterial;
             rocks.push(rock);
           }
@@ -225,43 +230,21 @@
           });
         });
 
-        // Create a wall with two exit spaces
+        // Create walls around the village with two exit spaces
         const wallMaterial = new BABYLON.StandardMaterial(
           'wallMaterial',
           scene
         );
-        wallMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5); // color for the wall
+        wallMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
 
         const wallHeight = 3;
         const wallThickness = 0.4;
         const wallSegments = [
-          // Left segment of the front wall
-          {
-            width: 6,
-            position: new BABYLON.Vector3(-7, wallHeight / 2, -10),
-          },
-          // Right segment of the front wall
-          {
-            width: 6,
-            position: new BABYLON.Vector3(7, wallHeight / 2, -10),
-          },
-          // Left side wall
-          {
-            width: 20,
-            position: new BABYLON.Vector3(-10, wallHeight / 2, 0),
-            rotation: Math.PI / 2,
-          },
-          // Right side wall
-          {
-            width: 20,
-            position: new BABYLON.Vector3(10, wallHeight / 2, 0),
-            rotation: Math.PI / 2,
-          },
-          // Back wall
-          {
-            width: 20,
-            position: new BABYLON.Vector3(0, wallHeight / 2, 10),
-          },
+          { width: 6, position: new BABYLON.Vector3(-7, wallHeight / 2, -10) },
+          { width: 6, position: new BABYLON.Vector3(7, wallHeight / 2, -10) },
+          { width: 20, position: new BABYLON.Vector3(-10, wallHeight / 2, 0), rotation: Math.PI / 2 },
+          { width: 20, position: new BABYLON.Vector3(10, wallHeight / 2, 0), rotation: Math.PI / 2 },
+          { width: 20, position: new BABYLON.Vector3(0, wallHeight / 2, 10) },
         ];
 
         wallSegments.forEach((segment) => {
@@ -277,7 +260,7 @@
           wall.material = wallMaterial;
         });
 
-        // Create two gates for the village
+        // Create gates for the village
         const gateWidth = 4;
         const gateHeight = 4;
         const gateThickness = 0.5;
@@ -285,7 +268,7 @@
           'gateMaterial',
           scene
         );
-        gateMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5); // Dark brown color for the gate
+        gateMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
 
         const gate1 = BABYLON.MeshBuilder.CreateBox(
           'gate1',
@@ -303,7 +286,7 @@
         gate2.position = new BABYLON.Vector3(5, gateHeight / 2, -10.25);
         gate2.material = gateMaterial;
 
-        // Add a welcome message on the ground outside the village gate
+        // Add welcome message to the village
         const dynamicTexture = new BABYLON.DynamicTexture(
           'dynamicTexture',
           { width: 512, height: 256 },
@@ -336,17 +319,19 @@
         return scene;
       };
 
+      // Create the scene and start the render loop
       var scene = createScene();
 
       engine.runRenderLoop(function () {
         scene.render();
       });
 
+      // Adjust canvas size when window is resized
       window.addEventListener('resize', function () {
         engine.resize();
       });
 
-      // Add two flower circles outside the village near the gate and welcome sign
+      // Function to add flower circles outside the village near the gate
       const flowerCircleOutsideVillage = (centerPosition) => {
         const flowerColors = [
           new BABYLON.Color3(1, 0, 0), // Red
@@ -358,6 +343,7 @@
         const gardenRadius = 0.5;
         const flowerCount = 8;
 
+        // Create flowers in a circle
         for (let i = 0; i < flowerCount; i++) {
           const angle = (i * 2 * Math.PI) / flowerCount;
           const x = centerPosition.x + gardenRadius * Math.cos(angle);
@@ -374,7 +360,7 @@
             'stemMaterial',
             scene
           );
-          stemMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.8, 0.2); // Green color for the stem
+          stemMaterial.diffuseColor = new BABYLON.Color3(0.2, 0.8, 0.2);
 
           // Create the stem
           const stem = BABYLON.MeshBuilder.CreateCylinder(
@@ -406,28 +392,29 @@
         }
       };
 
-      // Place two flower circles on each side of the gate
-      const leftGateFlowerPosition1 = new BABYLON.Vector3(-9, 0, -12); // Position near the left side of the gate
-      const leftGateFlowerPosition2 = new BABYLON.Vector3(-5, 0, -12); // Another position near the left side of the gate
-      const rightGateFlowerPosition1 = new BABYLON.Vector3(5, 0, -12); // Position near the right side of the gate
-      const rightGateFlowerPosition2 = new BABYLON.Vector3(9, 0, -12); // Another position near the right side of the gate
+      // Place flower circles near the village gate
+      const leftGateFlowerPosition1 = new BABYLON.Vector3(-9, 0, -12);
+      const leftGateFlowerPosition2 = new BABYLON.Vector3(-5, 0, -12);
+      const rightGateFlowerPosition1 = new BABYLON.Vector3(5, 0, -12);
+      const rightGateFlowerPosition2 = new BABYLON.Vector3(9, 0, -12);
 
       flowerCircleOutsideVillage(leftGateFlowerPosition1);
       flowerCircleOutsideVillage(leftGateFlowerPosition2);
       flowerCircleOutsideVillage(rightGateFlowerPosition1);
       flowerCircleOutsideVillage(rightGateFlowerPosition2);
 
-      // Function to export as GLB
+      // Function to export the scene as a GLB file
       function exportToGLB() {
         BABYLON.GLTF2Export.GLBAsync(scene, 'stickman.glb').then((glb) => {
           glb.downloadFiles();
         });
       }
 
-      // Attach export function to the download button
+      // Attach the export function to the download button
       document
         .getElementById('downloadButton')
         .addEventListener('click', exportToGLB);
     </script>
   </body>
 </html>
+
