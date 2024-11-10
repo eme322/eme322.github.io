@@ -24,6 +24,12 @@
       const createScene = function () {
         const scene = new BABYLON.Scene(engine);
 
+
+    // Add fog to the scene
+  scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
+  scene.fogColor = new BABYLON.Color3(0.8, 0.8, 0.9); // Light gray-blue fog
+  scene.fogDensity = 0.02; // Adjust density for more or less fog
+
         const camera = new BABYLON.ArcRotateCamera(
           'camera',
           -Math.PI / 1.5,
