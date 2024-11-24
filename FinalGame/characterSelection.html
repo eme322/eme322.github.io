@@ -1,0 +1,200 @@
+<!-- characterSelection.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choose Your Character</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      .screen {
+        padding: 20px;
+      }
+
+      #characters {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+
+      .character-container {
+        width: 120px;
+        height: 150px;
+        border: 2px solid transparent;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s, border-color 0.3s;
+        cursor: pointer;
+      }
+
+      .character-container:hover {
+        transform: scale(1.1);
+        border-color: yellow;
+      }
+
+      .character-container.selected {
+        border-color: yellow;
+      }
+
+      .character {
+        width: 100px; /* Adjust based on your frame size */
+        height: 100px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        will-change: background-position; /* Optimize animation rendering */
+      }
+
+
+      /* Samurai Mack: 8 frames */
+      @keyframes samuraiIdleAnimation {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: -800px 0; /* 8 frames x 100px width */
+        }
+      }
+
+      /* El Cacique: 10 frames */
+      @keyframes caciqueIdleAnimation {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: -1000px 0; /* 10 frames x 100px width */
+        }
+      }
+
+      /* Kenji: 4 frames */
+      @keyframes kenjiIdleAnimation {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: -200px 0; /* 4 frames x 100px width */
+        }
+      }
+
+      button:disabled {
+        background-color: gray;
+        cursor: not-allowed;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="player-screen" class="screen">
+      <h1>Choose Your Character</h1>
+      <div id="characters">
+        <!-- El Cacique -->
+        <div
+          class="character-container"
+          onclick="toggleCharacterSelection('El Cacique', this)"
+        >
+          <div
+            class="character"
+            style="
+              background-image: url('/Images/ElCacique/Idle.png');
+              animation: caciqueIdleAnimation 1s steps(10) infinite;
+            "
+          ></div>
+          <p>El Cacique</p>
+        </div>
+
+        <!-- Kenji -->
+        <div
+          class="character-container"
+          onclick="toggleCharacterSelection('Kenji', this)"
+        >
+          <div
+            class="character"
+            style="
+              background-image: url('/Images/Kenji/Jump.png');
+              animation: kenjiIdleAnimation 1s steps(2) infinite;
+            "
+          ></div>
+          <p>Kenji</p>
+        </div>
+
+        <!-- Samurai Mack -->
+        <div
+          class="character-container"
+          onclick="toggleCharacterSelection('Samurai Mack', this)"
+        >
+          <div
+            class="character"
+            style="
+              background-image: url('/Images/SamuraiMack/Idle.png');
+              animation: samuraiIdleAnimation 1s steps(8) infinite;
+            "
+          ></div>
+          <p>Samurai Mack</p>
+        </div>
+
+
+        <!-- Kuro -->
+        <div
+          class="character-container"
+          onclick="toggleCharacterSelection('Kuro', this)"
+        >
+          <div
+            class="character"
+            style="
+              background-image: url('Images/FrankTheGreatKNight/adventurer-idle-00.png');
+            "
+          ></div>
+          <p>Kuro</p>
+        </div>
+      </div>
+
+
+      <!--  -->
+
+
+      <script>
+        let selectedCharacters = [];
+  
+        function toggleCharacterSelection(characterName, element) {
+          const index = selectedCharacters.indexOf(characterName);
+  
+          if (index > -1) {
+            selectedCharacters.splice(index, 1);
+            element.classList.remove('selected');
+          } else if (selectedCharacters.length < 2) {
+            selectedCharacters.push(characterName);
+            element.classList.add('selected');
+          } else {
+            alert('You can only select 2 characters.');
+          }
+  
+          document.getElementById('confirmSelection').disabled = selectedCharacters.length !== 2;
+        }
+  
+        function confirmSelection() {
+          if (selectedCharacters.length === 2) {
+            localStorage.setItem('selectedCharacters', JSON.stringify(selectedCharacters));
+            window.location.href = 'index.html';
+          } else {
+            alert('Please select 2 characters.');
+          }
+        }
+      </script>
+    </body>
+  </html>
