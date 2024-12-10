@@ -26,9 +26,7 @@
         background-color: #111;
         color: white;
       }
-      #landing-page,
-      #game-screen,
-      #end-game {
+      #game-screen {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -39,11 +37,7 @@
         top: 0;
         left: 0;
       }
-      #landing-page {
-        background: linear-gradient(45deg, #1a2a6c, #b21f1f, #fdbb2d);
-        text-align: center;
-      }
-      #playButton,
+
       #playAgainButton {
         padding: 15px 30px;
         font-size: 1.5rem;
@@ -54,7 +48,6 @@
         border-radius: 5px;
         margin-top: 20px;
       }
-      #game-screen,
       #end-game {
         display: none; /* Initially hidden */
       }
@@ -62,115 +55,87 @@
         font-size: 2rem;
         margin-bottom: 20px;
       }
+
+      .health-bar-wrapper {
+        position: absolute;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        padding: 20px;
+      }
+      .health-bar {
+        position: relative;
+        background-color: red;
+        height: 30px;
+        flex-grow: 1;
+      }
+      #player1Health {
+        background: #818cf8;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+      }
+      #player2Health {
+        background: #818cf8;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+      }
+      #timer {
+        background-color: black;
+        width: 100px;
+        height: 50px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        border: 4px solid white;
+        margin: 0 20px;
+      }
+      #background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+      canvas {
+        border: 4px solid white;
+        background-color: #000;
+      }
     </style>
   </head>
   <body>
-    <!-- Landing Page -->
-    <div id="landing-page">
-      <h1>Welcome to the Fighting Game</h1>
-      <button id="playButton">Play Now</button>
-    </div>
-
     <!-- Game Screen -->
     <div id="game-screen">
+      <div id="background"></div>
       <div style="position: relative; display: inline-block">
-        <div
-          style="
-            position: absolute;
-            display: flex;
-            width: 100%;
-            align-items: center;
-            padding: 20px;
-          "
-        >
-          <!-- Health bars and timer section -->
-          <div
-            style="
-              position: relative;
-              width: 100%;
-              display: flex;
-              justify-content: flex-end;
-              border-top: 4px solid white;
-              border-left: 4px solid white;
-              border-bottom: 4px solid white;
-            "
-          >
-            <div style="background-color: red; height: 30px; width: 100%"></div>
-            <div
-              id="playerHealth"
-              style="
-                position: absolute;
-                background: #818cf8;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                width: 100%;
-              "
-            ></div>
+        <div class="health-bar-wrapper">
+          <div class="health-bar">
+            <div id="player1Health"></div>
           </div>
-          <div
-            id="timer"
-            style="
-              background-color: black;
-              width: 100px;
-              height: 50px;
-              flex-shrink: 0;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: white;
-              border: 4px solid white;
-            "
-          >
-            60
-          </div>
-          <div
-            style="
-              position: relative;
-              width: 100%;
-              border-top: 4px solid white;
-              border-bottom: 4px solid white;
-              border-right: 4px solid white;
-            "
-          >
-            <div style="background-color: red; height: 30px"></div>
-            <div
-              id="enemyHealth"
-              style="
-                position: absolute;
-                background: #818cf8;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                left: 0;
-              "
-            ></div>
+          <div id="timer">60</div>
+          <div class="health-bar">
+            <div id="player2Health"></div>
           </div>
         </div>
-        <div
-          id="displayText"
-          style="
-            position: absolute;
-            color: white;
-            align-items: center;
-            justify-content: center;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            display: none;
-          "
-        >
-          Tie
-        </div>
-        <canvas></canvas>
+        <div id="displayText">Tie</div>
+        <canvas id="gameCanvas" width="1024" height="576"></canvas>
       </div>
     </div>
 
     <!-- End Game Screen -->
     <div id="end-game">
       <h2 id="winnerText">Player 1 Wins!</h2>
-      <button id="playAgainButton">Play Again</button>
+      <button id="playAgainButton" aria-label="Play the game again">
+        Play Again
+      </button>
     </div>
 
     <script
@@ -184,14 +149,6 @@
     <script src="index.js"></script>
 
     <script>
-      // Show the game screen when Play Now is clicked
-      document
-        .getElementById('playButton')
-        .addEventListener('click', function () {
-          document.getElementById('landing-page').style.display = 'none'
-          document.getElementById('game-screen').style.display = 'flex'
-        })
-
       // Show the end game screen with the winner and Play Again button
       function showEndGame(winnerText) {
         document.getElementById('game-screen').style.display = 'none'
@@ -212,28 +169,42 @@
       // Function to reset game elements
       function resetGame() {
         // Reset health, timer, and any other necessary game states
-        player.health = 100
-        enemy.health = 100
+        player1.health = 100
+        player2.health = 100
         timer = 60
-        document.getElementById('playerHealth').style.width = '100%'
-        document.getElementById('enemyHealth').style.width = '100%'
+        document.getElementById('player1Health').style.width = '100%'
+        document.getElementById('player2Health').style.width = '100%'
         document.getElementById('timer').innerHTML = timer
         decreaseTimer() // Start the timer again
-        animate() // Restart the game animation
+        // animate() // Restart the game animation
       }
 
-      // Modify determineWinner function in `utils.js` to call `showEndGame`
-      function determineWinner({ player, enemy, timerId }) {
+      function determineWinner({ player1, player2, timerId }) {
         clearTimeout(timerId)
-        let winnerText
-        if (player.health === enemy.health) {
-          winnerText = 'Tie!'
-        } else if (player.health > enemy.health) {
-          winnerText = 'Player 1 Wins!'
+
+        let winnerMessage = ''
+        if (player1.health === player2.health) {
+          winnerMessage = 'Tie'
+        } else if (player1.health > player2.health) {
+          player2.switchSprite('death') // Trigger death animation for player 2
+          winnerMessage = 'Player 1 Wins'
         } else {
-          winnerText = 'Player 2 Wins!'
+          player1.switchSprite('death') // Trigger death animation for player 1
+          winnerMessage = 'Player 2 Wins'
         }
-        showEndGame(winnerText)
+
+        // Calculate the delay based on the death animation's duration
+        const deathAnimationDuration =
+          Math.max(
+            player1.sprites.death.framesMax,
+            player2.sprites.death.framesMax
+          ) * 100 // Assuming each frame is ~100ms (you can tweak this value)
+
+        // Delay showing the winner message until the death animation is over
+        setTimeout(() => {
+          document.querySelector('#displayText').style.display = 'flex'
+          document.querySelector('#displayText').innerHTML = winnerMessage
+        }, deathAnimationDuration)
       }
     </script>
   </body>
