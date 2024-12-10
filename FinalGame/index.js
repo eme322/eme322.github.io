@@ -8,7 +8,7 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 
 const gravity = 0.7
 
-// Define backgrounds for each round
+// Backgrounds
 const backgrounds = [
   new Sprite({
     position: { x: 0, y: 0 },
@@ -23,126 +23,103 @@ const backgrounds = [
     imageSrc: 'Images/2DBackground_36.png'
   })
 ]
-
 // Current round
 let currentRound = 0
 
-const player1 = new Fighter({
-  position: {
-    x: 0,
-    y: 0
+// Load player character selections from localStorage
+const selectedPlayer1Character = JSON.parse(
+  localStorage.getItem('player1Character')
+)
+const selectedPlayer2Character = JSON.parse(
+  localStorage.getItem('player2Character')
+)
+
+// Redirect if no characters are selected
+if (!selectedPlayer1Character || !selectedPlayer2Character) {
+  alert('Please select characters for both players!')
+  window.location.href = 'CharacterSelection.html' // Replace with the correct path
+}
+
+const characterConfigs = {
+  'El Cacique': {
+    imageSrc: 'Images/ElCacique/Idle.png',
+    sprites: {
+      idle: { imageSrc: 'Images/ElCacique/Idle.png', framesMax: 10 },
+      run: { imageSrc: 'Images/ElCacique/Run.png', framesMax: 8 },
+      jump: { imageSrc: 'Images/ElCacique/Jump.png', framesMax: 3 },
+      fall: { imageSrc: 'Images/ElCacique/Fall.png', framesMax: 3 },
+      attack1: { imageSrc: 'Images/ElCacique/Attack1.png', framesMax: 7 },
+      takeHit: { imageSrc: 'Images/ElCacique/Take Hit.png', framesMax: 3 },
+      death: { imageSrc: 'Images/ElCacique/Death.png', framesMax: 11 }
+    },
+    scale: 2.5,
+    offset: { x: 215, y: 0 } //100
   },
-  velocity: {
-    x: 0,
-    y: 0
+  Kenji: {
+    imageSrc: '/Images/Kenji/Idle.png',
+    sprites: {
+      idle: { imageSrc: '/Images/Kenji/Idle.png', framesMax: 4 },
+      run: { imageSrc: '/Images/Kenji/Run.png', framesMax: 8 },
+      jump: { imageSrc: '/Images/Kenji/Jump.png', framesMax: 2 },
+      fall: { imageSrc: '/Images/Kenji/Fall.png', framesMax: 2 },
+      attack1: { imageSrc: '/Images/Kenji/Attack1.png', framesMax: 4 },
+      takeHit: { imageSrc: '/Images/Kenji/Take hit.png', framesMax: 3 },
+      death: { imageSrc: '/Images/Kenji/Death.png', framesMax: 7 }
+    },
+    scale: 2.5,
+    offset: { x: 215, y: 100 }
   },
-  imageSrc: '/Images/SamuraiMack/Idle.png',
-  framesMax: 8,
-  scale: 2.5,
-  offset: {
-    x: 215,
-    y: 100
+  'Samurai Mack': {
+    imageSrc: '/Images/SamuraiMack/Idle.png',
+    sprites: {
+      idle: { imageSrc: '/Images/SamuraiMack/Idle.png', framesMax: 8 },
+      run: { imageSrc: '/Images/SamuraiMack/Run.png', framesMax: 8 },
+      jump: { imageSrc: '/Images/SamuraiMack/Jump.png', framesMax: 2 },
+      fall: { imageSrc: '/Images/SamuraiMack/Fall.png', framesMax: 2 },
+      attack1: { imageSrc: '/Images/SamuraiMack/Attack1.png', framesMax: 6 },
+      takeHit: {
+        imageSrc: '/Images/SamuraiMack/Take Hit - white silhouette.png',
+        framesMax: 4
+      },
+      death: { imageSrc: '/Images/SamuraiMack/Death.png', framesMax: 6 }
+    },
+    scale: 2.5,
+    offset: { x: 215, y: 90 }
   },
-  sprites: {
-    idle: {
-      imageSrc: '/Images/SamuraiMack/Idle.png',
-      framesMax: 8
+  'FRANK The Knight': {
+    imageSrc: 'Images/FrankTheKnight/IDLE.png',
+    sprites: {
+      idle: { imageSrc: 'Images/FrankTheKnight/IDLE.png', framesMax: 7 },
+      run: { imageSrc: 'Images/FrankTheKnight/RUN.png', framesMax: 8 },
+      jump: { imageSrc: 'Images/FrankTheKnight/JUMP.png', framesMax: 5 },
+      fall: { imageSrc: 'Images/FrankTheKnight/FALL.png', framesMax: 5 },
+      attack1: { imageSrc: 'Images/FrankTheKnight/ATTACK 1.png', framesMax: 6 },
+      takeHit: { imageSrc: 'Images/FrankTheKnight/TAKE HIT.png', framesMax: 4 },
+      death: { imageSrc: 'Images/FrankTheKnight/DEATH.png', framesMax: 12 }
     },
-    run: {
-      imageSrc: '/Images/SamuraiMack/Run.png',
-      framesMax: 8
-    },
-    jump: {
-      imageSrc: '/Images/SamuraiMack/Jump.png',
-      framesMax: 2
-    },
-    fall: {
-      imageSrc: '/Images/SamuraiMack/Fall.png',
-      framesMax: 2
-    },
-    attack1: {
-      imageSrc: '/Images/SamuraiMack/Attack1.png',
-      framesMax: 6
-    },
-    takeHit: {
-      imageSrc: '/Images/SamuraiMack/Take Hit - white silhouette.png',
-      framesMax: 4
-    },
-    death: {
-      imageSrc: '/Images/SamuraiMack/Death.png',
-      framesMax: 6
-    }
-  },
-  attackBox: {
-    offset: {
-      x: 100,
-      y: 50
-    },
-    width: 160,
-    height: 50
+    scale: 2.5,
+    offset: { x: 215, y: 100 }
   }
+}
+
+const player1CharacterKey = selectedPlayer1Character[0]
+const player2CharacterKey = selectedPlayer2Character[0]
+
+const player1 = new Fighter({
+  position: { x: 50, y: 0 },
+  velocity: { x: 0, y: 0 },
+  ...characterConfigs[player1CharacterKey]
 })
 
 const player2 = new Fighter({
-  position: {
-    x: 400,
-    y: 100
-  },
-  velocity: {
-    x: 0,
-    y: 0
-  },
-  color: 'blue',
-  offset: {
-    x: -50,
-    y: 0
-  },
-  imageSrc: '/Images/kenji/Idle.png',
-  framesMax: 4,
-  scale: 2.5,
-  offset: {
-    x: 215,
-    y: 100
-  },
-  sprites: {
-    idle: {
-      imageSrc: '/Images/kenji/Idle.png',
-      framesMax: 4
-    },
-    run: {
-      imageSrc: '/Images/kenji/Run.png',
-      framesMax: 8
-    },
-    jump: {
-      imageSrc: '/Images/kenji/Jump.png',
-      framesMax: 2
-    },
-    fall: {
-      imageSrc: '/Images/kenji/Fall.png',
-      framesMax: 2
-    },
-    attack1: {
-      imageSrc: '/Images/kenji/Attack1.png',
-      framesMax: 4
-    },
-    takeHit: {
-      imageSrc: '/Images/kenji/Take hit.png',
-      framesMax: 3
-    },
-    death: {
-      imageSrc: '/Images/kenji/Death.png',
-      framesMax: 7
-    }
-  },
-  attackBox: {
-    offset: {
-      x: -170,
-      y: 50
-    },
-    width: 170,
-    height: 50
-  }
+  position: { x: canvas.width - 150, y: 0 },
+  velocity: { x: 0, y: 0 },
+  ...characterConfigs[player2CharacterKey]
 })
+
+/////// %%%%%%%%%%%%%%%%%%%%%% //////////////////
+/////// %%%%%%%%%%%%%%%%%%%%%% //////////////////
+/////// %%%%%%%%%%%%%%%%%%%%%% //////////////////
 
 const keys = {
   a: { pressed: false },
@@ -248,6 +225,7 @@ function showGameOver() {
     canvas.height / 2
   )
 }
+
 // Animation Loop with Round
 function animate() {
   if (showingWinner) return
@@ -269,25 +247,28 @@ function animate() {
   )
 
   // Update players
-  player1.update()
-  player2.update()
+  player1.update(player2)
+  player2.update(player1)
 
-  // Reset velocities and handle movement
-  player1.velocity.x = 0
-  player2.velocity.x = 0
+  // Handle movement and collisions only if both players are alive
+  if (!player1.dead && !player2.dead) {
+    // ADD
+    player1.velocity.x = 0
+    player2.velocity.x = 0
 
-  movePlayer(player1, 'a', 'd')
-  movePlayer(player2, 'ArrowLeft', 'ArrowRight')
+    movePlayer(player1, 'a', 'd')
+    movePlayer(player2, 'ArrowLeft', 'ArrowRight')
 
-  // Handle collisions
-  handleCollision(player1, player2, 4)
-  handleCollision(player2, player1, 2)
-  ///
+    // Handle collisions
+    handleCollision(player1, player2, 4)
+    handleCollision(player2, player1, 2)
+    ///
 
-  // Check for round winner
-  if (player1.health <= 0 || player2.health <= 0) {
-    const winner = player1.health > player2.health ? 'Player 1' : 'Player 2'
-    showRoundWinner(winner)
+    // Check for round winner
+    if (player1.health <= 0 || player2.health <= 0) {
+      const winner = player1.health > player2.health ? 'Player 1' : 'Player 2'
+      showRoundWinner(winner)
+    }
   }
 }
 
@@ -326,6 +307,7 @@ function handleCollision(attacker, defender, frameHit) {
   }
 }
 
+// Start game loop
 animate()
 
 window.addEventListener('keydown', (event) => {
@@ -384,4 +366,3 @@ window.addEventListener('keyup', (event) => {
       break
   }
 })
-
