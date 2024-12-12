@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Screen</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: url('/Mainscreen/backgroundgame.gif') no-repeat center
+          center / cover;
+      }
+
+      #gameCanvas {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1;
+      }
+
+      #gameCoverImage {
+        width: 50%;
+        max-width: 700px; /* Adjust max-width for large screens */
+        height: auto;
+        margin-bottom: 20px; /* Add spacing between the logo and button */
+      }
+
+      #gameCoverButton {
+        cursor: pointer;
+        border: none;
+        background: transparent;
+        padding: 0;
+      }
+
+      #gameCoverButton img {
+        width: 150px;
+        height: auto;
+        display: block;
+        transition: transform 0.2s;
+      }
+
+      #gameCoverButton:hover img {
+        transform: scale(1.05);
+        transition: transform 0.2s;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Game Cover Image -->
+    <img id="gameCoverImage" src="/Mainscreen/GameCover.png" alt="Game Cover" />
+
+    <!-- Canvas for Game Content -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Button Using GameCover Image -->
+    <button id="gameCoverButton">
+      <img id="buttonImage" src="/Gold/normal.png" alt="Game Button" />
+    </button>
+
+    <!-- Audio Elements -->
+    <audio id="buttonSound" src="startingscreensounds/buttonnoise.mp3"></audio>
+    <audio
+      id="backgroundMusic"
+      src="startingscreensounds/startpagemusic.mp3"
+      loop
+    ></audio>
+
+    <script>
+      const canvas = document.getElementById('gameCanvas')
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+
+      const buttonImage = document.getElementById('buttonImage')
+      const buttonSound = document.getElementById('buttonSound')
+      const backgroundMusic = document.getElementById('backgroundMusic')
+      const gameCoverButton = document.getElementById('gameCoverButton')
+
+      // Change button image on interaction
+      gameCoverButton.onmouseover = () => (buttonImage.src = 'Gold/hover.png')
+      gameCoverButton.onmouseleave = () =>
+        (buttonImage.src = '/Gold/normal.png')
+      gameCoverButton.onmousedown = () =>
+        (buttonImage.src = '/Gold/pressed.png')
+      gameCoverButton.onmouseup = () => (buttonImage.src = '/Gold/normal.png')
+
+      // Function to start the game
+      gameCoverButton.onclick = function startGame() {
+        // Play button sound
+        buttonSound.play()
+
+        // Ensure redirection happens within 1 second, even if the sound takes longer
+        const redirectTimeout = setTimeout(() => {
+          window.location.href = 'MeetCharacters.html' // Redirect to MeetCharacters.html
+        }, 1000) // 1-second max delay
+
+        // When the button sound ends, redirect to MeetCharacters.html
+        buttonSound.onended = function () {
+          clearTimeout(redirectTimeout) // Stop timeout if sound ends before 1 second
+          window.location.href = 'MeetCharacters.html' // Redirect to MeetCharacters.html
+        }
+      }
+
+      // Autoplay compatibility: ensure music starts if interaction happens earlier
+      document.body.addEventListener('click', () => {
+        if (backgroundMusic.paused) backgroundMusic.play()
+      })
+    </script>
+  </body>
+</html>
