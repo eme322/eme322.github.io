@@ -13,7 +13,7 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background: url('FinalGame/MainScreen/backgroundgame.gif') no-repeat center
+        background: url('/Mainscreen/backgroundgame.gif') no-repeat center
           center / cover;
       }
 
@@ -53,7 +53,7 @@
   </head>
   <body>
     <!-- Game Cover Image -->
-    <img id="gameCoverImage" src="FinalGame/MainScreen/GameCover.png" alt="Game Cover" />
+    <img id="gameCoverImage" src="/Mainscreen/GameCover.png" alt="Game Cover" />
 
     <!-- Canvas for Game Content -->
     <canvas id="gameCanvas"></canvas>
@@ -79,11 +79,10 @@
       const buttonImage = document.getElementById('buttonImage')
       const buttonSound = document.getElementById('buttonSound')
       const backgroundMusic = document.getElementById('backgroundMusic')
-      const gameCoverImage = document.getElementById('gameCoverImage')
       const gameCoverButton = document.getElementById('gameCoverButton')
 
       // Change button image on interaction
-      gameCoverButton.onmouseover = () => (buttonImage.src = '/Gold/hover.png')
+      gameCoverButton.onmouseover = () => (buttonImage.src = 'Gold/hover.png')
       gameCoverButton.onmouseleave = () =>
         (buttonImage.src = '/Gold/normal.png')
       gameCoverButton.onmousedown = () =>
@@ -97,13 +96,13 @@
 
         // Ensure redirection happens within 1 second, even if the sound takes longer
         const redirectTimeout = setTimeout(() => {
-          window.location.href = 'CharacterSelection.html' // Redirect to character selection
+          window.location.href = 'MeetCharacters.html' // Redirect to MeetCharacters.html
         }, 1000) // 1-second max delay
 
-        // When the button sound ends, redirect to CharacterSelection.html
+        // When the button sound ends, redirect to MeetCharacters.html
         buttonSound.onended = function () {
           clearTimeout(redirectTimeout) // Stop timeout if sound ends before 1 second
-          window.location.href = '' // Redirect to character selection
+          window.location.href = 'MeetCharacters.html' // Redirect to MeetCharacters.html
         }
       }
 
@@ -114,4 +113,3 @@
     </script>
   </body>
 </html>
-

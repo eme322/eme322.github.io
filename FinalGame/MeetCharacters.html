@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meet the Characters</title>
+    <style>
+      @font-face {
+        font-family: 'ArcadeClassic';
+        src: url('Assets/ARCADECLASSIC.TTF') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      body {
+        font-family: 'ArcadeClassic', sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        background: url('Mainscreen/backgroundgame.gif') no-repeat center center
+          fixed;
+        background-size: cover;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .screen {
+        padding: 30px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+        max-width: 1100px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      h1 {
+        font-size: 36px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #0000ff;
+        margin-bottom: 20px;
+      }
+
+      #character-display {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+      }
+
+      .character-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .character {
+        width: 400px;
+        height: 400px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        animation: floatUpDown 3s infinite ease-in-out;
+      }
+
+      .character-name {
+        margin-top: -20px;
+        font-size: 24px;
+        color: #000;
+        text-align: center;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 12px 25px;
+        font-size: 18px;
+        cursor: pointer;
+        background-color: transparent;
+        border: 2px solid #8080ff;
+        border-radius: 5px;
+        color: #000;
+        transition: background-color 0.2s, opacity 0.2s;
+        opacity: 0.9;
+      }
+
+      button:hover {
+        background-color: #8080ff;
+        color: #000;
+        opacity: 1;
+      }
+
+      @keyframes floatUpDown {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Audio Element (no autoplay) -->
+    <audio
+      id="backgroundMusic"
+      src="StartingScreenSounds/startpagemusic.mp3"
+      loop
+    ></audio>
+
+    <div id="player-screen" class="screen">
+      <h1>Meet the Characters</h1>
+      <div id="character-display">
+        <!-- Samurai Mack -->
+        <div id="samurai-container" class="character-container">
+          <div
+            class="character"
+            style="background-image: url('/Images/SamuraiMack/Idle.png')"
+          ></div>
+          <p class="character-name">Samurai Mack</p>
+        </div>
+
+        <!-- Kenji -->
+        <div id="kenji-container" class="character-container">
+          <div
+            class="character"
+            style="
+              background-image: url('/Images/Kenji/Idle.png');
+              transform: scaleX(-1);
+            "
+          ></div>
+          <p class="character-name">Kenji</p>
+        </div>
+      </div>
+
+      <button id="startGameButton">Start Game</button>
+    </div>
+
+    <script>
+      const backgroundMusic = document.getElementById('backgroundMusic')
+      backgroundMusic.volume = 0.5
+
+      function startGame() {
+        // Attempt to play the music on user interaction
+        backgroundMusic
+          .play()
+          .then(() => {
+            console.log('Music started playing')
+          })
+          .catch((err) => {
+            console.log('Audio play blocked:', err)
+          })
+
+        // If you want to stop the music and navigate after a delay, for example:
+        setTimeout(() => {
+          // Stop the background music
+          backgroundMusic.pause()
+          backgroundMusic.currentTime = 0
+
+          // Navigate to the main game screen
+          window.location.href = 'Index.html'
+        }, 2000) // Wait 2 seconds to listen to the music before navigating
+      }
+
+      document
+        .getElementById('startGameButton')
+        .addEventListener('click', startGame)
+    </script>
+  </body>
+</html>

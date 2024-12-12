@@ -1,213 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fighting Game</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      * {
-        box-sizing: border-box;
-        font-family: 'Press Start 2P', cursive;
-      }
-      body,
-      html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #111;
-        color: white;
-      }
-      #game-screen {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Press Start 2P', cursive;
+      margin: 0;
+      padding: 0;
+    }
 
-      #playAgainButton {
-        padding: 15px 30px;
-        font-size: 1.5rem;
-        color: white;
-        background-color: #ff4f5a;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-top: 20px;
-      }
-      #end-game {
-        display: none; /* Initially hidden */
-      }
-      #end-game h2 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-      }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #000;
+    }
 
-      .health-bar-wrapper {
+    canvas {
+      display: block;
+      margin: auto;
+    }
+    /*
+    #displayText {
+      position: absolute;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      font-size: 24px;
+    }
+    */
+  </style>
+</head>
+<body>
+  <!-- Red container div -->
+  <div style="position: relative">
+    <!-- Smaller red container div -->
+    <div
+      style="
         position: absolute;
         display: flex;
         width: 100%;
         align-items: center;
         padding: 20px;
-      }
-      .health-bar {
-        position: relative;
-        background-color: red;
-        height: 30px;
-        flex-grow: 1;
-      }
-      #player1Health {
-        background: #818cf8;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        width: 100%;
-      }
-      #player2Health {
-        background: #818cf8;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-      }
-      #timer {
-        background-color: black;
-        width: 100px;
-        height: 50px;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        border: 4px solid white;
-        margin: 0 20px;
-      }
-      #background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-      }
-      canvas {
-        border: 4px solid white;
-        background-color: #000;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Game Screen -->
-    <div id="game-screen">
-      <div id="background"></div>
-      <div style="position: relative; display: inline-block">
-        <div class="health-bar-wrapper">
-          <div class="health-bar">
-            <div id="player1Health"></div>
-          </div>
-          <div id="timer">60</div>
-          <div class="health-bar">
-            <div id="player2Health"></div>
-          </div>
-        </div>
-        <div id="displayText">Tie</div>
-        <canvas id="gameCanvas" width="1024" height="576"></canvas>
+      "
+    >
+      <!-- Player health -->
+      <div
+        style="
+          position: relative;
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+          border-top: 4px solid white;
+          border-left: 4px solid white;
+          border-bottom: 4px solid white;
+        "
+      >
+        <div style="background-color: red; height: 30px; width: 100%"></div>
+        <div
+          id="player1Health"
+          style="
+            position: absolute;
+            background: #818cf8;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+          "
+        ></div>
       </div>
+
+      <!-- Timer -->
+      <div
+        id="timer"
+        style="
+          background-color: white;
+          width: 100px;
+          height: 50px;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: black;
+          border: 4px solid white;
+        "
+      >
+        10
+      </div>
+      <!-- player 2 health -->
+      <div
+        style="
+          position: relative;
+          width: 100%;
+          border-top: 4px solid white;
+          border-bottom: 4px solid white;
+          border-right: 4px solid white;
+        "
+      >
+        <div style="background-color: red; height: 30px"></div>
+        <div
+          id="player2Health"
+          style="
+            position: absolute;
+            background: #818cf8;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+          "
+        ></div>
+      </div>
+      <div></div>
     </div>
+    <div id="displayText"></div>
+    <canvas></canvas>
+  </div>
 
-    <!-- End Game Screen -->
-    <div id="end-game">
-      <h2 id="winnerText">Player 1 Wins!</h2>
-      <button id="playAgainButton" aria-label="Play the game again">
-        Play Again
-      </button>
-    </div>
-
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
-      integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="js/utils.js"></script>
-    <script src="js/classes.js"></script>
-    <script src="Index.js"></script>
-
-    <script>
-      // Show the end game screen with the winner and Play Again button
-      function showEndGame(winnerText) {
-        document.getElementById('game-screen').style.display = 'none'
-        document.getElementById('end-game').style.display = 'flex'
-        document.getElementById('winnerText').innerText = winnerText
-      }
-
-      // Reset the game when Play Again is clicked
-      document
-        .getElementById('playAgainButton')
-        .addEventListener('click', function () {
-          document.getElementById('end-game').style.display = 'none'
-          document.getElementById('game-screen').style.display = 'flex'
-          // Reset game state (health, timer, etc.)
-          resetGame()
-        })
-
-      // Function to reset game elements
-      function resetGame() {
-        // Reset health, timer, and any other necessary game states
-        player1.health = 100
-        player2.health = 100
-        timer = 60
-        document.getElementById('player1Health').style.width = '100%'
-        document.getElementById('player2Health').style.width = '100%'
-        document.getElementById('timer').innerHTML = timer
-        decreaseTimer() // Start the timer again
-        // animate() // Restart the game animation
-      }
-
-      function determineWinner({ player1, player2, timerId }) {
-        clearTimeout(timerId)
-
-        let winnerMessage = ''
-        if (player1.health === player2.health) {
-          winnerMessage = 'Tie'
-        } else if (player1.health > player2.health) {
-          player2.switchSprite('death') // Trigger death animation for player 2
-          winnerMessage = 'Player 1 Wins'
-        } else {
-          player1.switchSprite('death') // Trigger death animation for player 1
-          winnerMessage = 'Player 2 Wins'
-        }
-
-        // Calculate the delay based on the death animation's duration
-        const deathAnimationDuration =
-          Math.max(
-            player1.sprites.death.framesMax,
-            player2.sprites.death.framesMax
-          ) * 100 // Assuming each frame is ~100ms (you can tweak this value)
-
-        // Delay showing the winner message until the death animation is over
-        setTimeout(() => {
-          document.querySelector('#displayText').style.display = 'flex'
-          document.querySelector('#displayText').innerHTML = winnerMessage
-        }, deathAnimationDuration)
-      }
-    </script>
-  </body>
-</html>
-
-
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
+    integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script src="js/utils.js"></script>
+  <script src="js/classes.js"></script>
+  <script src="Index.js"></script>
+</body>
