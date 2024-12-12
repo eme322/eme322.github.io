@@ -53,14 +53,14 @@
   </head>
   <body>
     <!-- Game Cover Image -->
-    <img id="gameCoverImage" src="/MainScreen/GameCover.png" alt="Game Cover" />
+    <img id="gameCoverImage" src="MainScreen/GameCover.png" alt="Game Cover" />
 
     <!-- Canvas for Game Content -->
     <canvas id="gameCanvas"></canvas>
 
     <!-- Button Using GameCover Image -->
     <button id="gameCoverButton">
-      <img id="buttonImage" src="/Gold/normal.png" alt="Game Button" />
+      <img id="buttonImage" src="Gold/normal.png" alt="Game Button" />
     </button>
 
     <!-- Audio Elements -->
@@ -84,10 +84,10 @@
       // Change button image on interaction
       gameCoverButton.onmouseover = () => (buttonImage.src = 'Gold/hover.png')
       gameCoverButton.onmouseleave = () =>
-        (buttonImage.src = '/Gold/normal.png')
+        (buttonImage.src = 'Gold/normal.png')
       gameCoverButton.onmousedown = () =>
-        (buttonImage.src = '/Gold/pressed.png')
-      gameCoverButton.onmouseup = () => (buttonImage.src = '/Gold/normal.png')
+        (buttonImage.src = 'Gold/pressed.png')
+      gameCoverButton.onmouseup = () => (buttonImage.src = 'Gold/normal.png')
 
       // Function to start the game
       gameCoverButton.onclick = function startGame() {
