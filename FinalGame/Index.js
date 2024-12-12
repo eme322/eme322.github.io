@@ -379,9 +379,7 @@ function handleCollision(attacker, defender, frameHit) {
 
   // If attacker swings and no hit at frame, reset attack
   if (attacker.isAttacking && attacker.framesCurrent === frameHit) {
-    // If you want sword clash sound whenever swords would collide or on miss,
-    // you can conditionally check positions here.
-    // For now, play sword clash if they are close and both attacking at same time perhaps
+    
     if (
       (attacker === player1 && player2.isAttacking) ||
       (attacker === player2 && player1.isAttacking)
@@ -477,9 +475,8 @@ window.addEventListener('keydown', (event) => {
         break
       case 'ArrowDown':
         player2.attack()
-        // Player 2 attack grunt not specified, if you have one you can add it
         audioAttackP1.currentTime = 0
-        audioAttackP1.play() // Using P1 grunt as placeholder, or add a P2 ATTACK sound if available
+        audioAttackP1.play() 
         break
     }
   }
