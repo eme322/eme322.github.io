@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,8 +13,8 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background: url('MainScreen/backgroundgame.gif') no-repeat center
-          center / cover;
+        background: url('MainScreen/backgroundgame.gif') no-repeat center center /
+          cover;
       }
 
       #gameCanvas {
@@ -26,27 +26,28 @@
 
       #gameCoverImage {
         width: 50%;
-        max-width: 700px; /* Adjust max-width for large screens */
+        max-width: 700px;
         height: auto;
-        margin-bottom: 20px; /* Add spacing between the logo and button */
+        margin-bottom: 20px;
       }
 
-      #gameCoverButton {
-        cursor: pointer;
+      /* Start Game Button Styling */
+      #startGameButton {
+        position: relative;
+        padding: 20px 40px;
+        font-size: 20px;
+        color: black;
+        background-color: rgba(255, 255, 255, 0.8);
         border: none;
-        background: transparent;
-        padding: 0;
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        z-index: 2;
       }
 
-      #gameCoverButton img {
-        width: 150px;
-        height: auto;
-        display: block;
-        transition: transform 0.2s;
-      }
-
-      #gameCoverButton:hover img {
-        transform: scale(1.05);
+      #startGameButton:hover {
+        background-color: rgba(255, 255, 255, 1);
+        transform: scale(1.1);
         transition: transform 0.2s;
       }
     </style>
@@ -58,10 +59,8 @@
     <!-- Canvas for Game Content -->
     <canvas id="gameCanvas"></canvas>
 
-    <!-- Button Using GameCover Image -->
-    <button id="gameCoverButton">
-      <img id="buttonImage" src="Gold/normal.png" alt="Game Button" />
-    </button>
+    <!-- Start Game Button -->
+    <button id="startGameButton">Start Game</button>
 
     <!-- Audio Elements -->
     <audio id="buttonSound" src="StartingScreenSounds/buttonnoise.mp3"></audio>
@@ -76,21 +75,12 @@
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
 
-      const buttonImage = document.getElementById('buttonImage')
       const buttonSound = document.getElementById('buttonSound')
       const backgroundMusic = document.getElementById('backgroundMusic')
-      const gameCoverButton = document.getElementById('gameCoverButton')
-
-      // Change button image on interaction
-      gameCoverButton.onmouseover = () => (buttonImage.src = 'Gold/hover.png')
-      gameCoverButton.onmouseleave = () =>
-        (buttonImage.src = 'Gold/normal.png')
-      gameCoverButton.onmousedown = () =>
-        (buttonImage.src = 'Gold/pressed.png')
-      gameCoverButton.onmouseup = () => (buttonImage.src = 'Gold/normal.png')
+      const startGameButton = document.getElementById('startGameButton')
 
       // Function to start the game
-      gameCoverButton.onclick = function startGame() {
+      startGameButton.onclick = function startGame() {
         // Play button sound
         buttonSound.play()
 
