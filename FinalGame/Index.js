@@ -46,7 +46,7 @@ const player1 = new Fighter({
   imageSrc: 'Images/SamuraiMack/Idle.png',
   framesMax: 8,
   scale: 2.5,
-  offset: { x: 215, y: 157 },
+  offset: { x: 215, y: 80 },
   sprites: {
     idle: { imageSrc: 'Images/SamuraiMack/Idle.png', framesMax: 8 },
     run: { imageSrc: 'Images/SamuraiMack/Run.png', framesMax: 8 },
@@ -70,7 +70,7 @@ const player2 = new Fighter({
   imageSrc: 'Images/Kenji/Idle.png',
   framesMax: 4,
   scale: 2.5,
-  offset: { x: 215, y: 167 },
+  offset: { x: 215, y: 90 },
   sprites: {
     idle: { imageSrc: 'Images/Kenji/Idle.png', framesMax: 4 },
     run: { imageSrc: 'Images/Kenji/Run.png', framesMax: 8 },
