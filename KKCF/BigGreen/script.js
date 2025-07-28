@@ -1,9 +1,7 @@
 const items = [
   { name: "Plastic Bottle", type: "recycle" },
-  { name: "Apple Core", type: "compost" },
-  { name: "Chip Bag", type: "trash" },
-  { name: "Newspaper", type: "recycle" },
-  { name: "Banana Peel", type: "compost" }
+  { name: "Banana Peel", type: "compost" },
+  { name: "Candy Wrapper", type: "trash" }
 ];
 
 let selectedItem = null;
@@ -44,7 +42,7 @@ document.querySelectorAll(".bin").forEach(bin => {
 
     document.getElementById("score").innerText = "Score: " + score;
 
-    // Remove used item
+    // Remove item
     const index = items.indexOf(selectedItem);
     items.splice(index, 1);
     selectedItem = null;
@@ -53,7 +51,7 @@ document.querySelectorAll(".bin").forEach(bin => {
       loadItems();
     } else {
       document.getElementById("instructions").innerText = "🎉 Game Over!";
-      document.getElementById("items").innerHTML = "<strong>Well done!</strong>";
+      document.getElementById("items").innerHTML = "<strong>All items sorted!</strong>";
     }
   });
 });
