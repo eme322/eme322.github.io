@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Prompt Example</title>
+</head>
+<body>
+
+<h2>Simple Prompt Example</h2>
+
+<button onclick="askUser()">Click Me</button>
+
+<p id="output"></p>
+
+<script>
+  function askUser() {
+    // Ask the user to enter their name
+    var user = prompt("Enter Name");
+
+    // If the user types something, greet them
+    if (user !== null) {
+      document.getElementById("output").textContent = "Hello, " + user + "!";
+    } else {
+      document.getElementById("output").textContent = "You canceled the prompt.";
+    }
+  }
+</script>
+
+</body>
+</html>
