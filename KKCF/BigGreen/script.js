@@ -52,7 +52,6 @@ function highlightSelected(index) {
     el.classList.toggle("selected", i == index);
   });
 }
-
 document.querySelectorAll(".bin").forEach(bin => {
   bin.addEventListener("click", () => {
     if (!selectedItem) return;
@@ -79,5 +78,7 @@ document.querySelectorAll(".bin").forEach(bin => {
   });
 });
 
-loadItems();
-
+// ✅ This ensures the game starts after the HTML is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  loadItems();
+});
