@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Password Example</title>
+</head>
+<body>
+
+  <h2>Sign In</h2>
+
+  <label for="password">Enter your password:</label><br>
+  <input type="password" id="password"><br><br>
+
+  <input type="checkbox" onclick="togglePassword()"> Show Password
+
+  <script>
+    function togglePassword() {
+      // Get the password input field
+      let passwordField = document.getElementById("password");
+
+      // Check if the current type is "password"
+      if (passwordField.type === "password") {
+        passwordField.type = "text";  // If yes, change to "text" to show password
+      } else {
+        passwordField.type = "password";  // If no, change back to "password"
+      }
+    }
+  </script>
+
+</body>
+</html>
