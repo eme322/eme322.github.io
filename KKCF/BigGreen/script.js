@@ -2,17 +2,17 @@ const items = [
   {
     name: "Plastic Bottle",
     type: "recycle",
-    image: "https://cdn-icons-png.flaticon.com/512/3467/3467872.png"
+    image: "https://sustainable.columbia.edu/sites/sustainable.columbia.edu/files/styles/cu_crop/public/content/plastic_metal_glass%20recycling.jpeg?itok=7dG7SnPC"
   },
   {
     name: "Banana Peel",
     type: "compost",
-    image: "https://cdn-icons-png.flaticon.com/512/590/590685.png"
+    image: "https://images.utopia.org/A-h7AeEhgMBhSYrf1yYj7L_2T5XUBqtbYxVWw0JZqRM/rt:fill/w:1280/h:720/g:ce/plain/2021/10/you-can-you-eat-banana-peels-cc0-pixabay-alexas_fotos-211011.jpg"
   },
   {
     name: "Candy Wrapper",
     type: "trash",
-    image: "https://cdn-icons-png.flaticon.com/512/776/776587.png"
+    image: "https://media.istockphoto.com/id/1147024409/photo/after-party-finished-candy-full-of-wrapping-paper.jpg?s=612x612&w=0&k=20&c=ASxDbCSEeWdwkSIW1YWJXerN-eO3BsisTeM3QCeRImA="
   }
 ];
 
