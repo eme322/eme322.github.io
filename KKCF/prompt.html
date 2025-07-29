@@ -1,25 +1,33 @@
 <!DOCTYPE html>
+<!-- Defines the document as an HTML5 document -->
 <html>
 <head>
   <title>Prompt Example</title>
+  <!-- Sets the title shown in the browser tab -->
 </head>
 <body>
 
+<!-- Heading on the page -->
 <h2>Simple Prompt Example</h2>
 
+<!-- Button that runs JavaScript when clicked -->
 <button onclick="askUser()">Click Me</button>
 
+<!-- Placeholder to show the result (greeting or message) -->
 <p id="output"></p>
 
 <script>
+  // Function that runs when the button is clicked
   function askUser() {
-    // Ask the user to enter their name
+    // prompt() shows a pop-up asking the user to type something
     var user = prompt("Enter Name");
 
-    // If the user types something, greet them
+    // If the user didn't click cancel
     if (user !== null) {
+      // Show a greeting message with the user's input
       document.getElementById("output").textContent = "Hello, " + user + "!";
     } else {
+      // Show a message if the user canceled the prompt
       document.getElementById("output").textContent = "You canceled the prompt.";
     }
   }
