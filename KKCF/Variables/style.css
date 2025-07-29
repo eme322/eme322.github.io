@@ -1,21 +1,29 @@
+/* Style the entire page body */
 body {
-  font-family: sans-serif;
-  text-align: center;
-  margin-top: 40px;
+  font-family: sans-serif;     /* Use a clean, modern font */
+  text-align: center;          /* Center all content horizontally */
+  margin-top: 40px;            /* Add space at the top of the page */
 }
 
+/* Style both input and select elements */
 input, select {
-  padding: 5px;
-  margin: 5px;
-  width: 100px;
+  padding: 5px;                /* Add padding inside the elements */
+  margin: 5px;                 /* Add spacing around the elements */
+  width: 100px;                /* Set a fixed width for consistency */
 }
 
+/* Style the button */
 button {
-  padding: 8px 15px;
+  padding: 8px 15px;           /* Add vertical and horizontal padding */
 }
 
+/* 
+Style the element with the id="result"
+The # symbol is used to select an element by its **ID**
+In this case, it targets the <p id="result"> in the HTML
+*/
 #result {
-  font-size: 20px;
-  margin-top: 20px;
-  color: blue;
+  font-size: 20px;             /* Make the result text larger */
+  margin-top: 20px;            /* Add space above the result */
+  color: blue;                 /* Set the text color to blue */
 }
