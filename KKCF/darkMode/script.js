@@ -1,15 +1,18 @@
+//#2
 // Create the button element
 let button = document.createElement("button");
 
 // Set the initial text of the button
 button.textContent = "dark mode";
 
+//#3
 // Add the button to the page
 document.body.appendChild(button);
 
 // Add a click event to the button
 button.addEventListener("click", function () {
 
+  //#4
   // Check current background color to decide mode
   if (document.body.style.backgroundColor === "black") {
     // If dark mode is on, switch to light mode
@@ -17,6 +20,7 @@ button.addEventListener("click", function () {
     document.body.style.color = "black";                   // text to dark
     button.textContent = "dark mode";                      // button text changes to "dark mode"
 
+    //#5
   } else {
     // If light mode is on, switch to dark mode
     document.body.style.backgroundColor = "black";        // background to dark
