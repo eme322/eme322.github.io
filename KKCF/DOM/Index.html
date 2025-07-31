@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DOM Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Learning DOM with The Simpsons</h1>
+
+  <div id="scene">
+    <img id="homer" class="character" src="https://upload.wikimedia.org/wikipedia/en/0/02/Homer_Simpson_2006.png" alt="Homer" />
+    <img id="marge" class="character" src="https://upload.wikimedia.org/wikipedia/en/0/0b/Marge_Simpson.png" alt="Marge" />
+  </div>
+
+  <div id="speech"></div>
+
+  <div class="buttons">
+    <button id="toggleHomerBtn">Remove Homer</button>
+    <button id="talkBtn">Make Homer Talk</button>
+    <button id="swapBtn">Swap Positions</button>
+  </div>
+
+  <audio id="homerLaugh" src="https://www.myinstants.com/media/sounds/homer-simpson-doh.mp3"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
