@@ -1,0 +1,8 @@
+/*  */
+/* Start with light mode styles */
+body {
+  background-color: white;
+  color: black;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
