@@ -1,29 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DOM Demo</title>
-  <link rel="stylesheet" href="styles.css" />
+  <!-- Defines the document type and sets the language to English -->
+  <meta charset="UTF-8" /> <!-- Character encoding for proper text display -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Makes it responsive on mobile -->
+  <title>DOM Demo</title> <!-- Title shown in browser tab -->
+  <link rel="stylesheet" href="styles.css" /> <!-- Links to external CSS file -->
 </head>
 <body>
+  <!-- Main page heading -->
   <h1>Learning DOM with The Simpsons</h1>
 
+  <!-- Container for characters -->
   <div id="scene">
-    <img id="homer" class="character" src="https://upload.wikimedia.org/wikipedia/en/0/02/Homer_Simpson_2006.png" alt="Homer" />
-    <img id="marge" class="character" src="https://upload.wikimedia.org/wikipedia/en/0/0b/Marge_Simpson.png" alt="Marge" />
+    <!-- Homer image -->
+    <img 
+      id="homer" 
+      class="character" 
+      src="https://upload.wikimedia.org/wikipedia/en/0/02/Homer_Simpson_2006.png" 
+      alt="Homer" 
+    />
+
+    <!-- Marge image -->
+    <img 
+      id="marge" 
+      class="character" 
+      src="https://upload.wikimedia.org/wikipedia/en/0/0b/Marge_Simpson.png" 
+      alt="Marge" 
+    />
   </div>
 
+  <!-- Area where text or speech will appear -->
   <div id="speech"></div>
 
+  <!-- Buttons to interact with the characters -->
   <div class="buttons">
-    <button id="toggleHomerBtn">Remove Homer</button>
-    <button id="talkBtn">Make Homer Talk</button>
-    <button id="swapBtn">Swap Positions</button>
+    <button id="toggleHomerBtn">Remove Homer</button> <!-- Button to remove or bring back Homer -->
+    <button id="talkBtn">Make Homer Talk</button>     <!-- Button to make Homer say something -->
+    <button id="swapBtn">Swap Positions</button>      <!-- Button to switch Homer & Marge's spots -->
   </div>
 
-  <audio id="homerLaugh" src="https://www.myinstants.com/media/sounds/homer-simpson-doh.mp3"></audio>
+  <!-- Audio element for Homer’s sound -->
+  <audio 
+    id="homerLaugh" 
+    src="https://www.myinstants.com/media/sounds/homer-simpson-doh.mp3">
+  </audio>
 
+  <!-- Links to the external JavaScript file -->
   <script src="script.js"></script>
 </body>
 </html>
+
