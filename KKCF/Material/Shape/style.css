@@ -1,26 +1,21 @@
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* full screen height */
-  background-color: #f0f0f0;
+/* Container for both the circle and the image */
+.image-circle-wrapper {
+  position: relative;
+  width: 320px; /* overall container size */
+  height: 320px;
 }
 
-/* Circle shape */
-.circle {
-  width: 300px;
+/* Circle background shape */
+.circle-bg {
+  width: 300px; /* slightly smaller than container */
   height: 300px;
-  background-color: lightblue;
-  border-radius: 50%; /* makes it a circle */
-  position: relative; /* needed for absolute positioning of image */
-  overflow: hidden; /* hides parts of image outside circle */
+  z-index: 1; /* behind the image */
 }
 
-/* Dog image */
-.circle img {
-  width: 100%;
+/* Dog image styling */
+.circle-img {
+  width: 340px; /* slightly bigger than the circle */
   height: auto;
-  position: absolute; /* sits on top of the circle */
-  top: 0;
-  left: 0;
+  z-index: 2; /* above the circle */
 }
+
