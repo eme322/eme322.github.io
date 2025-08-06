@@ -25,6 +25,8 @@ img {
   animation: fadeInOut 3s infinite;
 }
 
+
+/*@keyframes is a CSS rule used in animations. It defines what should happen at specific times during the animation sequence.*/
 /* Keyframes for fade effect */
 @keyframes fadeInOut {
   0%, 100% { opacity: 0; } /* Fully invisible at start and end */
