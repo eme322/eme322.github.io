@@ -1,0 +1,15 @@
+/* Style the profile image */
+.profile-img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border: 5px solid #fff;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Card hover effect */
+.card:hover {
+  background-color: #f8f9fa;
+  transform: scale(1.05);
+  transition: 0.3s;
+}
