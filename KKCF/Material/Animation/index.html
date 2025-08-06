@@ -1,0 +1,40 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animation Demo</title>
+  <!-- Link to CSS file -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>3 Image Animations</h1>
+
+  <!-- 1. Fade In & Out Animation -->
+  <div class="animation-container">
+    <h2>Fade In & Out</h2>
+    <!-- Image with "fade" class to apply CSS animation -->
+    <img src="images/img1.jpg" class="fade" alt="Fade Animation">
+  </div>
+
+  <!-- 2. Bounce Animation -->
+  <div class="animation-container">
+    <h2>Bounce</h2>
+    <!-- Image with "bounce" class to apply CSS bounce animation -->
+    <img src="images/img2.jpg" class="bounce" alt="Bounce Animation">
+  </div>
+
+  <!-- 3. Move Across Screen Animation (Triggered by Button) -->
+  <div class="animation-container">
+    <h2>Move Across Screen (Click to Start)</h2>
+    <!-- Image with ID so we can control it using JavaScript -->
+    <img src="images/img3.jpg" id="moveImage" alt="Move Animation">
+    <!-- Button to trigger movement -->
+    <button id="moveBtn">Move!</button>
+  </div>
+
+  <!-- Link to JavaScript file -->
+  <script src="script.js"></script>
+</body>
+</html>
