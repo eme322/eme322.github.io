@@ -11,3 +11,13 @@ section {
   border-bottom: 1px solid #ccc;
   padding-bottom: 20px;
 }
+
+section:last-of-type {
+  border-bottom: none;
+}
+
+/* Force same height for row images */
+.fixed-img {
+  height: 200px;
+  object-fit: cover; /* crop image to fit box */
+}
