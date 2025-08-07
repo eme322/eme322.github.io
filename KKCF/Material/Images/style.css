@@ -1,0 +1,13 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+section {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+}
