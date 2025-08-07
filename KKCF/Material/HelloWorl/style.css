@@ -1,0 +1,50 @@
+/* Importing different fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Pacifico&family=Press+Start+2P&display=swap');
+
+/* Centering all text on the page */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+/* Fade-in animation */
+.fade-in {
+    font-family: 'Roboto', sans-serif; /* First font */
+    animation: fadeIn 2s ease-in;
+}
+
+/* Bounce animation */
+.bounce {
+    font-family: 'Pacifico', cursive; /* Second font */
+    animation: bounce 2s infinite;
+}
+
+/* Color-change animation */
+.color-change {
+    font-family: 'Press Start 2P', cursive; /* Third font */
+    animation: colorChange 3s infinite;
+}
+
+/* Fade-in keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Bounce keyframes */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* Color-change keyframes */
+@keyframes colorChange {
+    0% { color: red; }
+    33% { color: blue; }
+    66% { color: green; }
+    100% { color: red; }
+}
