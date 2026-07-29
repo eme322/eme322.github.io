@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bloom — Skill-Swap Community for Teens</title>
+  <meta name="description" content="Bloom is a peer skill-swap app for teens. Share what you know, learn what you love." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__brand">
+        <span class="nav__logo">B</span>
+        Bloom
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html" class="nav__link nav__link--active">Home</a></li>
+        <li><a href="author1.html" class="nav__link">Author 1 Portfolio</a></li>
+        <li><a href="author2.html" class="nav__link">Author 2 Portfolio</a></li>
+        <li><a href="#onboard" class="btn btn--primary nav__cta">Find a Match</a></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="container hero__grid">
+      <div class="hero__content">
+        <span class="eyebrow">Peer Skill-Swap for Teens</span>
+        <h1 class="hero__title">Trade what you <span>know</span>,<br />grow what you <span>love</span>.</h1>
+        <p class="hero__lead">
+          Bloom connects teenagers who can swap skills and creativity — a coding tip for a sketch lesson,
+          resume feedback for music production advice. Everyone has something to share.
+        </p>
+        <div class="hero__actions">
+          <a href="#onboard" class="btn btn--primary btn--lg">Find a Skill Match</a>
+          <a href="#feed" class="btn btn--ghost btn--lg">Start Learning</a>
+        </div>
+        <div class="hero__stats">
+          <div>
+            <div class="hero__stat-num">2,400+</div>
+            <div class="hero__stat-label">Teens swapping</div>
+          </div>
+          <div>
+            <div class="hero__stat-num">85</div>
+            <div class="hero__stat-label">Skills shared</div>
+          </div>
+          <div>
+            <div class="hero__stat-num">12–18</div>
+            <div class="hero__stat-label">Age range</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <div class="hero__blob"></div>
+        <img class="hero__photo"
+             src="https://images.pexels.com/photos/8199220/pexels-photo-8199220.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+             alt="A diverse group of students smiling and collaborating" />
+        <div class="hero__badge hero__badge--1">
+          <span class="hero__badge-dot"></span> Live matches
+        </div>
+        <div class="hero__badge hero__badge--2">
+          100% teen community
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ ONBOARDING ============ -->
+  <section class="section onboard" id="onboard">
+    <div class="container">
+      <div class="text-center">
+        <span class="eyebrow">Get Started</span>
+        <h2 class="section-title">Tell Bloom about you</h2>
+        <p class="section-subtitle">
+          Add the skills you can teach and the ones you want to learn. Bloom finds a match in seconds.
+        </p>
+      </div>
+
+      <div class="onboard__grid">
+        <!-- Teach -->
+        <div class="onboard__card">
+          <div class="onboard__card-head">
+            <div class="onboard__icon onboard__icon--teach"> teach</div>
+            <div>
+              <h3>What I Can Teach</h3>
+            </div>
+          </div>
+          <p>Share a skill you're confident helping another teen learn.</p>
+          <input type="text" class="onboard__field" placeholder="Type a skill, e.g. Coding" />
+          <div class="pills">
+            <span class="pill pill--teal">Coding</span>
+            <span class="pill pill--coral">Sketching</span>
+            <span class="pill pill--yellow">Music Production</span>
+            <span class="pill pill--green">Resume Writing</span>
+            <span class="pill pill--sky">Graphic Design</span>
+            <span class="pill pill--orange">Photography</span>
+          </div>
+        </div>
+
+        <!-- Learn -->
+        <div class="onboard__card">
+          <div class="onboard__card-head">
+            <div class="onboard__icon onboard__icon--learn"> learn</div>
+            <div>
+              <h3>What I Want to Learn</h3>
+            </div>
+          </div>
+          <p>Pick a skill you'd love another teen to teach you.</p>
+          <input type="text" class="onboard__field" placeholder="Type a skill, e.g. Sketching" />
+          <div class="pills">
+            <span class="pill pill--rose">Public Speaking</span>
+            <span class="pill pill--teal">Video Editing</span>
+            <span class="pill pill--coral">Songwriting</span>
+            <span class="pill pill--sky">Animation</span>
+            <span class="pill pill--yellow">Creative Writing</span>
+            <span class="pill pill--green">Guitar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MATCH FEED ============ -->
+  <section class="section feed" id="feed">
+    <div class="container">
+      <div class="text-center">
+        <span class="eyebrow">Match Feed</span>
+        <h2 class="section-title">Teens ready to swap</h2>
+        <p class="section-subtitle">
+          Browse real skill-match cards. Each teen shows what they offer and what they're hoping to learn.
+        </p>
+      </div>
+
+      <div class="feed__grid">
+        <!-- Card 1 -->
+        <article class="match-card">
+          <div class="match-card__top">
+            <div class="match-card__label">Offers</div>
+            <div class="match-card__skill">Coding</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">Python</span>
+              <span class="match-card__tag">Web</span>
+            </div>
+          </div>
+          <div class="match-card__bot">
+            <div class="match-card__label">Wants</div>
+            <div class="match-card__skill">Sketching</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">Portraits</span>
+              <span class="match-card__tag">Pencil</span>
+            </div>
+            <div class="match-card__person">
+              <img class="match-card__avatar"
+                   src="https://images.pexels.com/photos/13538613/pexels-photo-13538613.jpeg?auto=compress&cs=tinysrgb&h=120&w=120"
+                   alt="Avatar of Maya" />
+              <div>
+                <div class="match-card__person-name">Maya, 16</div>
+                <div class="match-card__person-meta">2 skills shared</div>
+              </div>
+            </div>
+            <button class="match-card__connect">Connect with Maya</button>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="match-card match-card--alt">
+          <div class="match-card__top">
+            <div class="match-card__label">Offers</div>
+            <div class="match-card__skill">Resume Writing</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">First job</span>
+              <span class="match-card__tag">Editing</span>
+            </div>
+          </div>
+          <div class="match-card__bot">
+            <div class="match-card__label">Wants</div>
+            <div class="match-card__skill">Music Production</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">Beats</span>
+              <span class="match-card__tag">Mixing</span>
+            </div>
+            <div class="match-card__person">
+              <img class="match-card__avatar"
+                   src="https://images.pexels.com/photos/38575490/pexels-photo-38575490.jpeg?auto=compress&cs=tinysrgb&h=120&w=120"
+                   alt="Avatar of Jordan" />
+              <div>
+                <div class="match-card__person-name">Jordan, 17</div>
+                <div class="match-card__person-meta">5 skills shared</div>
+              </div>
+            </div>
+            <button class="match-card__connect">Connect with Jordan</button>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="match-card match-card--alt2">
+          <div class="match-card__top">
+            <div class="match-card__label">Offers</div>
+            <div class="match-card__skill">Graphic Design</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">Logos</span>
+              <span class="match-card__tag">Posters</span>
+            </div>
+          </div>
+          <div class="match-card__bot">
+            <div class="match-card__label">Wants</div>
+            <div class="match-card__skill">Public Speaking</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">Confidence</span>
+              <span class="match-card__tag">Debate</span>
+            </div>
+            <div class="match-card__person">
+              <img class="match-card__avatar"
+                   src="https://images.pexels.com/photos/30649803/pexels-photo-30649803.jpeg?auto=compress&cs=tinysrgb&h=120&w=120"
+                   alt="Avatar of Sam" />
+              <div>
+                <div class="match-card__person-name">Sam, 15</div>
+                <div class="match-card__person-meta">3 skills shared</div>
+              </div>
+            </div>
+            <button class="match-card__connect">Connect with Sam</button>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="match-card">
+          <div class="match-card__top">
+            <div class="match-card__label">Offers</div>
+            <div class="match-card__skill">Photography</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">Phone cam</span>
+              <span class="match-card__tag">Editing</span>
+            </div>
+          </div>
+          <div class="match-card__bot">
+            <div class="match-card__label">Wants</div>
+            <div class="match-card__skill">Coding</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">HTML</span>
+              <span class="match-card__tag">CSS</span>
+            </div>
+            <div class="match-card__person">
+              <img class="match-card__avatar"
+                   src="https://images.pexels.com/photos/13538613/pexels-photo-13538613.jpeg?auto=compress&cs=tinysrgb&h=120&w=120"
+                   alt="Avatar of Alex" />
+              <div>
+                <div class="match-card__person-name">Alex, 14</div>
+                <div class="match-card__person-meta">1 skill shared</div>
+              </div>
+            </div>
+            <button class="match-card__connect">Connect with Alex</button>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="match-card match-card--alt">
+          <div class="match-card__top">
+            <div class="match-card__label">Offers</div>
+            <div class="match-card__skill">Music Production</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">FL Studio</span>
+              <span class="match-card__tag">Loops</span>
+            </div>
+          </div>
+          <div class="match-card__bot">
+            <div class="match-card__label">Wants</div>
+            <div class="match-card__skill">Resume Writing</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">Internships</span>
+              <span class="match-card__tag">Format</span>
+            </div>
+            <div class="match-card__person">
+              <img class="match-card__avatar"
+                   src="https://images.pexels.com/photos/38575490/pexels-photo-38575490.jpeg?auto=compress&cs=tinysrgb&h=120&w=120"
+                   alt="Avatar of Riley" />
+              <div>
+                <div class="match-card__person-name">Riley, 16</div>
+                <div class="match-card__person-meta">4 skills shared</div>
+              </div>
+            </div>
+            <button class="match-card__connect">Connect with Riley</button>
+          </div>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="match-card match-card--alt2">
+          <div class="match-card__top">
+            <div class="match-card__label">Offers</div>
+            <div class="match-card__skill">Sketching</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">Anime</span>
+              <span class="match-card__tag">Ink</span>
+            </div>
+          </div>
+          <div class="match-card__bot">
+            <div class="match-card__label">Wants</div>
+            <div class="match-card__skill">Graphic Design</div>
+            <div class="match-card__tags">
+              <span class="match-card__tag">Branding</span>
+              <span class="match-card__tag">Color</span>
+            </div>
+            <div class="match-card__person">
+              <img class="match-card__avatar"
+                   src="https://images.pexels.com/photos/30649803/pexels-photo-30649803.jpeg?auto=compress&cs=tinysrgb&h=120&w=120"
+                   alt="Avatar of Quinn" />
+              <div>
+                <div class="match-card__person-name">Quinn, 17</div>
+                <div class="match-card__person-meta">6 skills shared</div>
+              </div>
+            </div>
+            <button class="match-card__connect">Connect with Quinn</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMMUNITY IMPACT ============ -->
+  <section class="section impact">
+    <div class="container">
+      <div class="text-center">
+        <span class="eyebrow">Why Bloom Matters</span>
+        <h2 class="section-title">Learning is better together</h2>
+        <p class="section-subtitle">
+          Skill-sharing builds confidence, friendships, and real-world experience — all in a safe, teen-only space.
+        </p>
+      </div>
+
+      <div class="impact__grid">
+        <div class="impact__card">
+          <div class="impact__icon" style="background:var(--primary-50);color:var(--primary-500)"> mentor</div>
+          <h3>Peer Mentorship</h3>
+          <p>Teens teaching teens keeps lessons relatable, patient, and pressure-free.</p>
+        </div>
+        <div class="impact__card">
+          <div class="impact__icon" style="background:var(--secondary-50);color:var(--secondary-600)"> grow</div>
+          <h3>Real Confidence</h3>
+          <p>Sharing what you know — and admitting what you don't — grows self-esteem fast.</p>
+        </div>
+        <div class="impact__card">
+          <div class="impact__icon" style="background:var(--accent-50);color:#8A7400"> safe</div>
+          <h3>Safe &amp; Welcoming</h3>
+          <p>A moderated, teens-only community where everyone belongs and no question is "dumb."</p>
+        </div>
+        <div class="impact__card">
+          <div class="impact__icon" style="background:#EAF4FF;color:#2C7BB6"> spark</div>
+          <h3>New Interests</h3>
+          <p>Discover a passion you'd never have tried — from beat-making to resume design.</p>
+        </div>
+      </div>
+
+      <div class="impact__banner">
+        <div>
+          <h3>Ready to swap a skill?</h3>
+          <p>Join Bloom and meet a teen who's excited to learn from you — and teach you something new.</p>
+        </div>
+        <a href="#onboard" class="btn btn--secondary btn--lg">Get Started Free</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand">
+            <span class="nav__logo">B</span> Bloom
+          </div>
+          <p class="footer__about">
+            A peer skill-swap community built for teens. Share what you know, learn what you love.
+          </p>
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="Instagram">IG</a>
+            <a href="#" class="footer__social" aria-label="TikTok">TT</a>
+            <a href="#" class="footer__social" aria-label="YouTube">YT</a>
+            <a href="#" class="footer__social" aria-label="Discord">DC</a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4>Explore</h4>
+          <a href="index.html">Home</a>
+          <a href="#onboard">Find a Match</a>
+          <a href="#feed">Match Feed</a>
+          <a href="#">Community Guidelines</a>
+        </div>
+        <div class="footer__col">
+          <h4>Creators</h4>
+          <a href="author1.html">Author 1 Portfolio</a>
+          <a href="author2.html">Author 2 Portfolio</a>
+        </div>
+        <div class="footer__col">
+          <h4>Support</h4>
+          <a href="#">Safety Center</a>
+          <a href="#">Help &amp; FAQ</a>
+          <a href="#">Contact Us</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Bloom. Built by teens, for teens.</span>
+        <span>Made with care for the Bloom community.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile nav toggle (minimal, no framework) -->
+  <script>
+    var toggle = document.getElementById('navToggle');
+    var links = document.getElementById('navLinks');
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        links.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>
