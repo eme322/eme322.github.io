@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maya Rivera — Author 1 Portfolio | Bloom</title>
+  <meta name="description" content="Portfolio of Maya Rivera, co-creator of Bloom." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__brand">
+        <span class="nav__logo">B</span>
+        Bloom
+      </a>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html" class="nav__link">Home</a></li>
+        <li><a href="author1.html" class="nav__link nav__link--active">Author 1 Portfolio</a></li>
+        <li><a href="author2.html" class="nav__link">Author 2 Portfolio</a></li>
+        <li><a href="#contact" class="btn btn--primary nav__cta">Contact Maya</a></li>
+      </ul>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="p-hero p-hero--1">
+    <div class="container p-hero__grid">
+      <img class="p-hero__photo"
+           src="https://images.pexels.com/photos/12662921/pexels-photo-12662921.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+           alt="Portrait of Maya Rivera" />
+      <div>
+        <span class="eyebrow">Author 1 · Bloom Co-Creator</span>
+        <h1 class="p-hero__name">Hi, I'm Maya Rivera</h1>
+        <div class="p-hero__role">Frontend Developer &amp; Bloom Designer</div>
+        <p class="p-hero__bio">
+          I'm a 17-year-old student who loves building things people can actually use.
+          I coded the Bloom interface and designed the warm, friendly look you see across the site.
+          When I'm not at my laptop, I'm sketching or helping classmates debug their first website.
+        </p>
+        <div class="p-hero__pills pills">
+          <span class="pill pill--coral">Coding</span>
+          <span class="pill pill--teal">Web Design</span>
+          <span class="pill pill--yellow">UI/UX</span>
+          <span class="pill pill--sky">Mentoring</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="text-center">
+        <span class="eyebrow">About Me</span>
+        <h2 class="section-title">A little more about Maya</h2>
+      </div>
+      <div class="about__grid">
+        <div class="about__text">
+          <p>
+            I started coding when I was 13 after a teacher showed me how to make a simple webpage.
+            What hooked me wasn't the syntax — it was seeing something I built appear on a screen.
+            That same spark is why I helped create Bloom: I wanted every teen to feel that "I made this" moment.
+          </p>
+          <p>
+            I care about design that's warm and welcoming, not cold or intimidating. I believe good
+            interfaces should feel like a friend explaining things, not a manual. That philosophy
+            shaped every button and card on Bloom.
+          </p>
+          <p>
+            Outside of building Bloom, I run a small study group at school where I help friends
+            with their first HTML and CSS projects. Watching someone go from "I can't code" to
+            "look what I made" never gets old.
+          </p>
+        </div>
+        <dl class="about__facts">
+          <div class="about__fact"><dt>Age</dt><dd>17</dd></div>
+          <div class="about__fact"><dt>Grade</dt><dd>11th</dd></div>
+          <div class="about__fact"><dt>Role on Bloom</dt><dd>Frontend &amp; Design</dd></div>
+          <div class="about__fact"><dt>Can teach</dt><dd>Coding, Web Design</dd></div>
+          <div class="about__fact"><dt>Wants to learn</dt><dd>Sketching, Animation</dd></div>
+          <div class="about__fact"><dt>Favorite tool</dt><dd>VS Code</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section class="section section--tight" style="background:var(--neutral-100)">
+    <div class="container">
+      <div class="text-center">
+        <span class="eyebrow">Skills</span>
+        <h2 class="section-title">What I bring to the table</h2>
+        <p class="section-subtitle">Skills I'm confident teaching and using on real projects.</p>
+      </div>
+      <div class="skills__grid">
+        <div class="skill-card">
+          <div class="skill-card__icon" style="background:var(--primary-50);color:var(--primary-500)"> code</div>
+          <h3>HTML &amp; CSS</h3>
+          <p>Building clean, responsive layouts from scratch.</p>
+          <div class="skill-bar"><div class="skill-bar__fill" style="width:92%"></div></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card__icon" style="background:var(--secondary-50);color:var(--secondary-600)"> palette</div>
+          <h3>UI Design</h3>
+          <p>Creating warm, friendly interfaces in Figma.</p>
+          <div class="skill-bar"><div class="skill-bar__fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card__icon" style="background:var(--accent-50);color:#8A7400"> js</div>
+          <h3>JavaScript</h3>
+          <p>Adding interactivity and small animations to pages.</p>
+          <div class="skill-bar"><div class="skill-bar__fill" style="width:74%"></div></div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card__icon" style="background:#EAF4FF;color:#2C7BB6"> teach</div>
+          <h3>Mentoring</h3>
+          <p>Helping beginners feel confident with their first project.</p>
+          <div class="skill-bar"><div class="skill-bar__fill" style="width:88%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section class="section section--tight">
+    <div class="container">
+      <div class="text-center">
+        <span class="eyebrow">Projects</span>
+        <h2 class="section-title">Things I've built</h2>
+        <p class="section-subtitle">A few projects I'm proud of, including Bloom itself.</p>
+      </div>
+      <div class="projects__grid">
+        <article class="project-card">
+          <img class="project-card__img"
+               src="https://images.pexels.com/photos/574070/pexels-photo-574070.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+               alt="Bloom project preview" />
+          <div class="project-card__body">
+            <span class="project-card__tag">Web App</span>
+            <h3>Bloom Skill-Swap</h3>
+            <p>Co-designed and built the front-end for a teen peer skill-sharing platform.</p>
+          </div>
+        </article>
+        <article class="project-card">
+          <img class="project-card__img"
+               src="https://images.pexels.com/photos/3987066/pexels-photo-3987066.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+               alt="Study group website preview" />
+          <div class="project-card__body">
+            <span class="project-card__tag">School Project</span>
+            <h3>Code Club Site</h3>
+            <p>A simple site for my school's coding club with lesson notes and sign-ups.</p>
+          </div>
+        </article>
+        <article class="project-card">
+          <img class="project-card__img"
+               src="https://images.pexels.com/photos/34804019/pexels-photo-34804019.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
+               alt="Portfolio template preview" />
+          <div class="project-card__body">
+            <span class="project-card__tag">Design</span>
+            <h3>Teen Portfolio Kit</h3>
+            <p>A free HTML/CSS template helping classmates build their first portfolio.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INTERESTS ============ -->
+  <section class="section section--tight" style="background:var(--neutral-100)">
+    <div class="container">
+      <div class="text-center">
+        <span class="eyebrow">Interests</span>
+        <h2 class="section-title">When I'm not coding</h2>
+        <p class="section-subtitle">Hobbies and passions that keep me curious.</p>
+      </div>
+      <div class="interests__list">
+        <span class="interest"><span class="interest__emoji"> pencil</span> Sketching</span>
+        <span class="interest"><span class="interest__emoji"> game</span> Indie Games</span>
+        <span class="interest"><span class="interest__emoji"> book</span> Sci-Fi Novels</span>
+        <span class="interest"><span class="interest__emoji"> music</span> Lo-Fi Playlists</span>
+        <span class="interest"><span class="interest__emoji"> camera</span> Phone Photography</span>
+        <span class="interest"><span class="interest__emoji"> bike</span> Cycling</span>
+        <span class="interest"><span class="interest__emoji"> globe</span> Language Learning</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="section contact" id="contact">
+    <div class="container">
+      <div class="contact__card">
+        <span class="eyebrow">Contact</span>
+        <h2 class="section-title">Let's connect</h2>
+        <p class="section-subtitle" style="margin-inline:auto">
+          Want to swap a skill or talk about a project? Reach out using the info below.
+        </p>
+        <div class="contact__methods">
+          <div class="contact__method">
+            <div class="contact__method-icon"> mail</div>
+            <div>
+              <div class="contact__method-label">Email</div>
+              <div class="contact__method-value">maya.rivera@example.com</div>
+            </div>
+          </div>
+          <div class="contact__method">
+            <div class="contact__method-icon"> gh</div>
+            <div>
+              <div class="contact__method-label">GitHub</div>
+              <div class="contact__method-value">@maya-rivera</div>
+            </div>
+          </div>
+          <div class="contact__method">
+            <div class="contact__method-icon"> be</div>
+            <div>
+              <div class="contact__method-label">Behance</div>
+              <div class="contact__method-value">@mayadesigns</div>
+            </div>
+          </div>
+          <div class="contact__method">
+            <div class="contact__method-icon"> pin</div>
+            <div>
+              <div class="contact__method-label">Location</div>
+              <div class="contact__method-value">Remote · School Club</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand">
+            <span class="nav__logo">B</span> Bloom
+          </div>
+          <p class="footer__about">
+            A peer skill-swap community built for teens. Share what you know, learn what you love.
+          </p>
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="Instagram">IG</a>
+            <a href="#" class="footer__social" aria-label="TikTok">TT</a>
+            <a href="#" class="footer__social" aria-label="YouTube">YT</a>
+            <a href="#" class="footer__social" aria-label="Discord">DC</a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4>Explore</h4>
+          <a href="index.html">Home</a>
+          <a href="index.html#onboard">Find a Match</a>
+          <a href="index.html#feed">Match Feed</a>
+          <a href="#">Community Guidelines</a>
+        </div>
+        <div class="footer__col">
+          <h4>Creators</h4>
+          <a href="author1.html">Author 1 Portfolio</a>
+          <a href="author2.html">Author 2 Portfolio</a>
+        </div>
+        <div class="footer__col">
+          <h4>Support</h4>
+          <a href="#">Safety Center</a>
+          <a href="#">Help &amp; FAQ</a>
+          <a href="#">Contact Us</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Bloom. Built by teens, for teens.</span>
+        <span>Made with care for the Bloom community.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    var toggle = document.getElementById('navToggle');
+    var links = document.getElementById('navLinks');
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        links.classList.toggle('open');
+      });
+    }
+  </script>
+</body>
+</html>
